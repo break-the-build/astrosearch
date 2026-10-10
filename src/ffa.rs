@@ -14,7 +14,7 @@
 
 use crate::{
     grid::{maximum_duration, minimum_duration, DurationModel},
-    rednoise::MAX_TRANSIT_DURATION,
+    rednoise::{RedNoise, MAX_TRANSIT_DURATION},
 };
 use std::{
     sync::atomic::{AtomicUsize, Ordering},
@@ -38,9 +38,15 @@ pub(crate) struct CoarsePlan<'a> {
     pub(crate) model: DurationModel,
     pub(crate) durations: usize,
     pub(crate) threads: usize,
+    /// One "segment" of transit-weight-averaged beta^2 per duration knot
+    /// (all ones for white scoring), so windows are ranked with the same
+    /// correlated statistic the exact search uses.
+    pub(crate) red_noise: &'a RedNoise,
 }
 
 const QUANTITIES: usize = 4;
+/// Per-slot clip of the mean residual, in units of that slot's noise.
+const SLOT_CLIP_SIGMA: f64 = 5.0;
 
 /// Uniform slots for one band: interleaved [sum, background, weight, count].
 fn slot_series(inputs: &FoldInputs, delta: f64) -> Vec<f64> {
@@ -57,6 +63,18 @@ fn slot_series(inputs: &FoldInputs, delta: f64) -> Vec<f64> {
         out[s + 1] += inputs.background[i];
         out[s + 2] += w;
         out[s + 3] += 1.0;
+    }
+    // A single deep artifact lands in some phase bin at every trial period;
+    // the exact scan's repeated-event vetting rejects such windows, so cap
+    // each slot's mean residual at SLOT_CLIP_SIGMA of its own noise. A real
+    // transit contributes many moderate slots and is barely affected.
+    for slot in out.chunks_exact_mut(QUANTITIES) {
+        let w = slot[2];
+        if w > 0.0 {
+            let limit = SLOT_CLIP_SIGMA / w.sqrt();
+            slot[0] = (slot[0] / w).clamp(-limit, limit) * w;
+            slot[1] = (slot[1] / w).clamp(-limit, limit) * w;
+        }
     }
     out
 }
@@ -89,8 +107,15 @@ pub(crate) fn transform(data: &mut Vec<f64>, scratch: &mut Vec<f64>, m: usize, p
     }
 }
 
-/// Best white box score of one folded profile over `widths` (in slots).
-fn best_score(profile: &[f64], p: usize, widths: &[usize], prefix: &mut Vec<[f64; 4]>) -> f64 {
+/// Best box score of one folded profile over `widths` (slots, beta^2):
+/// depth / sqrt(beta^2 / W_in + 1 / W_out), the exact search's correlated
+/// statistic with one global beta^2 (beta^2 = 1 gives the white score).
+fn best_score(
+    profile: &[f64],
+    p: usize,
+    widths: &[(usize, f64)],
+    prefix: &mut Vec<[f64; 4]>,
+) -> f64 {
     prefix.clear();
     prefix.push([0.0; 4]);
     for i in 0..2 * p {
@@ -106,7 +131,7 @@ fn best_score(profile: &[f64], p: usize, widths: &[usize], prefix: &mut Vec<[f64
     let total_background = prefix[p][1];
     let total_weight = prefix[p][2];
     let mut best = f64::NEG_INFINITY;
-    for &width in widths {
+    for &(width, beta2) in widths {
         for start in 0..p {
             let (lo, hi) = (prefix[start], prefix[start + width]);
             let in_sum = hi[0] - lo[0];
@@ -120,25 +145,27 @@ fn best_score(profile: &[f64], p: usize, widths: &[usize], prefix: &mut Vec<[f64
             if numerator <= 0.0 {
                 continue;
             }
-            let score = numerator / (in_weight * out_weight * (in_weight + out_weight)).sqrt();
+            let depth = numerator / (in_weight * out_weight);
+            let score = depth / (beta2.max(1.0) / in_weight + 1.0 / out_weight).sqrt();
             best = best.max(score);
         }
     }
     best
 }
 
-/// Window widths (in slots) of the durations searched at `period`.
-fn widths(period: f64, delta: f64, plan: &CoarsePlan, p: usize) -> Vec<usize> {
+/// Window widths (in slots) and their beta^2 for the durations searched at `period`.
+fn widths(period: f64, delta: f64, plan: &CoarsePlan, p: usize) -> Vec<(usize, f64)> {
     let shortest = minimum_duration(period, plan.cadence, plan.model);
     let longest = maximum_duration(period, plan.cadence, plan.model, MAX_TRANSIT_DURATION);
-    let mut out: Vec<usize> = (0..plan.durations)
+    let mut out: Vec<(usize, f64)> = (0..plan.durations)
         .map(|i| {
             let f = i as f64 / plan.durations.saturating_sub(1).max(1) as f64;
             let duration = shortest * (longest / shortest).powf(f);
-            ((duration / delta).round() as usize).clamp(1, (p / 3).max(1))
+            let width = ((duration / delta).round() as usize).clamp(1, (p / 3).max(1));
+            (width, plan.red_noise.beta(0, width as f64 * delta).powi(2))
         })
         .collect();
-    out.dedup();
+    out.dedup_by_key(|w| w.0);
     out
 }
 
@@ -303,9 +330,13 @@ mod tests {
             profile[j * QUANTITIES + 2] = 10.0;
             profile[j * QUANTITIES + 3] = 5.0;
         }
-        let score = best_score(&profile, p, &[3], &mut Vec::new());
+        let score = best_score(&profile, p, &[(3, 1.0)], &mut Vec::new());
         // depth 0.01 over in-weight 30 and out-weight 170.
         let expected = 0.01 / (1.0 / 30.0 + 1.0 / 170.0f64).sqrt();
         assert!((score - expected).abs() < 1e-9, "{score} vs {expected}");
+        // Correlated noise (beta^2 = 4) inflates the in-transit variance only.
+        let red = best_score(&profile, p, &[(3, 4.0)], &mut Vec::new());
+        let expected_red = 0.01 / (4.0 / 30.0 + 1.0 / 170.0f64).sqrt();
+        assert!((red - expected_red).abs() < 1e-9, "{red} vs {expected_red}");
     }
 }

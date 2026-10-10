@@ -229,6 +229,37 @@ pub(crate) fn periodic_dips(
 /// transit over more phase and lowers its score.
 const COARSE_FLOOR_FRACTION: f64 = 0.6;
 
+/// Transit-weight-averaged beta^2 per duration knot as a one-segment model
+/// (white when correlated scoring is off).
+fn global_red_noise(samples: &Samples, correlated: bool) -> RedNoise {
+    let red = &samples.red_noise;
+    let knots = red.knots.len();
+    if !correlated || red.beta2.len() < knots {
+        return RedNoise::white(1);
+    }
+    let segments = red.beta2.len() / knots;
+    let mut weight = vec![0.0; segments];
+    for (&w, &s) in samples.transit_weights.iter().zip(&samples.segment_ids) {
+        weight[s.min(segments - 1)] += w;
+    }
+    let total: f64 = weight.iter().sum();
+    if total <= 0.0 {
+        return RedNoise::white(1);
+    }
+    let beta2 = (0..knots)
+        .map(|k| {
+            (0..segments)
+                .map(|s| weight[s] * red.beta2[s * knots + k])
+                .sum::<f64>()
+                / total
+        })
+        .collect();
+    RedNoise {
+        knots: red.knots.clone(),
+        beta2,
+    }
+}
+
 /// Coarse-to-fine search over the full-resolution grid in `context.periods`.
 ///
 /// Stage 1 evaluates the centre of every cell of `two_stage_factor` adjacent
@@ -252,6 +283,7 @@ fn two_stage_scan(context: &TrialContext, warnings: &mut Vec<String>) -> (Vec<Ca
             background: context.background,
             weights: &context.samples.transit_weights,
         };
+        let red_noise = global_red_noise(context.samples, context.correlated);
         let plan = crate::ffa::CoarsePlan {
             periods: context.periods,
             factor,
@@ -259,6 +291,7 @@ fn two_stage_scan(context: &TrialContext, warnings: &mut Vec<String>) -> (Vec<Ca
             model: DurationModel::from_config(&config),
             durations: config.durations,
             threads: config.threads,
+            red_noise: &red_noise,
         };
         crate::ffa::coarse_cell_scores(&inputs, &plan)
     } else {

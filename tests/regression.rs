@@ -536,3 +536,31 @@ fn fast_folding_coarse_stage_recovers_the_full_search_result() {
     };
     assert!(analyze(points, invalid).is_err());
 }
+
+#[test]
+fn fast_folding_ranking_survives_a_single_deep_artifact() {
+    // A real planet plus one deep, short artifact: the artifact lands in some
+    // phase bin at every trial period and must not crowd the planet out of the
+    // refined cells.
+    let mut points = curve(8000, 37);
+    inject(&mut points, 6.1, 1.3, 0.15, 0.0012);
+    inject(&mut points, 1000.0, 77.0, 0.08, 0.03);
+    let cfg = |ffa: bool| Config {
+        min_period: 1.0,
+        max_period: 20.0,
+        periods: 10,
+        threads: 1,
+        transit_search_passes: 1,
+        two_stage_factor: if ffa { 8 } else { 0 },
+        two_stage_keep: 16,
+        coarse_ffa: ffa,
+        ..config(1.0, 20.0)
+    };
+    let found = |r: &Report| {
+        r.candidates
+            .iter()
+            .any(|c| c.kind.is_transit() && (c.period - 6.1).abs() < 0.01)
+    };
+    assert!(found(&analyze(points.clone(), cfg(false)).unwrap()));
+    assert!(found(&analyze(points, cfg(true)).unwrap()));
+}

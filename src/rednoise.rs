@@ -86,8 +86,8 @@ impl RedNoise {
         Self { knots, beta2 }
     }
 
-    /// Independent noise (beta = 1) for hand-built test samples.
-    #[cfg(test)]
+    /// Independent noise (beta = 1): hand-built test samples and the white
+    /// ranking model of the fast-folding coarse stage.
     pub fn white(segments: usize) -> Self {
         Self {
             knots: vec![1.0],

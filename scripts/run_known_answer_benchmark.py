@@ -12,8 +12,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import csv
 import hashlib
 import json
+import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 
@@ -23,6 +25,25 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def run_measured(command: list[str], log_path: Path) -> tuple[int, dict]:
+    """Run one search, logging its output, and return its exit code and
+    resource use. os.wait4 reports this child alone, which stays correct when
+    several workers run searches concurrently (RUSAGE_CHILDREN would not)."""
+    start = time.perf_counter()
+    with log_path.open("w", encoding="utf-8") as log:
+        process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
+        _, status, usage = os.wait4(process.pid, 0)
+    process.returncode = os.waitstatus_to_exitcode(status)
+    # ru_maxrss is bytes on macOS and kibibytes on Linux.
+    scale = 1 if sys.platform == "darwin" else 1024
+    return process.returncode, {
+        "wall_seconds": round(time.perf_counter() - start, 3),
+        "user_seconds": round(usage.ru_utime, 3), "system_seconds": round(usage.ru_stime, 3),
+        "max_rss_mb": round(usage.ru_maxrss * scale / 2**20, 1),
+        "load_average": [round(v, 2) for v in os.getloadavg()],
+    }
 
 
 def run_case(index: int, total: int, row: dict, manifest_dir: Path,
@@ -48,15 +69,22 @@ def run_case(index: int, total: int, row: dict, manifest_dir: Path,
         if args.periods is not None:
             command.extend(("--periods", str(args.periods)))
         log_path = candidate_path.with_suffix(".log")
-        completed = subprocess.run(command, capture_output=True, text=True, check=False)
-        log_path.write_text(completed.stdout + completed.stderr, encoding="utf-8")
-        if completed.returncode != 0 or not stage.is_file():
+        returncode, metrics = run_measured(command, log_path)
+        if returncode != 0 or not stage.is_file():
             stage.unlink(missing_ok=True)
             return index, case_id, f"search failed (see {log_path})"
+        provenance = Path(str(stage) + ".provenance.json")
+        if provenance.is_file():
+            record = json.loads(provenance.read_text())
+            metrics.update(observations=record.get("observations"), span_days=record.get("span_days"),
+                           transit_trials=record.get("transit_trials"))
+            provenance.replace(Path(str(candidate_path) + ".provenance.json"))
         stage.replace(candidate_path)
-        sidecar.write_text(json.dumps({"state": state, "command": command,
-                                       "candidate_sha256": sha256(candidate_path)},
-                                      indent=2) + "\n")
+        temporary = sidecar.with_name(f".{sidecar.name}.tmp")
+        temporary.write_text(json.dumps({"state": state, "command": command,
+                                         "candidate_sha256": sha256(candidate_path),
+                                         "metrics": metrics}, indent=2) + "\n")
+        temporary.replace(sidecar)
         return index, case_id, "searched"
     except Exception as error:
         candidate_path.with_name(f".{candidate_path.name}.tmp").unlink(missing_ok=True)

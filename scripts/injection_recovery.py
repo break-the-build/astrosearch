@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import shlex
 import math
 import subprocess
 from concurrent.futures import ProcessPoolExecutor
@@ -28,6 +29,7 @@ import numpy as np
 
 import evaluate_benchmark as ev
 from vetting.io import phase_offset, read_table
+from vetting.tier import jackknife_score
 
 csv.field_size_limit(2**31 - 1)
 SNR_LEVELS = (7.0, 10.0, 15.0, 20.0, 30.0, 40.0, 60.0)
@@ -77,7 +79,7 @@ def build_injection(case: dict, root: Path, rng: np.random.Generator, snr: float
 
 
 def run_one(job: tuple) -> dict:
-    case, root, work, binary, snr, seed, threshold = job
+    case, root, work, binary, snr, seed, threshold, extra = job
     rng = np.random.default_rng(seed)
     built = build_injection(case, Path(root), rng, snr)
     if built is None:
@@ -87,17 +89,21 @@ def run_one(job: tuple) -> dict:
     out = curve.with_suffix(".candidates.csv")
     np.savetxt(curve, rows, delimiter=",", header="time,flux,flux_err", comments="", fmt="%.8f")
     subprocess.run([binary, "--input", str(curve), "--output", str(out), "--threads", "1",
-                    "--transit-search-passes", "1", "--min-period", "0.5", "--max-period", "15"],
+                    "--transit-search-passes", "1", "--min-period", "0.5", "--max-period", "15",
+                    *shlex.split(extra)],
                    check=True, capture_output=True, text=True)
     with out.open(newline="") as stream:
         transit = [r for r in csv.DictReader(stream) if r["class"] in ("periodic_dip", "duo_transit")]
     span = float(rows[-1, 0] - rows[0, 0])
-    matched = next((float(r["score"]) for r in transit
-                    if any(ev.close_ephemeris(e, truth, span, 1.0) for e in ev.ephemerides(r))), None)
+    matched_row = next((r for r in transit
+                        if any(ev.close_ephemeris(e, truth, span, 1.0) for e in ev.ephemerides(r))), None)
+    matched = float(matched_row["score"]) if matched_row else None
+    jackknife = jackknife_score(matched_row) if matched_row else None
     curve.unlink()
     return {"case_id": case["case_id"], "split": case["split"], **truth, "matched_score": matched,
             "recovered_screening": matched is not None and matched >= 6.0,
-            "recovered_detection": matched is not None and matched >= threshold}
+            "matched_jackknife": jackknife,
+            "recovered_detection": jackknife is not None and jackknife >= threshold}
 
 
 def summarize(rows: list[dict], threshold: float) -> dict:
@@ -121,6 +127,7 @@ def main() -> int:
     p.add_argument("--max-observations", type=int, default=20000)
     p.add_argument("--workers", type=int, default=8)
     p.add_argument("--seed", type=int, default=20261010)
+    p.add_argument("--extra-search-args", default="", help="additional astrosearch options")
     p.add_argument("--calibration", type=Path,
                    default=Path(__file__).resolve().parents[1] / "data/calibration/detection_threshold.json")
     p.add_argument("--work-dir", type=Path, required=True)
@@ -133,7 +140,8 @@ def main() -> int:
     rng = np.random.default_rng(a.seed)
     chosen = [hosts[i] for i in rng.choice(len(hosts), size=min(a.hosts, len(hosts)), replace=False)]
     a.work_dir.mkdir(parents=True, exist_ok=True)
-    jobs = [(case, str(root), str(a.work_dir), a.binary, snr, a.seed + 1000 * i + j, threshold)
+    jobs = [(case, str(root), str(a.work_dir), a.binary, snr, a.seed + 1000 * i + j, threshold,
+             a.extra_search_args)
             for i, case in enumerate(chosen) for j, snr in enumerate(SNR_LEVELS)]
     with ProcessPoolExecutor(max_workers=a.workers) as pool:
         rows = list(pool.map(run_one, jobs))

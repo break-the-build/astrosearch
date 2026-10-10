@@ -12,6 +12,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import csv
 import hashlib
 import json
+import shlex
 import sys
 from pathlib import Path
 from run_metrics import build_identity, run_with_metrics
@@ -52,6 +53,7 @@ def run_case(index: int, total: int, row: dict, manifest_dir: Path,
             command.extend(("--periods", str(args.periods)))
         if args.max_period_trials is not None:
             command.extend(("--max-period-trials", str(args.max_period_trials)))
+        command.extend(shlex.split(args.extra_search_args))
         if density:
             # Per-target density enables the physical duration floor in the grid.
             command.extend(("--stellar-density", density))
@@ -93,6 +95,8 @@ def main() -> int:
     parser.add_argument("--min-period", type=float, default=0.15)
     parser.add_argument("--max-period", type=float, default=30)
     parser.add_argument("--periods", type=int)
+    parser.add_argument("--extra-search-args", default="",
+                        help="additional astrosearch options, e.g. '--bin-minutes 10'")
     parser.add_argument("--max-period-trials", type=int,
                         help="period-grid cap passed to astrosearch (default: its built-in 250000)")
     parser.add_argument("--grouping", choices=("ephemeris", "events"), default="events")
@@ -114,6 +118,7 @@ def main() -> int:
               "min_period": args.min_period,
               "max_period": args.max_period, "periods": args.periods,
               "max_period_trials": args.max_period_trials,
+              "extra_search_args": args.extra_search_args,
               "grouping": args.grouping,
               "transit_search_passes": args.transit_search_passes,
               "search_timeout_s": args.search_timeout}

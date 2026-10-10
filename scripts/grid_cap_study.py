@@ -7,9 +7,11 @@ drift rule. Three variants are compared on the same calibration-split hosts
 (each host contributes its confirmed planet and its inverted-flux null):
 
   A  default cap (250k)
-  B  cap raised (default 1,000,000)
-  C  stellar-density grid: TIC density per host enables the physical
-     duration floor, which needs far fewer trials than the cadence floor
+  B  cap raised to 1,000,000
+  C  TIC density with the conservative duration floor (b <= 0.95, e <= 0.9)
+  D  A + 10-minute binning
+  E  TIC density with the physical floor (half the central duration)
+  F  D + E
 
   prepare   sample hosts, fetch TIC densities, write one run manifest per variant
   evaluate  recall at matched null trigger rates (thresholds from each
@@ -31,7 +33,9 @@ import evaluate_benchmark as ev
 from vetting.tier import statistic
 
 csv.field_size_limit(2**31 - 1)
-VARIANTS = ("A_cap250k", "B_cap1M", "C_density")
+VARIANTS = ("A_cap250k", "B_cap1M", "C_density", "D_bin10", "E_physical", "F_bin10_physical")
+#: Variants that pass the host TIC density to the search.
+DENSITY_VARIANTS = ("C_density", "E_physical", "F_bin10_physical")
 RHO_SUN_G_CM3 = 1.408
 
 
@@ -76,7 +80,7 @@ def prepare(a) -> None:
                                                         "stellar_density_g_cm3"])
             writer.writeheader()
             for case in selected:
-                density = densities.get(case["host_id"]) if variant == "C_density" else None
+                density = densities.get(case["host_id"]) if variant in DENSITY_VARIANTS else None
                 writer.writerow({"case_id": case["case_id"],
                                  "data_csv": str(root / "lightcurves" / f"{case['case_id']}.csv"),
                                  "candidates_csv": f"{variant}/{case['case_id']}/candidates.csv",

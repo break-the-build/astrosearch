@@ -81,6 +81,14 @@ pub struct Config {
     /// Optional stellar mean density in g/cm^3. When supplied, the transit
     /// search skips durations shorter than a conservative geometry bound.
     pub stellar_density_g_cm3: Option<f64>,
+    /// Use half the circular central-transit duration (stellar density, or
+    /// solar) as the shortest searched duration instead of the cadence floor.
+    /// Needs far fewer trial periods on long baselines; very short (grazing or
+    /// eccentric) transits are then not searched.
+    pub physical_duration_floor: bool,
+    /// Bin samples to this width (days) before detrending; 0 disables. Bins
+    /// stay within gaps and slower cadences pass through unchanged.
+    pub bin_days: f64,
     /// Minimum number of period/frequency trials; resolution can require more.
     pub periods: usize,
     pub durations: usize,
@@ -124,6 +132,8 @@ impl Default for Config {
             min_period: 0.15,
             max_period: 30.0,
             stellar_density_g_cm3: None,
+            physical_duration_floor: false,
+            bin_days: 0.0,
             periods: 2400,
             durations: 10,
             trend_days: 1.05,
@@ -163,6 +173,9 @@ impl Config {
             .is_some_and(|rho| !rho.is_finite() || rho <= 0.0)
         {
             return Err("stellar-density must be a finite, positive value in g/cm^3".into());
+        }
+        if !(self.bin_days.is_finite() && (0.0..=1.0).contains(&self.bin_days)) {
+            return Err("bin-minutes must be between 0 and 1440".into());
         }
         if !(10..=PERIOD_TRIALS_CEILING).contains(&self.max_period_trials) {
             return Err(format!(

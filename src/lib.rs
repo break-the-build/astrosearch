@@ -54,6 +54,7 @@ pub fn analyze(points: Vec<Point>, config: Config) -> Result<Report, String> {
     config.validate()?;
     let original_count = points.len();
     let mut points = input::clean_points(points);
+    let cleaned_count = points.len();
     if points.len() < 30 {
         return Err(format!(
             "need at least 30 valid, distinct observation times; found {}",
@@ -64,6 +65,16 @@ pub fn analyze(points: Vec<Point>, config: Config) -> Result<Report, String> {
         let center = math::median(points.iter().map(|point| point.flux));
         for point in &mut points {
             point.flux = (2.0 * center - point.flux).max(center * 1e-9);
+        }
+    }
+    let binned_from = points.len();
+    if config.bin_days > 0.0 {
+        points = input::bin_points(&points, config.bin_days);
+        if points.len() < 30 {
+            return Err(format!(
+                "binning left {} samples; need at least 30",
+                points.len()
+            ));
         }
     }
     let span = points.last().unwrap().time - points[0].time;
@@ -80,10 +91,17 @@ pub fn analyze(points: Vec<Point>, config: Config) -> Result<Report, String> {
         return Err("time range is too large relative to the observation cadence".into());
     }
     let mut warnings = Vec::new();
-    if points.len() != original_count {
+    if cleaned_count != original_count {
         warnings.push(format!(
             "removed {} invalid rows or duplicate observations",
-            original_count - points.len()
+            original_count - cleaned_count
+        ));
+    }
+    if points.len() != binned_from {
+        warnings.push(format!(
+            "binned {binned_from} samples into {} bins of {:.1} min",
+            points.len(),
+            config.bin_days * 1440.0
         ));
     }
     let transits = transit::iterative_periodic_dips(&samples, config, &mut warnings);

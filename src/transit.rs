@@ -2,7 +2,7 @@
 
 use crate::{
     epochs::{repeated_evidence, Epoch, EpochIndex},
-    grid::{adaptive_period_grid, minimum_duration, TrialBudget},
+    grid::{adaptive_period_grid, minimum_duration, DurationModel, TrialBudget},
     grouping::{collapse_periodic, collapse_transit_events, event_support_overlap},
     math::{median, robust_sigma},
     parallel::collect_trials,
@@ -126,7 +126,7 @@ pub(crate) fn periodic_dips(
     let min_duration = minimum_duration(
         config.min_period,
         samples.cadence,
-        config.stellar_density_g_cm3,
+        DurationModel::from_config(&config),
     );
     let min_period = config.min_period.max(3.0 * min_duration);
     // Two events can be observed at periods longer than half the baseline.
@@ -144,7 +144,7 @@ pub(crate) fn periodic_dips(
         max_period,
         samples.span,
         samples.cadence,
-        config.stellar_density_g_cm3,
+        DurationModel::from_config(&config),
         TrialBudget::from_config(&config),
         warnings,
     );
@@ -261,8 +261,11 @@ impl TrialContext<'_> {
             crate::CandidateGrouping::Ephemeris => 1,
             crate::CandidateGrouping::Events => MAX_CANDIDATES_PER_PERIOD,
         };
-        let period_min_duration =
-            minimum_duration(period, self.samples.cadence, config.stellar_density_g_cm3);
+        let period_min_duration = minimum_duration(
+            period,
+            self.samples.cadence,
+            DurationModel::from_config(&config),
+        );
         let bins = ((2.0 * period / period_min_duration).ceil() as usize)
             .clamp(128, 16_384)
             .next_power_of_two();

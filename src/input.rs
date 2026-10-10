@@ -113,6 +113,43 @@ fn parse_reader(reader: impl BufRead) -> Result<(Vec<Point>, usize), String> {
     Ok((points, skipped))
 }
 
+/// Inverse-variance (or equal-weight, when any error is unknown) means of
+/// time-sorted points in bins of `width` days anchored at the first sample.
+/// A bin never spans a gap wider than itself, and points already sparser
+/// than `width` come out unchanged.
+pub(crate) fn bin_points(points: &[Point], width: f64) -> Vec<Point> {
+    let mut out = Vec::with_capacity(points.len());
+    let Some(first) = points.first() else {
+        return out;
+    };
+    let key = |p: &Point| ((p.time - first.time) / width).floor() as i64;
+    let mut start = 0;
+    while start < points.len() {
+        let bin = key(&points[start]);
+        let mut end = start + 1;
+        while end < points.len() && key(&points[end]) == bin {
+            end += 1;
+        }
+        let group = &points[start..end];
+        let weighted = group.iter().all(|p| p.error > 0.0);
+        let weight = |p: &Point| {
+            if weighted {
+                1.0 / (p.error * p.error)
+            } else {
+                1.0
+            }
+        };
+        let total: f64 = group.iter().map(weight).sum();
+        out.push(Point {
+            time: group.iter().map(|p| weight(p) * p.time).sum::<f64>() / total,
+            flux: group.iter().map(|p| weight(p) * p.flux).sum::<f64>() / total,
+            error: if weighted { total.sqrt().recip() } else { 0.0 },
+        });
+        start = end;
+    }
+    out
+}
+
 pub(crate) fn clean_points(points: Vec<Point>) -> Vec<Point> {
     let mut points: Vec<Point> = points
         .into_iter()
@@ -168,6 +205,26 @@ mod tests {
         assert_eq!(points.len(), 2);
         assert!(points.iter().all(|p| p.error == 0.0));
         assert!(parse_reader("time,flux\n1,\"1\n".as_bytes()).is_err());
+    }
+
+    #[test]
+    fn binning_averages_fast_cadences_and_keeps_gaps_and_slow_cadences() {
+        let point = |time: f64, flux: f64, error: f64| Point { time, flux, error };
+        // Five 2-minute samples, a gap, then two 30-minute samples.
+        let mut points: Vec<Point> = (0..5)
+            .map(|i| point(i as f64 * 2.0 / 1440.0, 1.0 + i as f64 * 1e-3, 1e-3))
+            .collect();
+        points.push(point(1.0, 2.0, 2e-3));
+        points.push(point(1.0 + 30.0 / 1440.0, 3.0, 2e-3));
+        let binned = bin_points(&points, 10.0 / 1440.0);
+        assert_eq!(binned.len(), 3);
+        assert!((binned[0].flux - 1.002).abs() < 1e-12);
+        assert!((binned[0].error - 1e-3 / 5f64.sqrt()).abs() < 1e-12);
+        assert_eq!((binned[1].flux, binned[1].error), (2.0, 2e-3));
+        assert_eq!(binned[2].flux, 3.0);
+        // Unknown errors fall back to equal weights and stay unknown.
+        let unknown = bin_points(&[point(0.0, 1.0, 0.0), point(0.001, 3.0, 1e-3)], 0.01);
+        assert_eq!((unknown[0].flux, unknown[0].error), (2.0, 0.0));
     }
 
     #[test]

@@ -33,7 +33,7 @@ def in_transit(lc: LightCurve, cand: Candidate, factor: float = 1.0) -> np.ndarr
 
 
 def subset(lc: LightCurve, keep: np.ndarray) -> LightCurve:
-    return LightCurve(lc.time[keep], lc.flux[keep], lc.error[keep], lc.part[keep], lc.parts)
+    return LightCurve(lc.time[keep], lc.flux[keep], lc.error[keep], lc.part[keep], lc.parts, lc.stats)
 
 
 def mask_siblings(lc: LightCurve, target: Candidate, others: list[Candidate], baseline: float,

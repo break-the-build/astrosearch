@@ -227,9 +227,9 @@ class TimeSystemTests(unittest.TestCase):
     def test_read_lightcurve_accepts_bjd(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "lc.csv"
-            path.write_text("time,flux,flux_err\n2458400.5,1.0,0.001\n2458400.6,1.0,0.001\n")
+            path.write_text("time,flux,flux_err\n" + "".join(f"{2458400.5 + 0.1 * i:.4f},1.0,0.001\n" for i in range(40)))
             lc = read_lightcurve(path)
-        np.testing.assert_allclose(lc.time, [1400.5, 1400.6])
+        np.testing.assert_allclose(lc.time[:2], [1400.5, 1400.6])
 
 
 class DetectionTierTests(unittest.TestCase):

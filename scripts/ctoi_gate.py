@@ -187,7 +187,8 @@ def main() -> int:
     duo = candidate.kind == "duo_transit"
     report = {"tic": a.tic, "candidate": {k: getattr(candidate, k) for k in
                                           ("rank", "kind", "score", "period", "epoch",
-                                           "duration", "depth_ppm", "n_events")}}
+                                           "duration", "depth_ppm", "n_events")},
+              "input_rows": vars(lc.stats) if lc.stats else None}
 
     fit = physical_fit(a.lightcurve, a.candidates, candidate, a.out_dir, a.mcmc_steps)
     report["fit"] = fit

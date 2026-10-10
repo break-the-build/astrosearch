@@ -442,3 +442,52 @@ fn max_period_trials_caps_the_grid_and_warns() {
     };
     assert!(analyze(points, invalid).is_err());
 }
+
+#[test]
+fn two_stage_search_recovers_the_full_search_period_with_fewer_trials() {
+    let mut points = curve(6000, 29);
+    inject(&mut points, 7.3, 1.9, 0.15, 0.0015);
+    let run = |factor: usize, threads: usize| {
+        let cfg = Config {
+            min_period: 1.0,
+            max_period: 20.0,
+            periods: 10,
+            threads,
+            transit_search_passes: 1,
+            two_stage_factor: factor,
+            two_stage_keep: 64,
+            ..config(1.0, 20.0)
+        };
+        analyze(points.clone(), cfg).unwrap()
+    };
+    let full = run(0, 1);
+    let staged = run(8, 1);
+    let best = |r: &Report| {
+        r.candidates
+            .iter()
+            .filter(|c| c.kind.is_transit())
+            .max_by(|a, b| a.score.total_cmp(&b.score))
+            .map(|c| (c.period, c.score))
+            .unwrap()
+    };
+    let (full_period, full_score) = best(&full);
+    let (staged_period, staged_score) = best(&staged);
+    assert!((full_period - 7.3).abs() < 0.01, "{full_period}");
+    assert_eq!(full_period.to_bits(), staged_period.to_bits());
+    assert_eq!(full_score.to_bits(), staged_score.to_bits());
+    assert!(staged.transit_trials * 2 < full.transit_trials);
+    assert!(staged
+        .warnings
+        .iter()
+        .any(|w| w.starts_with("two-stage search")));
+    // Deterministic regardless of thread count.
+    assert_eq!(
+        render_csv(&staged.candidates),
+        render_csv(&run(8, 4).candidates)
+    );
+    let invalid = Config {
+        two_stage_factor: 1,
+        ..config(1.0, 20.0)
+    };
+    assert!(analyze(points, invalid).is_err());
+}

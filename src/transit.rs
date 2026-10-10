@@ -188,12 +188,17 @@ pub(crate) fn periodic_dips(
         red_weights: &red_weights,
         correlated,
     };
-    let per_trial = collect_trials(
-        trials,
-        config.threads,
-        TrialScratch::default,
-        |scratch, k| context.scan(k, scratch),
-    );
+    let (per_trial, evaluated) = if config.two_stage_factor >= 2 {
+        two_stage_scan(&context, warnings)
+    } else {
+        let all = collect_trials(
+            trials,
+            config.threads,
+            TrialScratch::default,
+            |scratch, k| context.scan(k, scratch),
+        );
+        (all, trials)
+    };
     let mut periodogram = Vec::new();
     if config.keep_periodogram {
         let mut last_period = None;
@@ -215,11 +220,78 @@ pub(crate) fn periodic_dips(
     TransitSearch {
         candidates,
         periodogram,
-        trials,
+        trials: evaluated,
     }
 }
 
+/// Score floor of the coarse stage, as a fraction of `min_transit_score`:
+/// a coarse period is up to ~factor/4 minimum durations off, which smears a
+/// transit over more phase and lowers its score.
+const COARSE_FLOOR_FRACTION: f64 = 0.6;
+
+/// Coarse-to-fine search over the full-resolution grid in `context.periods`.
+///
+/// Stage 1 evaluates the centre of every cell of `two_stage_factor` adjacent
+/// fine periods with a lowered score floor. Stage 2 evaluates every fine
+/// period of the `two_stage_keep` best-scoring cells and their neighbours with
+/// the normal settings; only stage-2 results are returned. Selection is by
+/// score with index tie-breaks, so results are deterministic and independent
+/// of the thread count. Returns the candidates and the number of trial
+/// periods evaluated.
+fn two_stage_scan(context: &TrialContext, warnings: &mut Vec<String>) -> (Vec<Candidate>, usize) {
+    let config = context.config;
+    let fine = context.periods.len();
+    let factor = config.two_stage_factor;
+    let cells = fine.div_ceil(factor);
+    let centre = |cell: usize| (cell * factor + factor / 2).min(fine - 1);
+    let coarse_context = TrialContext {
+        config: Config {
+            min_transit_score: config.min_transit_score * COARSE_FLOOR_FRACTION,
+            ..config
+        },
+        ..*context
+    };
+    let coarse = collect_trials(
+        cells,
+        config.threads,
+        TrialScratch::default,
+        |scratch, cell| coarse_context.scan(centre(cell), scratch),
+    );
+    let index_of: std::collections::HashMap<u64, usize> = (0..cells)
+        .map(|cell| (context.periods[centre(cell)].to_bits(), cell))
+        .collect();
+    let mut best = vec![f64::NEG_INFINITY; cells];
+    for candidate in &coarse {
+        if let Some(&cell) = index_of.get(&candidate.period.to_bits()) {
+            best[cell] = best[cell].max(candidate.score);
+        }
+    }
+    let mut ranked: Vec<usize> = (0..cells).filter(|&c| best[c].is_finite()).collect();
+    ranked.sort_by(|&a, &b| best[b].total_cmp(&best[a]).then(a.cmp(&b)));
+    ranked.truncate(config.two_stage_keep);
+    let mut refine = vec![false; fine];
+    for &cell in &ranked {
+        let start = cell.saturating_sub(1) * factor;
+        let end = ((cell + 2) * factor).min(fine);
+        refine[start..end].fill(true);
+    }
+    let indices: Vec<usize> = (0..fine).filter(|&k| refine[k]).collect();
+    let refined = collect_trials(
+        indices.len(),
+        config.threads,
+        TrialScratch::default,
+        |scratch, i| context.scan(indices[i], scratch),
+    );
+    warnings.push(format!(
+        "two-stage search: {cells} coarse trials, {} cells kept, {} of {fine} fine trials refined",
+        ranked.len(),
+        indices.len()
+    ));
+    (refined, cells + indices.len())
+}
+
 /// Read-only inputs shared by every trial period of one search pass.
+#[derive(Clone, Copy)]
 struct TrialContext<'a> {
     samples: &'a Samples,
     config: Config,

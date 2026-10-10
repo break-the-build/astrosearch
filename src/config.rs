@@ -89,6 +89,11 @@ pub struct Config {
     /// Bin samples to this width (days) before detrending; 0 disables. Bins
     /// stay within gaps and slower cadences pass through unchanged.
     pub bin_days: f64,
+    /// Two-stage search: evaluate one period per this many fine grid periods,
+    /// then refine the best cells at full resolution (0 disables).
+    pub two_stage_factor: usize,
+    /// Coarse cells refined in a two-stage search.
+    pub two_stage_keep: usize,
     /// Minimum number of period/frequency trials; resolution can require more.
     pub periods: usize,
     pub durations: usize,
@@ -134,6 +139,8 @@ impl Default for Config {
             stellar_density_g_cm3: None,
             physical_duration_floor: false,
             bin_days: 0.0,
+            two_stage_factor: 0,
+            two_stage_keep: 512,
             periods: 2400,
             durations: 10,
             trend_days: 1.05,
@@ -173,6 +180,12 @@ impl Config {
             .is_some_and(|rho| !rho.is_finite() || rho <= 0.0)
         {
             return Err("stellar-density must be a finite, positive value in g/cm^3".into());
+        }
+        if self.two_stage_factor == 1 || self.two_stage_factor > 1024 {
+            return Err("two-stage factor must be 0 (off) or between 2 and 1024".into());
+        }
+        if !(1..=1_000_000).contains(&self.two_stage_keep) {
+            return Err("two-stage-keep must be between 1 and 1000000".into());
         }
         if !(self.bin_days.is_finite() && (0.0..=1.0).contains(&self.bin_days)) {
             return Err("bin-minutes must be between 0 and 1440".into());

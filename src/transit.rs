@@ -2,7 +2,7 @@
 
 use crate::{
     epochs::{repeated_evidence, Epoch, EpochIndex},
-    grid::{adaptive_period_grid, minimum_duration},
+    grid::{adaptive_period_grid, minimum_duration, TrialBudget},
     grouping::{collapse_periodic, collapse_transit_events, event_support_overlap},
     math::{median, robust_sigma},
     parallel::collect_trials,
@@ -145,7 +145,7 @@ pub(crate) fn periodic_dips(
         samples.span,
         samples.cadence,
         config.stellar_density_g_cm3,
-        config.periods,
+        TrialBudget::from_config(&config),
         warnings,
     );
     let trials = periods.len();

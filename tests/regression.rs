@@ -408,3 +408,37 @@ fn tier_column_separates_detection_from_screening_transits() {
         .unwrap()
         .ends_with(",note"));
 }
+
+#[test]
+fn max_period_trials_caps_the_grid_and_warns() {
+    let points = curve(3000, 5);
+    let run = |cap: usize| {
+        let cfg = Config {
+            min_period: 0.5,
+            max_period: 10.0,
+            periods: 10,
+            max_period_trials: cap,
+            transit_search_passes: 1,
+            ..config(0.5, 10.0)
+        };
+        analyze(points.clone(), cfg).unwrap()
+    };
+    let small = run(2_000);
+    assert_eq!(small.transit_trials, 2_000);
+    assert!(
+        small.warnings.iter().any(|w| w.contains("capped at 2000")),
+        "{:?}",
+        small.warnings
+    );
+    let large = run(1_000_000);
+    assert!(large.transit_trials > 2_000);
+    assert!(!large
+        .warnings
+        .iter()
+        .any(|w| w.contains("transit search needs")));
+    let invalid = Config {
+        max_period_trials: 5,
+        ..config(0.5, 10.0)
+    };
+    assert!(analyze(points, invalid).is_err());
+}

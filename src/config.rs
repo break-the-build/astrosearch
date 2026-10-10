@@ -1,6 +1,9 @@
 //! Search options, their defaults, and validation.
 
+/// Default cap on trial periods per search (`Config::max_period_trials`).
 pub const MAX_PERIOD_TRIALS: usize = 250_000;
+/// Hard ceiling on `Config::max_period_trials` (memory and runtime guard).
+pub const PERIOD_TRIALS_CEILING: usize = 20_000_000;
 /// Calibrated detection-tier score (see `Config::detection_threshold`).
 pub const DETECTION_THRESHOLD: f64 = 23.3;
 
@@ -101,6 +104,10 @@ pub struct Config {
     /// inverted null controls (`data/calibration/detection_threshold.json`;
     /// QLP light curves, one search pass).
     pub detection_threshold: f64,
+    /// Cap on trial periods. When the resolution rule needs more, the grid is
+    /// coarsened and a warning is emitted; raising it costs runtime roughly
+    /// in proportion (see docs/GRID_CAP_STUDY.md).
+    pub max_period_trials: usize,
     /// Distinct periodic-dip ephemerides kept after deduplication.
     pub transit_candidates: usize,
     /// Maximum number of sequential masked transit searches.
@@ -128,6 +135,7 @@ impl Default for Config {
             candidate_grouping: CandidateGrouping::Events,
             min_transit_score: 6.0,
             detection_threshold: DETECTION_THRESHOLD,
+            max_period_trials: MAX_PERIOD_TRIALS,
             transit_candidates: 12,
             transit_search_passes: 5,
             invert: false,
@@ -156,9 +164,15 @@ impl Config {
         {
             return Err("stellar-density must be a finite, positive value in g/cm^3".into());
         }
-        if !(10..=MAX_PERIOD_TRIALS).contains(&self.periods) {
+        if !(10..=PERIOD_TRIALS_CEILING).contains(&self.max_period_trials) {
             return Err(format!(
-                "periods must be between 10 and {MAX_PERIOD_TRIALS}"
+                "max-period-trials must be between 10 and {PERIOD_TRIALS_CEILING}"
+            ));
+        }
+        if !(10..=self.max_period_trials).contains(&self.periods) {
+            return Err(format!(
+                "periods must be between 10 and max-period-trials ({})",
+                self.max_period_trials
             ));
         }
         if !(1..=128).contains(&self.durations) {

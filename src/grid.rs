@@ -1,19 +1,35 @@
 //! Trial-period grid, trial budgets, and the minimum searched transit duration.
 
-use crate::MAX_PERIOD_TRIALS;
+/// Requested trial count (`Config::periods`) and its cap
+/// (`Config::max_period_trials`).
+#[derive(Clone, Copy)]
+pub(crate) struct TrialBudget {
+    pub(crate) requested: usize,
+    pub(crate) cap: usize,
+}
 
-/// Trials needed for the target resolution, at least `requested`, capped at
-/// `MAX_PERIOD_TRIALS` with a warning when the cap loses resolution.
+impl TrialBudget {
+    pub(crate) fn from_config(config: &crate::Config) -> Self {
+        Self {
+            requested: config.periods,
+            cap: config.max_period_trials,
+        }
+    }
+}
+
+/// Trials needed for the target resolution, at least `budget.requested`,
+/// capped at `budget.cap` with a warning when the cap loses resolution.
 pub(crate) fn trial_count(
     required: usize,
-    requested: usize,
+    budget: TrialBudget,
     detector: &str,
     warnings: &mut Vec<String>,
 ) -> usize {
-    if required > MAX_PERIOD_TRIALS {
-        warnings.push(format!("{detector} search needs {required} trials for target resolution; capped at {MAX_PERIOD_TRIALS}, so narrow peaks may be missed"));
+    let cap = budget.cap;
+    if required > cap {
+        warnings.push(format!("{detector} search needs {required} trials for target resolution; capped at {cap}, so narrow peaks may be missed"));
     }
-    requested.max(required).clamp(2, MAX_PERIOD_TRIALS)
+    budget.requested.max(required).clamp(2, cap)
 }
 
 /// Sampling floor, or a stellar-density duration floor when target metadata
@@ -49,7 +65,7 @@ pub(crate) fn adaptive_period_grid(
     span: f64,
     cadence: f64,
     density_g_cm3: Option<f64>,
-    requested: usize,
+    budget: TrialBudget,
     warnings: &mut Vec<String>,
 ) -> Vec<f64> {
     const INTEGRATION_STEPS: usize = 4096;
@@ -59,7 +75,7 @@ pub(crate) fn adaptive_period_grid(
         let duration = minimum_duration(min_period, cadence, None);
         let max_log_step = (duration / (2.0 * span)).ln_1p();
         let required = ((log_range / max_log_step).ceil() as usize).saturating_add(1);
-        let trials = trial_count(required, requested, "transit", warnings);
+        let trials = trial_count(required, budget, "transit", warnings);
         let step = log_range / (trials - 1) as f64;
         return (0..trials)
             .map(|i| (log_min + step * i as f64).exp())
@@ -79,7 +95,7 @@ pub(crate) fn adaptive_period_grid(
     // The physical duration curve uses a small margin for integration error.
     let total_resolution = resolution[INTEGRATION_STEPS];
     let required = (total_resolution.ceil() as usize).saturating_add(1);
-    let trials = trial_count(required, requested, "transit", warnings);
+    let trials = trial_count(required, budget, "transit", warnings);
     let mut grid = Vec::with_capacity(trials);
     for i in 0..trials {
         let target = total_resolution * i as f64 / (trials - 1) as f64;
@@ -110,9 +126,22 @@ pub(crate) fn adaptive_period_grid(
 mod tests {
     use super::*;
 
+    const TEST_BUDGET: TrialBudget = TrialBudget {
+        requested: 10,
+        cap: 250_000,
+    };
+
     #[test]
     fn adaptive_grid_preserves_log_spacing_without_density_priors() {
-        let grid = adaptive_period_grid(0.5, 20.0, 1000.0, 2.0 / 1440.0, None, 10, &mut Vec::new());
+        let grid = adaptive_period_grid(
+            0.5,
+            20.0,
+            1000.0,
+            2.0 / 1440.0,
+            None,
+            TEST_BUDGET,
+            &mut Vec::new(),
+        );
         assert!(grid.len() > 10);
         assert_eq!(grid.first().copied(), Some(0.5));
         assert!((grid.last().copied().unwrap() - 20.0).abs() < 1e-12);
@@ -128,7 +157,15 @@ mod tests {
     fn density_grid_coarsens_with_period_and_respects_drift_bound() {
         let span = 10.0;
         let cadence = 2.0 / 86400.0;
-        let grid = adaptive_period_grid(0.5, 100.0, span, cadence, Some(1.0), 10, &mut Vec::new());
+        let grid = adaptive_period_grid(
+            0.5,
+            100.0,
+            span,
+            cadence,
+            Some(1.0),
+            TEST_BUDGET,
+            &mut Vec::new(),
+        );
         assert!(grid.len() > 10);
         let first_log_step = (grid[1] / grid[0]).ln();
         let last = grid.len() - 1;

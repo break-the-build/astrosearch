@@ -19,7 +19,7 @@ pub(crate) fn periodic_variability(
     let required = (5.0 * samples.span * (fmax - fmin)).ceil() as usize;
     let trials = trial_count(
         required.saturating_add(1),
-        config.periods,
+        crate::grid::TrialBudget::from_config(&config),
         "variability",
         warnings,
     );

@@ -1,0 +1,122 @@
+{
+ "created_utc": "2026-10-10T21:21:18+00:00",
+ "source": "data/benchmarks/generated-20261009/case-metadata.csv",
+ "product": "QLP full-frame-image light curves",
+ "method": "masked known planet; 1-h bins; robust std of adjacent-bin differences / sqrt(2)",
+ "beta_1h": "sigma_1h / (point scatter / sqrt(points per hour)); point scatter as in injection_recovery.py",
+ "light_curves": 400,
+ "table": [
+  {
+   "tmag": 7.773,
+   "sigma_1h_ppm": 97.8,
+   "n": 8,
+   "sigma_1h_ppm_p16": 81.0,
+   "sigma_1h_ppm_p84": 335.1,
+   "beta_1h": 1.315
+  },
+  {
+   "tmag": 8.283,
+   "sigma_1h_ppm": 97.4,
+   "n": 16,
+   "sigma_1h_ppm_p16": 91.0,
+   "sigma_1h_ppm_p84": 117.8,
+   "beta_1h": 1.265
+  },
+  {
+   "tmag": 8.758,
+   "sigma_1h_ppm": 117.8,
+   "n": 29,
+   "sigma_1h_ppm_p16": 109.9,
+   "sigma_1h_ppm_p84": 150.7,
+   "beta_1h": 1.231
+  },
+  {
+   "tmag": 9.271,
+   "sigma_1h_ppm": 155.9,
+   "n": 35,
+   "sigma_1h_ppm_p16": 135.7,
+   "sigma_1h_ppm_p84": 177.4,
+   "beta_1h": 1.251
+  },
+  {
+   "tmag": 9.781,
+   "sigma_1h_ppm": 200.4,
+   "n": 31,
+   "sigma_1h_ppm_p16": 164.8,
+   "sigma_1h_ppm_p84": 247.3,
+   "beta_1h": 1.238
+  },
+  {
+   "tmag": 10.242,
+   "sigma_1h_ppm": 252.6,
+   "n": 34,
+   "sigma_1h_ppm_p16": 220.8,
+   "sigma_1h_ppm_p84": 286.5,
+   "beta_1h": 1.234
+  },
+  {
+   "tmag": 10.797,
+   "sigma_1h_ppm": 356.0,
+   "n": 53,
+   "sigma_1h_ppm_p16": 319.8,
+   "sigma_1h_ppm_p84": 475.0,
+   "beta_1h": 1.264
+  },
+  {
+   "tmag": 11.308,
+   "sigma_1h_ppm": 555.2,
+   "n": 49,
+   "sigma_1h_ppm_p16": 445.1,
+   "sigma_1h_ppm_p84": 782.5,
+   "beta_1h": 1.255
+  },
+  {
+   "tmag": 11.78,
+   "sigma_1h_ppm": 614.1,
+   "n": 39,
+   "sigma_1h_ppm_p16": 556.3,
+   "sigma_1h_ppm_p84": 837.9,
+   "beta_1h": 1.231
+  },
+  {
+   "tmag": 12.267,
+   "sigma_1h_ppm": 854.6,
+   "n": 35,
+   "sigma_1h_ppm_p16": 718.7,
+   "sigma_1h_ppm_p84": 1087.7,
+   "beta_1h": 1.242
+  },
+  {
+   "tmag": 12.718,
+   "sigma_1h_ppm": 1223.5,
+   "n": 22,
+   "sigma_1h_ppm_p16": 1089.3,
+   "sigma_1h_ppm_p84": 1395.8,
+   "beta_1h": 1.229
+  },
+  {
+   "tmag": 13.175,
+   "sigma_1h_ppm": 1843.4,
+   "n": 15,
+   "sigma_1h_ppm_p16": 1554.9,
+   "sigma_1h_ppm_p84": 2112.0,
+   "beta_1h": 1.215
+  },
+  {
+   "tmag": 13.673,
+   "sigma_1h_ppm": 3353.9,
+   "n": 12,
+   "sigma_1h_ppm_p16": 2392.4,
+   "sigma_1h_ppm_p84": 4366.8,
+   "beta_1h": 1.106
+  },
+  {
+   "tmag": 14.862,
+   "sigma_1h_ppm": 9479.2,
+   "n": 6,
+   "sigma_1h_ppm_p16": 6482.7,
+   "sigma_1h_ppm_p84": 10922.2,
+   "beta_1h": 1.123
+  }
+ ]
+}

@@ -14,6 +14,7 @@ from survey_ledger import claim_target, finish_run, record_target, should_defer
 from vetting.network import install_default_timeouts
 from run_metrics import build_identity as capture_build_identity, run_with_metrics
 from candidate_registry import ingest as register_candidates
+import target_yield
 import requests
 from requests.adapters import HTTPAdapter
 
@@ -484,6 +485,13 @@ def main():
                    help="Reconsider completed targets after this many days; default 30")
     p.add_argument("--revisit",action="store_true",
                    help="Force reconsideration of completed targets regardless of the ledger cooldown")
+    p.add_argument("--ranking",choices=("yield","snr"),default="yield",
+                   help="target order: expected new detectable planets (default; scripts/target_yield.py) "
+                        "or the older fixed-radius S/N proxy")
+    p.add_argument("--assumed-sectors",type=float,default=target_yield.Settings.assumed_sectors,
+                   help="sectors assumed by the yield ranking when a row has neither observed_days nor sectors")
+    p.add_argument("--calibration-dir",type=Path,
+                   help="yield-ranking calibration directory; default data/calibration")
     a=p.parse_args()
     signal.signal(signal.SIGTERM,lambda signum,frame: sys.exit(128+signum))
     if a.max_targets is not None and a.max_targets < 1:
@@ -497,6 +505,16 @@ def main():
     if (not math.isfinite(a.max_sector_noise_ratio) or a.max_sector_noise_ratio < 0
             or 0 < a.max_sector_noise_ratio < 1):
         p.error("--max-sector-noise-ratio must be 0 (disabled) or at least 1")
+    if not math.isfinite(a.assumed_sectors) or a.assumed_sectors <= 0:
+        p.error("--assumed-sectors must be finite and positive")
+    if not 0 < a.min_period < a.max_period:
+        p.error("need 0 < --min-period < --max-period")
+    yield_model=None
+    if a.ranking=="yield":
+        try:
+            yield_model=target_yield.load_model(a.calibration_dir)
+        except ValueError as error:
+            p.error(str(error))
     a.output.mkdir(parents=True,exist_ok=True)
     a.require_distance = not a.allow_missing_distance
     rows=read_targets(a.targets)
@@ -541,14 +559,25 @@ def main():
             ledger_deferred.add(index)
         else:
             eligible.append(index)
-    eligible.sort(key=lambda index:(
-        local_snr_proxy(rows[index]) is None,
-        -(local_snr_proxy(rows[index]) or 0.0),index))
+    yield_settings=target_yield.Settings(min_period=a.min_period,max_period=a.max_period,
+                                         assumed_sectors=a.assumed_sectors)
+    expected={}
+    def ranking_score(index):
+        if index not in expected:
+            if yield_model is None:
+                expected[index]=local_snr_proxy(rows[index])
+            else:
+                result=target_yield.expected_new_planets(rows[index],yield_model,yield_settings)
+                expected[index]=None if result is None else result["expected_new_planets"]
+        return expected[index]
+    # Highest expected yield (or S/N proxy) first; unscorable rows last.
+    eligible.sort(key=lambda index:(ranking_score(index) is None,-(ranking_score(index) or 0.0),index))
     selected=eligible[:a.max_targets] if a.max_targets is not None else eligible
     selected_set=set(selected)
     # Record the local physical proxy for every catalog row so selection is
     # auditable and repeatable without an external decision service.
-    decision_fields=["input_row","tic_id","eligible","selected","local_snr_proxy","status"]
+    decision_fields=["input_row","tic_id","eligible","selected","expected_new_planets",
+                     "local_snr_proxy","status"]
     decision_rows=[]
     for index,row in enumerate(rows):
         ident=row.get("tic_id",row.get("tic",row.get("ID","")))
@@ -558,8 +587,10 @@ def main():
         elif index in selected_set: state="selected"
         elif index in eligible: state="budget_deferred"
         else: state="ineligible"
+        planets=ranking_score(index) if yield_model is not None and index in catalog_eligible else None
         decision_rows.append({"input_row":index+1,"tic_id":ident,
             "eligible":index in catalog_eligible,"selected":index in selected_set,
+            "expected_new_planets":"" if planets is None else planets,
             "local_snr_proxy":"" if score is None else score,"status":state})
     atomic_write_csv(a.output/"local_decisions.csv",decision_fields,decision_rows)
     # Ineligible rows still receive a cheap local skip record; only selected,
@@ -638,7 +669,7 @@ def main():
     run_status="failed" if failures and failures==len(work_rows) else (
         "partial" if failures else "complete")
     atomic_write_text(a.output/"run_metadata.json",json.dumps({
-        "run_id":run_id,"ledger":str(ledger_path.resolve()),"ranking":"local_snr_proxy",
+        "run_id":run_id,"ledger":str(ledger_path.resolve()),"ranking":("expected_new_planets" if yield_model is not None else "local_snr_proxy"),
         "config_sha256":config_sha,"targets_csv_sha256":sha256_file(a.targets),
         "astrosearch_binary":str(binary),"binary_sha256":sha256_file(binary),
         "source_revision":a.source_revision,

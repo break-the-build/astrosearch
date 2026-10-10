@@ -87,7 +87,20 @@ The ledger is a work tracker, not a claim that a target or signal is novel. Keep
 
 Only one batch process sharing the same ledger can hold a live claim for a TIC at a time. An abandoned claim is recoverable after 24 hours; Ctrl-C and SIGTERM mark in-progress targets retryable immediately. MAST HTTP requests use a 300-second connect/read timeout by default and bounded retries for connection errors, HTTP 429, and server errors; use `--network-timeout SECONDS` to change the request timeout. Rust searches have a 2-hour per-target timeout by default; use `--search-timeout SECONDS` to change it. Target failures produce a partial/failed run status and a nonzero exit code. Inspect `batch_summary.json`, `run_metadata.json`, and the ledger before treating a batch as complete. Batch CSVs and manifests are written to temporary files and atomically published; manifests include hashes for source sectors and search outputs to support audit and resume checks.
 
-Eligible targets are ordered by a relative fixed-radius-planet signal-to-noise proxy. If provided, `cdpp_1h_ppm` is used with the stellar radius and dilution is reduced by `1 + contamination_ratio`; otherwise a TESS-magnitude photon-noise proxy is used. The fallback is not a measured TESS noise level, and neither score is a detection probability. `local_decisions.csv` records this score and whether each target was selected, deferred by the budget, or suppressed by the ledger. The ranking is deterministic and requires no external model account or API credentials.
+By default, eligible targets are ordered by the **expected number of new planets this search can detect** around each star (`--ranking yield`, implemented in `scripts/target_yield.py`, also available as `astrosearch-target-yield targets.csv --output ranked.csv [--sky-cells cells.csv]`). For each star the model integrates over orbital period (the survey's `--min-period` to `--max-period`) and planet radius (0.5–20 R⊕):
+
+- **Planet occurrence:** the SAG13 occurrence rates (Kopparapu et al. 2018), reduced inside about 10 days (Mulders et al. 2015). Small planets are twice as common around M dwarfs as around Sun-like stars; giant planets are half as common.
+- **Transit probability:** the chance that the orbit is aligned to transit. For stars that already have a known transiting planet (`known_planet_periods`), this becomes the much higher probability for a nearly coplanar system.
+- **Detection completeness:** the measured injection-recovery completeness of the deployed detection tier (`data/calibration/completeness.json`).
+- **Discount for earlier searches:** planets that SPOC or QLP probably already found are discounted (`data/calibration/discovery_priors.json`). This step uses cited assumptions, not measurements.
+
+Predicted signal-to-noise uses the 1-hour noise measured against TESS magnitude on 384 QLP light curves (`data/calibration/noise_vs_tmag.json`, built by `scripts/calibrate_noise_model.py`), or `cdpp_1h_ppm` when given. Dilution is reduced by `1 + contamination_ratio`. Observing time comes from `observed_days` or `sectors` when present, otherwise from `--assumed-sectors` (4).
+
+The result is an expected count from population statistics. It says nothing about whether any particular star has a planet. Typical values are 10⁻⁴ to 10⁻² per star.
+
+`--ranking snr` restores the older ranking, a relative fixed-radius-planet signal-to-noise proxy (CDPP, or a TESS-magnitude photon-noise fallback).
+
+`local_decisions.csv` records the yield for each eligible target, along with whether the target was selected, deferred by the budget, or suppressed by the ledger. Both rankings are deterministic and need no external service.
 
 ## CTOI readiness gate
 

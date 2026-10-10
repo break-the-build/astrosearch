@@ -1,0 +1,32 @@
+{
+ "description": "Assumed completeness of earlier TESS searches, used to discount planets that are probably already known. These are modelling assumptions with citations, not measurements; edit them to test sensitivity.",
+ "model": "C_prior(SNR) = efficiency / (1 + exp(-(SNR_red - threshold) / width)), with SNR_red the correlated-noise S/N (white S/N / beta); C = 1 - prod(1 - C_pipeline)",
+ "pipelines": [
+  {
+   "name": "SPOC 2-minute multi-sector",
+   "applies_if_column": "spoc_2min",
+   "threshold": 7.1,
+   "width": 1.0,
+   "efficiency": 0.9,
+   "max_tmag": 99,
+   "reference": "Jenkins et al. 2016 (SPIE 9913); Twicken et al. 2018 (PASP 130, 064502): TCE threshold 7.1 sigma"
+  },
+  {
+   "name": "QLP bright (thoroughly vetted)",
+   "threshold": 9.0,
+   "width": 1.0,
+   "efficiency": 0.85,
+   "max_tmag": 10.5,
+   "reference": "Huang et al. 2020 (RNAAS 4, 204); Guerrero et al. 2021 (ApJS 254, 39)"
+  },
+  {
+   "name": "QLP faint-star search",
+   "threshold": 9.0,
+   "width": 1.0,
+   "efficiency": 0.6,
+   "min_tmag": 10.5,
+   "max_tmag": 13.5,
+   "reference": "Kunimoto et al. 2022 (ApJS 259, 33): multi-sector QLP search to T = 13.5; vetting, not detection, limits completeness"
+  }
+ ]
+}

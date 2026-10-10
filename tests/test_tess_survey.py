@@ -175,11 +175,16 @@ class SurveyEndToEndTests(unittest.TestCase):
         self.assertEqual(noisy["excluded_noisy_sectors"], [16])
         self.assertNotIn(16, noisy["sectors"])
         with (self.output / "local_decisions.csv").open() as stream:
-            states = {r["input_row"]: r["status"] for r in csv.DictReader(stream)}
+            decisions = list(csv.DictReader(stream))
+        states = {r["input_row"]: r["status"] for r in decisions}
         self.assertEqual(states["6"], "duplicate_tic_id")
+        # Default ranking: expected new planets, recorded for every eligible row.
+        for row in decisions:
+            self.assertEqual(row["expected_new_planets"] != "", row["eligible"] == "True", row)
         self.assertEqual(len(summary["duplicates"]), 1)
         metadata = json.loads((self.output / "run_metadata.json").read_text())
         self.assertEqual(metadata["status"], "partial")
+        self.assertEqual(metadata["ranking"], "expected_new_planets")
         self.assertTrue((self.output / "target_ranking.csv").exists())
 
         # Rerun: completed targets are deferred by the ledger cooldown; the
@@ -190,15 +195,24 @@ class SurveyEndToEndTests(unittest.TestCase):
         self.assertEqual(summary["444"]["status"], "error")
 
     def test_search_timeout_is_retryable(self):
-        code, summary = self.run_survey("--search-timeout", "0.01", "--max-targets", "1")
+        code, summary = self.run_survey("--search-timeout", "0.01", "--max-targets", "1",
+                                        "--ranking", "snr")  # selects TIC 111
         self.assertEqual(code, 1)
         run = summary["111"]["authors"][0]
         self.assertEqual((run["status"], run["reason"]), ("search_failed", "search timeout"))
         self.assertEqual(summary["111"]["status"], "error")
 
+    def test_snr_ranking_remains_available(self):
+        self.run_survey("--ranking", "snr", "--search-timeout", "0.01", "--max-targets", "1")
+        metadata = json.loads((self.output / "run_metadata.json").read_text())
+        self.assertEqual(metadata["ranking"], "local_snr_proxy")
+        with (self.output / "local_decisions.csv").open() as stream:
+            self.assertTrue(all(r["expected_new_planets"] == "" for r in csv.DictReader(stream)))
+
     def test_invalid_arguments_are_rejected(self):
         for extra in (["--max-targets", "0"], ["--search-timeout", "-1"],
-                      ["--max-sector-noise-ratio", "0.5"]):
+                      ["--max-sector-noise-ratio", "0.5"], ["--assumed-sectors", "0"],
+                      ["--max-period", "1"], ["--calibration-dir", str(self.dir / "missing")]):
             code, summary = self.run_survey(*extra)
             self.assertEqual((code, summary), (2, None), extra)
 

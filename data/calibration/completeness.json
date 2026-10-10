@@ -1,0 +1,17 @@
+{
+ "description": "Injection-recovery completeness of the deployed search at the jackknife detection tier, as a function of injected white-noise S/N",
+ "snr_definition": "0.85 * depth * sqrt(in-transit points) / point scatter, point scatter = 1.4826 * MAD(diff(flux)) / sqrt(2) (scripts/injection_recovery.py)",
+ "detection_threshold": 23.302528953788222,
+ "injections_per_level": 20,
+ "source": "140 batman injections into 20 calibration-split QLP light curves (known planet masked), periods log-uniform 0.7-12 d, 5 search passes; tallied with the jackknife score",
+ "created_utc": "2026-10-10",
+ "curve": [
+  {"snr": 7, "recovered": 0, "n": 20},
+  {"snr": 10, "recovered": 0, "n": 20},
+  {"snr": 15, "recovered": 0, "n": 20},
+  {"snr": 20, "recovered": 2, "n": 20},
+  {"snr": 30, "recovered": 14, "n": 20},
+  {"snr": 40, "recovered": 18, "n": 20},
+  {"snr": 60, "recovered": 20, "n": 20}
+ ]
+}

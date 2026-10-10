@@ -34,6 +34,7 @@ astrosearch-calibrate-tier = "calibrate_detection_threshold:main"
 astrosearch-benchmark-run = "run_known_answer_benchmark:main"
 astrosearch-benchmark-evaluate = "evaluate_benchmark:main"
 astrosearch-known-systems = "benchmark_known_systems:main"
+astrosearch-target-yield = "target_yield:main"
 
 [build-system]
 requires = ["setuptools>=69"]
@@ -51,7 +52,7 @@ py-modules = [
   "candidate_preflight", "candidate_registry", "ctoi_gate", "evaluate_benchmark",
   "export_tess", "gp_detrend", "pixel_difference_check", "predict_transits",
   "refine_candidates", "run_known_answer_benchmark", "run_metrics", "survey_ledger",
-  "tess_survey", "tls_search",
+  "target_yield", "tess_survey", "tls_search",
 ]
 
 [tool.uv]
@@ -70,6 +71,7 @@ omit = [
   "scripts/baseline_bls_benchmark.py",
   "scripts/build_hard_negative_manifest.py",
   "scripts/build_survey_hard_negative_labels.py",
+  "scripts/calibrate_noise_model.py",
   "scripts/compare_detection_statistics.py",
   "scripts/compare_detrenders.py",
   "scripts/compare_fap_passes.py",

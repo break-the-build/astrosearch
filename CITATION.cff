@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use astrosearch, please cite it with the metadata below and record the git commit from the provenance files."
+title: "astrosearch: a reproducible transit-candidate search and vetting pipeline for TESS light curves"
+type: software
+version: 0.1.0
+license: MIT
+authors:
+  - family-names: Luedke
+    given-names: Daniel
+keywords:
+  - TESS
+  - exoplanets
+  - transit search
+  - light curves
+references:
+  - type: article
+    title: "TESS Spots a Compact System of Super-Earths around the Naked-eye Star HR 858"
+    authors:
+      - family-names: Vanderburg
+        given-names: Andrew
+    year: 2019
+    journal: "The Astrophysical Journal Letters"
+    volume: 881
+    start: L19
+    notes: "Ingress/egress magnitude limit used by the blend test."
+  - type: article
+    title: "Planetary Candidates Observed by Kepler. VII. The First Fully Uniform Catalog Based on the Entire 48-month Data Set (Q1-Q17 DR24)"
+    authors:
+      - family-names: Coughlin
+        given-names: Jeffrey L.
+    year: 2016
+    journal: "The Astrophysical Journal Supplement Series"
+    volume: 224
+    start: 12
+    notes: "Model-shift test that the secondary-eclipse scan follows."

@@ -32,7 +32,10 @@ def metadata_digest(row: dict[str, Any]) -> str:
 
 def config_digest(args: Any) -> str:
     """Only settings that change the resulting data/search are fingerprinted."""
-    return _digest({
+    profile = getattr(args, "search_profile", "standard")
+    # The standard profile adds no key, so existing ledgers keep their digests.
+    extra = {} if profile == "standard" else {"search_profile": profile}
+    return _digest({**extra,
         "authors": list(args.authors),
         "min_sector": args.min_sector,
         "min_exptime": args.min_exptime,

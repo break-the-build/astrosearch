@@ -11,7 +11,7 @@ cargo build --release
 
 ## TESS batch survey
 
-The Python front end downloads public TESS light curves through Lightkurve/MAST, normalizes each sector independently, keeps pipeline reductions separate, and invokes the Rust search. Install Python dependencies with `uv sync`, then provide a TIC/CTL target-list CSV. Required column: `tic_id`. Recommended TIC fields are `teff_k`, `distance_pc`, `radius_solar`, and `tmag`; an optional `stellar_density_g_cm3` column enables a target-specific adaptive transit period grid. Targets without a usable temperature or distance are skipped. This workflow prioritizes cool, nearby, small stars with FFI observations at Sector 90 or later and at least 1,095 days of total coverage. The recent sector can be combined with older sectors for a longer baseline. The priority score only sorts targets; it is not a detection probability.
+The Python front end downloads public TESS light curves through Lightkurve/MAST, normalizes each sector independently, keeps pipeline reductions separate, and invokes the Rust search. Install Python dependencies with `uv sync`, then provide a TIC/CTL target-list CSV. Required column: `tic_id`. Recommended TIC fields are `teff_k`, `distance_pc`, `radius_solar`, and `tmag`; an optional `stellar_density_g_cm3` column enables a target-specific adaptive transit period grid. Targets without a usable temperature or distance are skipped. This workflow prioritizes cool, nearby, small stars with Sector 90+ observations and at least 1,095 days of total coverage. The recent sector can be combined with older sectors for a longer baseline. The priority score only sorts targets; it is not a detection probability.
 
 ```sh
 uv sync
@@ -19,7 +19,32 @@ cargo build --release
 python scripts/tess_survey.py --targets data/survey/targets.csv --output data/survey/run1
 ```
 
-The example input is [targets-example.csv](/Users/danny/dev/astronomy/data/survey/targets-example.csv); it uses TIC 4206066, an unconfirmed candidate benchmark in `data/tic4206066`, so it validates workflow behavior and is not a fresh target or truth standard. Default authors are `QLP` and `SPOC`; results live in one folder per TIC and author, with one normalized CSV per sector, a manifest of product metadata/checksums, a stitched CSV, candidate CSV, and Rust search log. Light curves now retain `exposure_days` and `sector` columns so the refinement and injection tools can respect mixed cadence. These integrations use Lightkurve's MAST search and download interfaces; for large all-sky catalog queries, use MAST/astroquery to prepare a bounded TIC/CTL list first, then run the batch on a small pilot sample. FFI products are selected at one cadence per sector (shortest exposure of at least 200 seconds) to avoid duplicate observations. Each sector receives a robust adjacent-difference noise estimate normalized for exposure time; sectors above 5× that target's median are excluded from the combined search and recorded in the manifest. This is an outlier screen, not a universal threshold; inspect the ratios and tune `--max-sector-noise-ratio` (0 disables it). Tune `--min-sector`, `--min-baseline`, `--min-exptime`, and stellar cuts for the science question.
+The example input is [targets-example.csv](/Users/danny/dev/astronomy/data/survey/targets-example.csv); it uses TIC 4206066, an unconfirmed candidate benchmark in `data/tic4206066`, so it validates workflow behavior and is not a fresh target or truth standard. Default authors are `QLP` and `SPOC`; results live in one folder per TIC and author, with one normalized CSV per sector, a manifest of product metadata/checksums, a stitched CSV, candidate CSV, and Rust search log. Light curves now retain `exposure_days` and `sector` columns so the refinement and injection tools can respect mixed cadence. These integrations use Lightkurve's MAST search and download interfaces; for large all-sky catalog queries, use MAST/astroquery to prepare a bounded TIC/CTL list first, then run the batch on a small pilot sample. QLP products use a 200-second minimum exposure by default; SPOC uses a separate 120-second minimum so standard 2-minute SPOC products are not silently excluded. Raise `--min-exptime-spoc` to reduce SPOC data volume. Each sector receives a robust adjacent-difference noise estimate normalized for exposure time; sectors above 5× that target's median are excluded from the combined search and recorded in the manifest. This is an outlier screen, not a universal threshold; inspect the ratios and tune `--max-sector-noise-ratio` (0 disables it). Tune `--min-sector`, `--min-baseline`, `--min-exptime`, and stellar cuts for the science question.
+
+Before ranking a bounded TIC target list, attach real MAST coverage and restrict to targets meeting the survey's recent-sector and multiyear baseline requirements:
+
+```sh
+uv run astrosearch-enrich-targets targets-ranked.csv \
+  --output targets-coverage.csv \
+  --eligible-output targets-survey-eligible.csv \
+  --cache data/survey/coverage-cache
+uv run astrosearch-target-yield targets-survey-eligible.csv \
+  --output targets-yield.csv --sky-cells sky-cells.csv
+```
+
+The coverage command caches per-target MAST results for resumability and records sector counts, observed days, and exact SPOC 2-minute sector IDs. Cached values are snapshots; delete a target's cache JSON to refresh it after MAST coverage changes. The survey still checks actual products and baseline before searching.
+
+After a batch search, check all detection-tier rows against SPOC TCE files in one pass. The command downloads each shared MAST sector file once and records its URL and SHA-256:
+
+```sh
+uv run astrosearch-tce-preflight \
+  --run-dir data/survey/run1 \
+  --coverage targets-coverage.csv \
+  --output data/survey/run1/spoc_tce_catalog_checks.json
+```
+
+By default this checks recent sectors (90+) with SPOC 2-minute coverage; no match is limited to the reported files and sectors and does not establish novelty.
+
 
 Each successful Rust search is also added to `<output>/candidate_registry.sqlite` with the light-curve/candidate hashes, source/build identity, product manifest, and candidate measurements. Promotions remain human-evidenced: use `python scripts/candidate_registry.py promote ...` only after recording the relevant catalog, pixel, independent-pipeline, and follow-up evidence.
 
@@ -99,6 +124,15 @@ Predicted signal-to-noise uses the 1-hour noise measured against TESS magnitude 
 The result is an expected count from population statistics. It says nothing about whether any particular star has a planet. Typical values are 10⁻⁴ to 10⁻² per star.
 
 `--ranking snr` restores the older ranking, a relative fixed-radius-planet signal-to-noise proxy (CDPP, or a TESS-magnitude photon-noise fallback).
+
+`--search-profile fast` runs grid-study variant J, which combines four settings:
+
+- 10-minute inverse-variance binning;
+- physical transit-duration limits;
+- a 7× coarse period grid, ranked by fast folding and refined around the best 512 cells;
+- a cap of 2 million period trials.
+
+On 158 known-answer cases (78 planets, 80 noise-only), J used 7× less CPU than `standard`: 2,776 s against 20,563 s, and 6 minutes against 110 minutes of wall time. At matched false-alarm rates it recovered every planet that `standard` found, plus 3 more at 5% and 4 more at 10%. That gain is not statistically significant (p = 0.25 and 0.13). `standard` stays the default until injection completeness has been rechecked under `fast`. `--periods` cannot be combined with `fast`.
 
 `local_decisions.csv` records the yield for each eligible target, along with whether the target was selected, deferred by the budget, or suppressed by the ledger. Both rankings are deterministic and need no external service.
 
@@ -273,7 +307,7 @@ uv run --frozen python -m coverage combine && uv run --frozen python -m coverage
 
 GitHub Actions runs exactly these steps on pushes and pull requests.
 
-The Python side is an installable package: `scripts/vetting` plus the operational tools as modules. `uv sync` installs it editable. It is editable because the gate runs `refine_candidates.py` and the release binary from the checkout. Console commands: `astrosearch-gate`, `astrosearch-survey`, `astrosearch-export`, `astrosearch-pixel-check`, `astrosearch-refine`, `astrosearch-preflight`, `astrosearch-registry`, `astrosearch-calibrate-tier`, `astrosearch-benchmark-run`, `astrosearch-benchmark-evaluate` and `astrosearch-known-systems`. One-off research scripts stay in `scripts/` outside the package and outside the coverage gate. The gate is 60% of package lines; 67% at the time of writing, with `tess_survey` at 85%. The Python suite includes tests that need the release binary (set `ASTROSEARCH_BIN` to use another build; they skip if it is missing):
+The Python side is an installable package: `scripts/vetting` plus the operational tools as modules. `uv sync` installs it editable. It is editable because the gate runs `refine_candidates.py` and the release binary from the checkout. Console commands: `astrosearch-gate`, `astrosearch-survey`, `astrosearch-export`, `astrosearch-pixel-check`, `astrosearch-refine`, `astrosearch-preflight`, `astrosearch-registry`, `astrosearch-calibrate-tier`, `astrosearch-benchmark-run`, `astrosearch-benchmark-evaluate`, `astrosearch-known-systems`, `astrosearch-enrich-targets` and `astrosearch-tce-preflight`. One-off research scripts stay in `scripts/` outside the package and outside the coverage gate. The gate is 60% of package lines; 67% at the time of writing, with `tess_survey` at 85%. The Python suite includes tests that need the release binary (set `ASTROSEARCH_BIN` to use another build; they skip if it is missing):
 
 - `test_parser_parity.py`: differential fuzzing of the Rust and Python light-curve readers on randomized messy files.
 - `test_cli_fuzz.py`: CLI mutation fuzzing.

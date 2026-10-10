@@ -202,6 +202,18 @@ class SurveyEndToEndTests(unittest.TestCase):
         self.assertEqual((run["status"], run["reason"]), ("search_failed", "search timeout"))
         self.assertEqual(summary["111"]["status"], "error")
 
+    def test_fast_search_profile_finds_the_signal(self):
+        code, summary = self.run_survey("--search-profile", "fast", "--max-targets", "1",
+                                        "--ranking", "snr", "--periods", "0")
+        run = summary["111"]["authors"][0]
+        self.assertEqual(run["status"], "searched")
+        log = (self.output / "TIC111" / "QLP" / "search.log")
+        with open(run["candidates_csv"], newline="") as stream:
+            best = max((r for r in csv.DictReader(stream) if r["class"] == "periodic_dip"),
+                       key=lambda r: float(r["score"]))
+        self.assertAlmostEqual(float(best["period_days"]), 3.2, delta=0.01)
+        self.assertIn("two-stage search (fast folding)", log.read_text())
+
     def test_snr_ranking_remains_available(self):
         self.run_survey("--ranking", "snr", "--search-timeout", "0.01", "--max-targets", "1")
         metadata = json.loads((self.output / "run_metadata.json").read_text())
@@ -212,7 +224,8 @@ class SurveyEndToEndTests(unittest.TestCase):
     def test_invalid_arguments_are_rejected(self):
         for extra in (["--max-targets", "0"], ["--search-timeout", "-1"],
                       ["--max-sector-noise-ratio", "0.5"], ["--assumed-sectors", "0"],
-                      ["--max-period", "1"], ["--calibration-dir", str(self.dir / "missing")]):
+                      ["--max-period", "1"], ["--calibration-dir", str(self.dir / "missing")],
+                      ["--search-profile", "fast"]):  # run_survey passes --periods 300
             code, summary = self.run_survey(*extra)
             self.assertEqual((code, summary), (2, None), extra)
 

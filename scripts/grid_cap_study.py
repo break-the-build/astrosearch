@@ -119,8 +119,12 @@ def evaluate(a) -> None:
     from scipy import stats
 
     truth = {c["case_id"]: c for c in ev.read_csv(a.out / "truth.csv")}
+    variants = a.variants or list(VARIANTS)
+    unknown = sorted(set(variants) - set(VARIANTS))
+    if unknown or "A_cap250k" not in variants:
+        raise SystemExit(f"--variants must name known variants including A_cap250k; unknown: {unknown}")
     results = {}
-    for variant in VARIANTS:
+    for variant in variants:
         rows = {}
         for case_id, case in truth.items():
             path = a.out / variant / case_id / "candidates.csv"
@@ -129,6 +133,7 @@ def evaluate(a) -> None:
         results[variant] = rows
     complete = set.intersection(*(set(r) for r in results.values()))
     out = {"statistic": a.statistic, "complete_cases": len(complete), "variants": {}}
+    suffix = "" if variants == list(VARIANTS) else "_" + "-".join(v.split("_")[0] for v in variants)
     hits = {}
     for variant, rows in results.items():
         rows = {k: v for k, v in rows.items() if k in complete}
@@ -145,13 +150,13 @@ def evaluate(a) -> None:
             hits[(variant, far)] = found
             summary[f"recall_at_far_{far:.2f}"] = [len(found), len(planets), ev.wilson(len(found), len(planets))]
         out["variants"][variant] = summary
-    for variant in VARIANTS[1:]:
+    for variant in (v for v in variants if v != "A_cap250k"):
         for far in (0.05, 0.10):
             gain = len(hits[(variant, far)] - hits[("A_cap250k", far)])
             loss = len(hits[("A_cap250k", far)] - hits[(variant, far)])
             p = float(stats.binomtest(gain, gain + loss, 0.5).pvalue) if gain + loss else 1.0
             out.setdefault("paired_vs_A", {})[f"{variant}@{far:.2f}"] = {"gained": gain, "lost": loss, "mcnemar_p": p}
-    (a.out / f"evaluation_{a.statistic}.json").write_text(json.dumps(out, indent=1) + "\n")
+    (a.out / f"evaluation_{a.statistic}{suffix}.json").write_text(json.dumps(out, indent=1) + "\n")
     print(json.dumps(out, indent=1))
 
 
@@ -166,6 +171,8 @@ def main() -> int:
     evaluation = sub.add_parser("evaluate")
     evaluation.add_argument("out", type=Path)
     evaluation.add_argument("--statistic", default="jackknife_score", choices=("score", "jackknife_score"))
+    evaluation.add_argument("--variants", nargs="+",
+                            help="evaluate only these variants (must include A_cap250k); default all")
     a = p.parse_args()
     prepare(a) if a.command == "prepare" else evaluate(a)
     return 0

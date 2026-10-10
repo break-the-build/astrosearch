@@ -25,6 +25,16 @@ ALIASES = {"teff_k": ("teff_k","teff","Teff"), "distance_pc": ("distance_pc","di
            "cdpp_1h_ppm": ("cdpp_1h_ppm","cdpp1h_ppm","cdpp_ppm"),
            "contamination_ratio": ("contamination_ratio","contratio","contam_ratio")}
 _ACTIVE_RUN = None
+# Named search configurations. "fast" is grid-study variant J: 10-minute
+# binning, physical duration limits, a 7x coarse grid ranked by fast folding
+# and refined around the best cells, and a 2M period-trial cap. On 158
+# known-answer cases it used 7x less CPU than "standard" and recovered every
+# planet "standard" did (plus 3-4 more) at matched false-alarm rates.
+SEARCH_PROFILES = {
+    "standard": (),
+    "fast": ("--bin-minutes", "10", "--physical-duration-floor", "--two-stage", "7",
+             "--coarse-ffa", "--max-period-trials", "2000000"),
+}
 
 def finalize_interrupted_run():
     global _ACTIVE_RUN
@@ -160,6 +170,35 @@ def retry_network(operation, description, attempts=4):
                   f"({attempt+1}/{attempts-1})",file=sys.stderr,flush=True)
             time.sleep(delay)
 
+def select_lightcurve_products(search, min_exptime):
+    """Pick the shortest cadence that meets the survey limit for each sector."""
+    selected={}
+    columns=set(search.table.colnames)
+    sector_column="sector" if "sector" in columns else (
+        "sequence_number" if "sequence_number" in columns else None)
+    if sector_column is None:
+        return selected, False
+    for i in range(len(search)):
+        item=search.table[i]
+        try: sector,exptime=int(item[sector_column]),float(item["exptime"])
+        except (KeyError,TypeError,ValueError): continue
+        if not math.isfinite(exptime) or exptime<min_exptime: continue
+        if sector not in selected or exptime<selected[sector]["exptime"]:
+            selected[sector]={"index":i,"sector":sector,"exptime":exptime,
+                              "author":str(item["author"]),"mission":str(item["mission"])}
+            for column in ("dataURI", "productFilename", "obs_id"):
+                if column in columns:
+                    selected[sector][column]=str(item[column])
+    return selected, True
+
+def listed_sectors(row, author):
+    raw=str(row.get(f"{author.lower()}_sectors", "") or "")
+    sectors=[]
+    for token in raw.replace(",", ";").split(";"):
+        try: sectors.append(int(token))
+        except ValueError: continue
+    return sectors
+
 def atomic_write_text(path, text, encoding="utf-8"):
     path=Path(path)
     path.parent.mkdir(parents=True,exist_ok=True)
@@ -240,39 +279,42 @@ def one_target(row,a,binary):
             f"MAST search for TIC {ident} ({author})")
         # One product/sector, shortest available FFI exposure; do not merge
         # SPOC and QLP reductions into one detection statistic.
-        selected={}
-        columns=set(search.table.colnames)
-        # MAST's current HLSP result tables expose sector as
-        # `sequence_number`; some Lightkurve/product combinations use
-        # `sector`. Handle both without aborting an entire target.
-        sector_column="sector" if "sector" in columns else (
-            "sequence_number" if "sequence_number" in columns else None)
-        if sector_column is None:
+        min_exptime=(a.min_exptime_spoc if author.upper()=="SPOC" else a.min_exptime)
+        selected,has_sector_metadata=select_lightcurve_products(search,min_exptime)
+        if not has_sector_metadata:
             author_runs.append({"author":author,"status":"no_sector_metadata"})
             continue
-        for i in range(len(search)):
-            # Lightkurve 2.6's SearchResult integer indexing incorrectly
-            # routes through Astropy column selection; table row access is
-            # stable across supported versions.
-            item=search.table[i]
-            try: sector,exptime=int(item[sector_column]),float(item["exptime"])
-            except (KeyError,TypeError,ValueError): continue
-            if not math.isfinite(exptime) or exptime<a.min_exptime: continue
-            if sector not in selected or exptime<selected[sector]["exptime"]:
-                selected[sector]={"index":i,"sector":sector,"exptime":exptime,
-                                  "author":str(item["author"]),"mission":str(item["mission"])}
-                for column in ("dataURI", "productFilename", "obs_id"):
-                    if column in columns:
-                        selected[sector][column]=str(item[column])
         recent_sectors=[s for s in selected if s>=a.min_sector]
+        expected_recent=[s for s in listed_sectors(row,author) if s>=a.min_sector]
+        # MAST's indexed observation list can lag the target-yield coverage
+        # prefetch. Refresh once before dropping a target that the prefetch
+        # says has recent sectors; this avoids a transient empty/stale listing
+        # consuming one of the user's --max-targets slots.
+        for refresh in range(2):
+            if recent_sectors or not expected_recent:
+                break
+            time.sleep(2.0 * (refresh + 1))
+            search=retry_network(
+                lambda: lk.search_lightcurve(f"TIC {ident}",mission="TESS",author=author),
+                f"MAST refresh for TIC {ident} ({author})")
+            selected,has_sector_metadata=select_lightcurve_products(search,min_exptime)
+            if not has_sector_metadata:
+                break
+            recent_sectors=[s for s in selected if s>=a.min_sector]
+        if recent_sectors and expected_recent and not set(expected_recent).intersection(recent_sectors):
+            print(f"TIC {ident} {author}: refreshed recent-sector set differs from prefetch; "
+                  f"prefetch={expected_recent} search={recent_sectors}",file=sys.stderr,flush=True)
         if not recent_sectors:
-            author_runs.append({"author":author,"status":"no_recent_ffi_products"})
+            author_runs.append({"author":author,"status":"no_recent_ffi_products",
+                "expected_recent_sectors":expected_recent,
+                "reason":"MAST returned no usable product at or after the configured minimum sector"})
             continue
         out=root/author; out.mkdir(parents=True,exist_ok=True); products=[]
         for sector,meta in sorted(selected.items()):
             lc=retry_network(lambda: search[[meta["index"]]].download(
                 quality_bitmask="hard",download_dir=str(a.cache_dir.resolve())),
                 f"MAST download for TIC {ident}, sector {sector} ({author})")
+            flux_column=str(getattr(lc,"flux_col","") or "").upper()
             lc=lc.remove_nans().normalize()
             t=np.asarray(lc.time.value,dtype=float)
             f=np.ma.filled(np.asarray(lc.flux.value),np.nan).astype(float)
@@ -288,6 +330,8 @@ def one_target(row,a,binary):
                            comments="",fmt="%.15g")
             noise_density=sector_noise_density(values[:,0],values[:,1],meta["exptime"])
             products.append({**meta,"rows":len(values),"file":name,
+                "flux_column":flux_column,
+                "crowding_corrected":"PDCSAP" in flux_column,
                 "time_start":float(values[0,0]),"time_end":float(values[-1,0]),
                 "noise_density":noise_density,
                 "sha256":hashlib.sha256(file.read_bytes()).hexdigest()})
@@ -312,15 +356,31 @@ def one_target(row,a,binary):
         combined_file=out/"combined.csv"
         atomic_savetxt(combined_file,combined,np,delimiter=",",header="time,flux,flux_err,exposure_days,sector",
                        comments="",fmt="%.15g")
+        combined_parts=[]
+        for product in used_products:
+            part={**product,
+                  "time_min":product["time_start"],"time_max":product["time_end"],
+                  "crowding_corrected":product.get("crowding_corrected", True)}
+            combined_parts.append(part)
+        atomic_write_text(out/"combined.meta.json",json.dumps(
+            {"tic_id":ident,"author":author,"rows":int(len(combined)),
+             "parts":combined_parts},indent=2,sort_keys=True)+"\n")
         baseline=float(combined[-1,0]-combined[0,0])
         sectors=sorted(x["sector"] for x in used_products)
-        qualifies=baseline>=a.min_baseline and any(s>=a.min_sector for s in sectors)
+        has_recent=any(s>=a.min_sector for s in sectors)
+        has_baseline=baseline>=a.min_baseline
+        qualifies=has_baseline and has_recent
         if not qualifies:
-            author_runs.append({"author":author,"status":"insufficient_multiyear_baseline",
+            status="insufficient_multiyear_baseline" if not has_baseline else "missing_recent_sector_after_download"
+            reason=(f"usable baseline {baseline:.1f} d is below {a.min_baseline:g} d" if not has_baseline else
+                    f"no downloaded usable sector is >= {a.min_sector}")
+            author_runs.append({"author":author,"status":status,"reason":reason,
                 "sectors":sectors,"products":products,
                 "excluded_noisy_sectors":[x["sector"] for x in products if x["excluded_noisy"]],
                 "baseline_days":baseline,
-                "recent_multiyear":False,"priority_score":priority(row,len(sectors),baseline),
+                "recent_multiyear":has_baseline and has_recent,
+                "expected_recent_sectors":expected_recent,
+                "priority_score":priority(row,len(sectors),baseline),
                 "combined_csv":str(combined_file)})
             continue
         candidates=out/"candidates.csv"
@@ -334,6 +394,7 @@ def one_target(row,a,binary):
              "--candidate-grouping",a.candidate_grouping]
         if density is not None: cmd.extend(("--stellar-density",str(density)))
         if a.periods: cmd.extend(("--periods",str(a.periods)))
+        cmd.extend(SEARCH_PROFILES[a.search_profile])
         log=out/"search.log"
         with tempfile.NamedTemporaryFile("w",dir=out,prefix=".search.",suffix=".tmp",
                                          delete=False) as stream:
@@ -448,7 +509,10 @@ def main():
     p.add_argument("--binary",help="astrosearch executable; builds release binary by default")
     p.add_argument("--authors",nargs="+",default=["QLP","SPOC"])
     p.add_argument("--min-sector",type=int,default=90)
-    p.add_argument("--min-exptime",type=float,default=200,help="Exclude short-cadence products")
+    p.add_argument("--min-exptime",type=float,default=200,
+                   help="Minimum QLP/FFI exposure in seconds (default: 200)")
+    p.add_argument("--min-exptime-spoc",type=float,default=120,
+                   help="Minimum SPOC exposure in seconds; 120 includes standard 2-minute SPOC products")
     p.add_argument("--max-sector-noise-ratio",type=float,default=5.0,
                    help="Reject sectors above this robust per-cadence-adjusted noise ratio; 0 disables QC")
     p.add_argument("--min-baseline",type=float,default=1095,help="Require about three years and one recent sector")
@@ -485,6 +549,9 @@ def main():
                    help="Reconsider completed targets after this many days; default 30")
     p.add_argument("--revisit",action="store_true",
                    help="Force reconsideration of completed targets regardless of the ledger cooldown")
+    p.add_argument("--search-profile",choices=tuple(SEARCH_PROFILES),default="standard",
+                   help="search configuration: standard (current default) or fast (grid-study variant J, "
+                        "about 7x less CPU at equal or better recall)")
     p.add_argument("--ranking",choices=("yield","snr"),default="yield",
                    help="target order: expected new detectable planets (default; scripts/target_yield.py) "
                         "or the older fixed-radius S/N proxy")
@@ -500,6 +567,10 @@ def main():
         p.error("--revisit-after-days cannot be negative")
     if not math.isfinite(a.search_timeout) or a.search_timeout <= 0:
         p.error("--search-timeout must be finite and positive")
+    if not math.isfinite(a.min_exptime) or a.min_exptime < 0:
+        p.error("--min-exptime must be finite and nonnegative")
+    if not math.isfinite(a.min_exptime_spoc) or a.min_exptime_spoc < 0:
+        p.error("--min-exptime-spoc must be finite and nonnegative")
     if not math.isfinite(a.network_timeout) or a.network_timeout <= 0:
         p.error("--network-timeout must be finite and positive")
     if (not math.isfinite(a.max_sector_noise_ratio) or a.max_sector_noise_ratio < 0
@@ -507,6 +578,8 @@ def main():
         p.error("--max-sector-noise-ratio must be 0 (disabled) or at least 1")
     if not math.isfinite(a.assumed_sectors) or a.assumed_sectors <= 0:
         p.error("--assumed-sectors must be finite and positive")
+    if a.search_profile!="standard" and a.periods:
+        p.error("--periods fixes the period grid; it cannot be combined with --search-profile fast")
     if not 0 < a.min_period < a.max_period:
         p.error("need 0 < --min-period < --max-period")
     yield_model=None

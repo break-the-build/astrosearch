@@ -231,13 +231,20 @@ The CLI is a thin wrapper around `astrosearch::analyze_file` and `astrosearch::a
 | `parallel`, `math` | Deterministic parallel trial scheduling; medians and robust scatter |
 
 ```sh
+uv sync --frozen --extra inference          # the locked Python environment CI uses
 cargo fmt --check
 cargo clippy --all-targets -- -D warnings
-cargo test --release
-.venv/bin/python -m unittest discover -s tests -p 'test_sre.py'
+cargo test --release                        # also builds target/release/astrosearch
+uv run --frozen python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-GitHub Actions runs formatting, Clippy, the Rust test suite, Python syntax checks, and the operational Python tests on pushes and pull requests.
+GitHub Actions runs exactly these steps on pushes and pull requests. The Python suite includes tests that need the release binary (set `ASTROSEARCH_BIN` to use another build; they skip if it is missing):
+
+- `test_parser_parity.py`: differential fuzzing of the Rust and Python light-curve readers on randomized messy files.
+- `test_cli_fuzz.py`: CLI mutation fuzzing.
+- `test_gate_integration.py`: an end-to-end search → offline gate run.
+
+Rust property tests (`tests/properties.rs`) check invariance to input row order and to invalid rows, plus the CSV shape. Every networked script installs finite request timeouts (`scripts/vetting/network.py`); the gate's is set with `--network-timeout`.
 
 Regression checks cover shallow repeated transits, two nearby planet periods, two transits separated by more than half the baseline, null/isolated-event controls, flux/time invariance, CSV parsing and flux/error pairing, sparse gaps, invalid configurations and duplicate-only data, error normalization, event shoulders, source-file overwrite protection, and mixed-cadence segmentation (sector gaps, cadence switches in both directions, dropouts, tiny-segment noise fallback, per-segment noise and weights, event runs across segment boundaries, shallow-transit recovery, noise-only nulls, and serial/parallel bit identity). Passing these checks demonstrates the specified behaviors; it does not establish survey completeness or reliability.
 

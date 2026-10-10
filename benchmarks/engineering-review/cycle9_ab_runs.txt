@@ -1,0 +1,37 @@
+A 0 {'real': 146.56, 'user': 150.64, 'sys': 0.32, 'max_rss_mb': 49.015625, 'sha': 'b9ff4ec0e75ff918'}
+B 0 {'real': 99.6, 'user': 131.35, 'sys': 0.28, 'max_rss_mb': 55.609375, 'sha': 'b9ff4ec0e75ff918'}
+B 1 {'real': 88.46, 'user': 131.64, 'sys': 0.28, 'max_rss_mb': 51.546875, 'sha': 'b9ff4ec0e75ff918'}
+A 1 {'real': 100.37, 'user': 152.38, 'sys': 0.32, 'max_rss_mb': 57.28125, 'sha': 'b9ff4ec0e75ff918'}
+A 2 {'real': 92.85, 'user': 153.28, 'sys': 0.36, 'max_rss_mb': 58.53125, 'sha': 'b9ff4ec0e75ff918'}
+B 2 {'real': 63.6, 'user': 133.13, 'sys': 0.32, 'max_rss_mb': 61.078125, 'sha': 'b9ff4ec0e75ff918'}
+B 3 {'real': 51.4, 'user': 132.79, 'sys': 0.33, 'max_rss_mb': 59.578125, 'sha': 'b9ff4ec0e75ff918'}
+A 3 {'real': 57.26, 'user': 155.0, 'sys': 0.35, 'max_rss_mb': 56.71875, 'sha': 'b9ff4ec0e75ff918'}
+{
+ "A": {
+  "user_median": 152.82999999999998,
+  "real_median": 96.61,
+  "rss_mb_median": 57.0,
+  "digests": [
+   "b9ff4ec0e75ff918"
+  ]
+ },
+ "B": {
+  "user_median": 132.21499999999997,
+  "real_median": 76.03,
+  "rss_mb_median": 57.59375,
+  "digests": [
+   "b9ff4ec0e75ff918"
+  ]
+ },
+ "user_speedup_A_over_B": 1.1559202813599063,
+ "identical_output": true,
+ "load_average_at_end": [
+  44.79541015625,
+  68.1962890625,
+  90.42431640625
+ ],
+ "args": [
+  "--threads",
+  "4"
+ ]
+}

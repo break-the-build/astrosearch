@@ -22,16 +22,16 @@ import math
 import shlex
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from vetting import aliases, crosscheck, diagnostics, fap, fpp, gate, provenance, siblings, stellar  # noqa: E402
+from vetting import (  # noqa: E402
+    aliases, crosscheck, diagnostics, fap, fpp, gate, network, provenance, siblings, stellar)
 from vetting.io import (  # noqa: E402
-    TRANSIT_CLASSES, normalize_epoch, read_candidates, read_lightcurve, write_json)
+    TRANSIT_CLASSES, atomic_write_text, normalize_epoch, read_candidates, read_lightcurve, write_json)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -173,8 +173,11 @@ def main() -> int:
     p.add_argument("--sibling-score-fraction", type=float, default=0.5,
                    help="mask other transit candidates scoring at least this fraction of the "
                         "candidate's score (0 disables sibling masking)")
+    p.add_argument("--network-timeout", type=float, default=300.0,
+                   help="seconds before a stalled MAST/Gaia/archive request fails")
     p.add_argument("--out-dir", type=Path, required=True)
     a = p.parse_args()
+    network.install_default_timeouts(a.network_timeout)
     a.out_dir.mkdir(parents=True, exist_ok=True)
     search_args = shlex.split(a.search_args)
 
@@ -187,7 +190,8 @@ def main() -> int:
     duo = candidate.kind == "duo_transit"
     report = {"tic": a.tic, "candidate": {k: getattr(candidate, k) for k in
                                           ("rank", "kind", "score", "period", "epoch",
-                                           "duration", "depth_ppm", "n_events")}}
+                                           "duration", "depth_ppm", "n_events")},
+              "input_rows": vars(lc.stats) if lc.stats else None}
 
     fit = physical_fit(a.lightcurve, a.candidates, candidate, a.out_dir, a.mcmc_steps)
     report["fit"] = fit
@@ -301,8 +305,7 @@ def main() -> int:
         report["provenance"]["search"] = json.loads(binary_provenance.read_text())
     report["verification_protocol"] = gate.protocol_checklist(report)
 
-    write_json(a.out_dir / "gate.json", report)
-    (a.out_dir / "gate.md").write_text(gate.render_markdown(
+    atomic_write_text(a.out_dir / "gate.md", gate.render_markdown(
         a.tic, report["candidate"], criteria, decision, planet, ctoi,
         report["verification_protocol"]))
     with (a.out_dir / "ctoi_row.csv").open("w", newline="") as stream:
@@ -314,6 +317,8 @@ def main() -> int:
             writer = csv.DictWriter(stream, fieldnames=list(windows[0]))
             writer.writeheader()
             writer.writerows(windows)
+    # Written last and atomically: its presence means the whole run completed.
+    write_json(a.out_dir / "gate.json", report)
     print(decision["summary"])
     for key, result in criteria.items():
         print(f"  {key}: {result['status']}")

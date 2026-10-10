@@ -1,0 +1,43 @@
+A 0 {'real': 133.8, 'user': 38.63, 'sys': 0.08, 'max_rss_mb': 15.953125, 'sha': 'b883cc55ebd7400f'}
+B 0 {'real': 111.42, 'user': 32.29, 'sys': 0.07, 'max_rss_mb': 16.953125, 'sha': 'b883cc55ebd7400f'}
+B 1 {'real': 103.19, 'user': 32.85, 'sys': 0.07, 'max_rss_mb': 18.03125, 'sha': 'b883cc55ebd7400f'}
+A 1 {'real': 114.8, 'user': 39.16, 'sys': 0.09, 'max_rss_mb': 16.703125, 'sha': 'b883cc55ebd7400f'}
+A 2 {'real': 106.19, 'user': 38.77, 'sys': 0.08, 'max_rss_mb': 17.484375, 'sha': 'b883cc55ebd7400f'}
+B 2 {'real': 90.56, 'user': 32.37, 'sys': 0.07, 'max_rss_mb': 17.1875, 'sha': 'b883cc55ebd7400f'}
+B 3 {'real': 176.52, 'user': 33.02, 'sys': 0.06, 'max_rss_mb': 16.734375, 'sha': 'b883cc55ebd7400f'}
+A 3 {'real': 153.33, 'user': 38.46, 'sys': 0.16, 'max_rss_mb': 16.5625, 'sha': 'b883cc55ebd7400f'}
+A 4 {'real': 140.57, 'user': 38.96, 'sys': 0.21, 'max_rss_mb': 16.609375, 'sha': 'b883cc55ebd7400f'}
+B 4 {'real': 118.75, 'user': 32.8, 'sys': 0.17, 'max_rss_mb': 16.28125, 'sha': 'b883cc55ebd7400f'}
+B 5 {'real': 121.58, 'user': 32.77, 'sys': 0.17, 'max_rss_mb': 16.296875, 'sha': 'b883cc55ebd7400f'}
+A 5 {'real': 159.08, 'user': 38.81, 'sys': 0.2, 'max_rss_mb': 16.765625, 'sha': 'b883cc55ebd7400f'}
+{
+ "A": {
+  "user_median": 38.790000000000006,
+  "real_median": 137.185,
+  "rss_mb_median": 16.65625,
+  "digests": [
+   "b883cc55ebd7400f"
+  ]
+ },
+ "B": {
+  "user_median": 32.785,
+  "real_median": 115.08500000000001,
+  "rss_mb_median": 16.84375,
+  "digests": [
+   "b883cc55ebd7400f"
+  ]
+ },
+ "user_speedup_A_over_B": 1.1831630318743331,
+ "identical_output": true,
+ "load_average_at_end": [
+  117.68798828125,
+  109.8837890625,
+  109.93896484375
+ ],
+ "args": [
+  "--threads",
+  "1",
+  "--transit-search-passes",
+  "1"
+ ]
+}

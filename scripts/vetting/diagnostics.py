@@ -40,7 +40,10 @@ def event_depths(lc: LightCurve, epoch: float, period: float, duration: float,
 
 
 def combine(events: list[dict]) -> dict:
-    """Inverse-variance mean depth, its error, and the chi^2 consistency."""
+    """Inverse-variance mean depth, its error, and the chi^2 consistency.
+    Events with non-finite depth or error are excluded, never averaged in."""
+    events = [e for e in events if math.isfinite(e["depth_ppm"]) and math.isfinite(e["sigma_ppm"])
+              and e["sigma_ppm"] > 0]
     if not events:
         return {"depth_ppm": None, "sigma_ppm": None, "events": 0}
     d = np.array([e["depth_ppm"] for e in events])

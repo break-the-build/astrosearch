@@ -15,6 +15,8 @@ pub(crate) struct PhaseWorkspace {
     pub(crate) weight_prefix: Vec<f64>,
     pub(crate) count_prefix: Vec<usize>,
     pub(crate) red_prefix: Vec<f64>,
+    /// Which knots' histograms are built for the current trial period.
+    red_built: Vec<bool>,
     pub(crate) point_bins: Vec<usize>,
     pub(crate) point_cycles: Vec<i64>,
     pub(crate) point_sum_prefix: Vec<f64>,
@@ -87,43 +89,56 @@ impl PhaseWorkspace {
             let in_sum = sum[end] - sum[start];
             let out_background = total_background - (background[end] - background[start]);
             let numerator = out_background * in_weight - in_sum * out_weight;
-            let possible = count[end] - count[start] >= 4
-                && in_weight > 0.0
-                && out_weight > 0.0
-                && numerator > 0.0
-                && numerator * numerator
-                    >= limit * in_weight * out_weight * (in_weight + out_weight);
+            // Non-short-circuit `&`: every term is cheap and branch-free
+            // evaluation lets the compiler vectorize the loop body.
+            let possible = (count[end] - count[start] >= 4)
+                & (in_weight > 0.0)
+                & (out_weight > 0.0)
+                & (numerator > 0.0)
+                & (numerator * numerator
+                    >= limit * in_weight * out_weight * (in_weight + out_weight));
             if possible {
                 survivors.push(start);
             }
         }
     }
 
-    /// Phase histograms of `w * beta^2` for the first `knots` duration knots
-    /// and their circular prefix sums (knot-major; `point_weights` layout).
-    pub(crate) fn ensure_red(&mut self, bins: usize, knots: usize, point_weights: &[f64]) {
-        if self.red_ready {
+    /// Phase histogram of `w * beta^2` for duration knot `knot` and its
+    /// circular prefix sums, built on first use within a trial period
+    /// (`point_weights` is knot-major with `knots` rows). A window reads only
+    /// its own knot and the next one, so most knots are never built.
+    pub(crate) fn ensure_red_knot(
+        &mut self,
+        bins: usize,
+        knots: usize,
+        knot: usize,
+        point_weights: &[f64],
+    ) {
+        if !self.red_ready {
+            self.red.resize(knots * bins, 0.0);
+            self.red_prefix.resize(knots * (2 * bins + 1), 0.0);
+            self.red_built.clear();
+            self.red_built.resize(knots, false);
+            self.red_ready = true;
+        }
+        if self.red_built[knot] {
             return;
         }
         let observations = self.point_bins.len();
-        self.red.resize(knots * bins, 0.0);
-        self.red.fill(0.0);
-        for (i, &b) in self.point_bins.iter().enumerate() {
-            for knot in 0..knots {
-                self.red[knot * bins + b] += point_weights[knot * observations + i];
-            }
+        let histogram = &mut self.red[knot * bins..(knot + 1) * bins];
+        histogram.fill(0.0);
+        // Each bin accumulates in sample order, as in a sample-major loop.
+        let weights = &point_weights[knot * observations..(knot + 1) * observations];
+        for (&b, &w) in self.point_bins.iter().zip(weights) {
+            histogram[b] += w;
         }
         let stride = 2 * bins + 1;
-        self.red_prefix.resize(knots * stride, 0.0);
-        for knot in 0..knots {
-            let histogram = &self.red[knot * bins..(knot + 1) * bins];
-            let prefix = &mut self.red_prefix[knot * stride..(knot + 1) * stride];
-            prefix[0] = 0.0;
-            for i in 0..2 * bins {
-                prefix[i + 1] = prefix[i] + histogram[if i < bins { i } else { i - bins }];
-            }
+        let prefix = &mut self.red_prefix[knot * stride..(knot + 1) * stride];
+        prefix[0] = 0.0;
+        for i in 0..2 * bins {
+            prefix[i + 1] = prefix[i] + histogram[if i < bins { i } else { i - bins }];
         }
-        self.red_ready = true;
+        self.red_built[knot] = true;
     }
 
     /// Time-ordered prefix sums and per-cycle index ranges for event statistics.

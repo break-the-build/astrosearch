@@ -362,7 +362,6 @@ def main() -> int:
     candidates = select_rows(eligible_planets(catalog_rows), pool_per_split,
                              args.seed, allow_incomplete=True)
 
-    import numpy as np
 
     truth_rows: list[dict] = []
     run_rows: list[dict] = []

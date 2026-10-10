@@ -423,10 +423,12 @@ impl TrialContext<'_> {
             return None;
         }
         let (score, noise_factor) = if self.correlated {
-            workspace.ensure_red(bins, trial.red_knots, self.red_weights);
+            workspace.ensure_red_knot(bins, trial.red_knots, window.knot, self.red_weights);
             let mut red_weight = workspace.red_sum(bins, window.knot, start, end);
             if window.fraction > 0.0 {
-                let upper = workspace.red_sum(bins, window.knot + 1, start, end);
+                let upper_knot = window.knot + 1;
+                workspace.ensure_red_knot(bins, trial.red_knots, upper_knot, self.red_weights);
+                let upper = workspace.red_sum(bins, upper_knot, start, end);
                 red_weight = (1.0 - window.fraction) * red_weight + window.fraction * upper;
             }
             let in_variance = (red_weight / (in_weight * in_weight)).max(1.0 / in_weight);

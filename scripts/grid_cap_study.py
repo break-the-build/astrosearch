@@ -15,6 +15,7 @@ drift rule. Three variants are compared on the same calibration-split hosts
   G  F with the cap raised to 1,000,000 (resolution-complete under the physical prior)
   H  F, cap 2,000,000, two-stage search with factor 7 (coarse screen + full refinement)
   I  H with the coarse stage ranked by the fast folding algorithm
+  J  candidate default: I plus the physical minimum orbital period
 
   prepare   sample hosts, fetch TIC densities, write one run manifest per variant
   evaluate  recall at matched null trigger rates (thresholds from each
@@ -37,10 +38,10 @@ from vetting.tier import statistic
 
 csv.field_size_limit(2**31 - 1)
 VARIANTS = ("A_cap250k", "B_cap1M", "C_density", "D_bin10", "E_physical", "F_bin10_physical",
-            "G_bin10_physical_cap1M", "H_two_stage", "I_ffa_two_stage")
+            "G_bin10_physical_cap1M", "H_two_stage", "I_ffa_two_stage", "J_default_candidate")
 #: Variants that pass the host TIC density to the search.
 DENSITY_VARIANTS = ("C_density", "E_physical", "F_bin10_physical", "G_bin10_physical_cap1M",
-                    "H_two_stage", "I_ffa_two_stage")
+                    "H_two_stage", "I_ffa_two_stage", "J_default_candidate")
 RHO_SUN_G_CM3 = 1.408
 
 

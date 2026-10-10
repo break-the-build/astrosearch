@@ -21,6 +21,8 @@ python scripts/tess_survey.py --targets data/survey/targets.csv --output data/su
 
 The example input is [targets-example.csv](/Users/danny/dev/astronomy/data/survey/targets-example.csv); it uses TIC 4206066, an unconfirmed candidate benchmark in `data/tic4206066`, so it validates workflow behavior and is not a fresh target or truth standard. Default authors are `QLP` and `SPOC`; results live in one folder per TIC and author, with one normalized CSV per sector, a manifest of product metadata/checksums, a stitched CSV, candidate CSV, and Rust search log. Light curves now retain `exposure_days` and `sector` columns so the refinement and injection tools can respect mixed cadence. These integrations use Lightkurve's MAST search and download interfaces; for large all-sky catalog queries, use MAST/astroquery to prepare a bounded TIC/CTL list first, then run the batch on a small pilot sample. FFI products are selected at one cadence per sector (shortest exposure of at least 200 seconds) to avoid duplicate observations. Each sector receives a robust adjacent-difference noise estimate normalized for exposure time; sectors above 5× that target's median are excluded from the combined search and recorded in the manifest. This is an outlier screen, not a universal threshold; inspect the ratios and tune `--max-sector-noise-ratio` (0 disables it). Tune `--min-sector`, `--min-baseline`, `--min-exptime`, and stellar cuts for the science question.
 
+Each successful Rust search is also added to `<output>/candidate_registry.sqlite` with the light-curve/candidate hashes, source/build identity, product manifest, and candidate measurements. Promotions remain human-evidenced: use `python scripts/candidate_registry.py promote ...` only after recording the relevant catalog, pixel, independent-pipeline, and follow-up evidence.
+
 ```sh
 python scripts/tess_survey.py --targets targets.csv --output data/survey/pilot \
   --min-sector 90 --min-baseline 1095 --authors QLP SPOC --threads 24
@@ -50,6 +52,23 @@ python scripts/tls_search.py --lightcurve data/survey/run1/TIC123456789/QLP/comb
 ```
 
 Use tess_survey.py --tls to run TLS per target. TLS false-alarm estimates assume white noise; compare with --invert controls and empirical nulls. This independent detection path does not validate candidates.
+
+For a frozen known-planet comparison, run TLS on the same calibration controls
+and blind light curves, calibrate its SDE threshold on calibration controls,
+and optionally compare its paired blind outcomes with a saved astrosearch
+evaluation report:
+
+```sh
+python scripts/run_tls_benchmark.py \
+  --truth-manifest data/benchmarks/generated-20261009/truth-manifest.csv \
+  --run-manifest data/benchmarks/generated-20261009/run-manifest.csv \
+  --output data/benchmarks/tls-20261010 \
+  --reference-report data/benchmarks/generated-20261009/evaluation-jackknife.json
+```
+
+This runs one TLS analysis per required case and can take hours. The old blind
+sample has already been inspected, so the result is a retrospective method
+comparison only and must not be used to tune production settings.
 
 Sector 90+ is a recency filter, not evidence that targets or signals have not been searched. QLP processes FFI light curves and performs multi-sector searches; prioritize documented coverage gaps or measured residual sensitivity, and audit current catalogs before calling a signal novel.
 

@@ -1,0 +1,16 @@
+{
+  "targets": 200,
+  "available": 136,
+  "by_author": {
+    "QLP": 134,
+    "TESS-SPOC": 2,
+    "SPOC": 0
+  },
+  "errors": 0,
+  "output_csv": "/Users/danny/dev/astronomy/data/benchmarks/hard-negatives/probed-eb-targets.csv",
+  "author_preference": [
+    "QLP",
+    "TESS-SPOC",
+    "SPOC"
+  ]
+}

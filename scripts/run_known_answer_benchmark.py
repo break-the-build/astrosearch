@@ -12,11 +12,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import csv
 import hashlib
 import json
-import os
-import subprocess
 import sys
-import time
 from pathlib import Path
+from run_metrics import build_identity, run_with_metrics
 
 
 def sha256(path: Path) -> str:
@@ -27,27 +25,9 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def run_measured(command: list[str], log_path: Path) -> tuple[int, dict]:
-    """Run one search, logging its output, and return its exit code and
-    resource use. os.wait4 reports this child alone, which stays correct when
-    several workers run searches concurrently (RUSAGE_CHILDREN would not)."""
-    start = time.perf_counter()
-    with log_path.open("w", encoding="utf-8") as log:
-        process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
-        _, status, usage = os.wait4(process.pid, 0)
-    process.returncode = os.waitstatus_to_exitcode(status)
-    # ru_maxrss is bytes on macOS and kibibytes on Linux.
-    scale = 1 if sys.platform == "darwin" else 1024
-    return process.returncode, {
-        "wall_seconds": round(time.perf_counter() - start, 3),
-        "user_seconds": round(usage.ru_utime, 3), "system_seconds": round(usage.ru_stime, 3),
-        "max_rss_mb": round(usage.ru_maxrss * scale / 2**20, 1),
-        "load_average": [round(v, 2) for v in os.getloadavg()],
-    }
-
-
 def run_case(index: int, total: int, row: dict, manifest_dir: Path,
-             binary: Path, binary_hash: str, config: dict, args) -> tuple[int, str, str]:
+             binary: Path, binary_hash: str, config: dict, build: dict,
+             args) -> tuple[int, str, str]:
     case_id = row["case_id"]
     data_path = (manifest_dir / row["data_csv"]).resolve()
     candidate_path = (manifest_dir / row["candidates_csv"]).resolve()
@@ -55,7 +35,7 @@ def run_case(index: int, total: int, row: dict, manifest_dir: Path,
     if not data_path.is_file():
         return index, case_id, f"missing data {data_path}"
     state = {"input_sha256": sha256(data_path), "binary_sha256": binary_hash,
-             "config": config}
+             "config": config, "build_identity": build, "metrics_schema": 1}
     try:
         if (not args.rerun and candidate_path.is_file() and sidecar.is_file()
                 and json.loads(sidecar.read_text()).get("state") == state):
@@ -69,10 +49,14 @@ def run_case(index: int, total: int, row: dict, manifest_dir: Path,
         if args.periods is not None:
             command.extend(("--periods", str(args.periods)))
         log_path = candidate_path.with_suffix(".log")
-        returncode, metrics = run_measured(command, log_path)
-        if returncode != 0 or not stage.is_file():
+        metrics = run_with_metrics(command, log_path, timeout=args.search_timeout)
+        if metrics["timed_out"] or metrics["exit_code"] != 0 or not stage.is_file():
             stage.unlink(missing_ok=True)
-            return index, case_id, f"search failed (see {log_path})"
+            Path(str(stage) + ".provenance.json").unlink(missing_ok=True)
+            return index, case_id, ("search timed out" if metrics["timed_out"] else
+                                    f"search failed exit={metrics['exit_code']} (see {log_path})")
+        # The search writes provenance beside its (staging) output; keep it
+        # next to the published candidates instead of under the temporary name.
         provenance = Path(str(stage) + ".provenance.json")
         if provenance.is_file():
             record = json.loads(provenance.read_text())
@@ -104,6 +88,8 @@ def main() -> int:
     parser.add_argument("--periods", type=int)
     parser.add_argument("--grouping", choices=("ephemeris", "events"), default="events")
     parser.add_argument("--transit-search-passes", type=int, default=5)
+    parser.add_argument("--search-timeout", type=float, default=3600,
+                        help="maximum seconds for one target search")
     parser.add_argument("--rerun", action="store_true", help="ignore matching resume metadata")
     args = parser.parse_args()
     manifest = args.manifest.expanduser().resolve()
@@ -111,19 +97,23 @@ def main() -> int:
     if not manifest.is_file() or not binary.is_file():
         parser.error("run manifest or astrosearch executable not found")
     if (not 0 < args.min_period < args.max_period or args.workers < 1
-            or not 1 <= args.transit_search_passes <= 12):
+            or not 1 <= args.transit_search_passes <= 12
+            or args.search_timeout <= 0):
         parser.error("invalid period bounds, worker count, or transit search pass count")
-    config = {"threads": args.threads, "min_period": args.min_period,
+    build = build_identity(root, binary)
+    config = {"threads": args.threads, "workers": args.workers,
+              "min_period": args.min_period,
               "max_period": args.max_period, "periods": args.periods,
               "grouping": args.grouping,
-              "transit_search_passes": args.transit_search_passes}
+              "transit_search_passes": args.transit_search_passes,
+              "search_timeout_s": args.search_timeout}
     binary_hash = sha256(binary)
     with manifest.open(newline="", encoding="utf-8-sig") as stream:
         rows = list(csv.DictReader(stream))
     failed = 0
     with ThreadPoolExecutor(max_workers=args.workers) as executor:
         futures = [executor.submit(run_case, i, len(rows), row, manifest.parent,
-                                   binary, binary_hash, config, args)
+                                   binary, binary_hash, config, build, args)
                    for i, row in enumerate(rows, 1)]
         for future in as_completed(futures):
             index, case_id, status = future.result()

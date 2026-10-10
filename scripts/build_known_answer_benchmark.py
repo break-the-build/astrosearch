@@ -113,6 +113,34 @@ def archive_time_to_btjd(value: float) -> float:
     return value - 2457000.0 if value > 2_400_000 else value
 
 
+def qlp_processing_family(products: list[dict]) -> tuple[str, list[int]]:
+    """Classify QLP product-era metadata from MAST product names/sequences."""
+    sectors = set()
+    for product in products:
+        for key in ("sector", "sequence_number", "productFilename", "obs_id"):
+            raw = product.get(key, "")
+            if key in {"sector", "sequence_number"}:
+                try:
+                    number = int(float(raw))
+                    if 1 <= number <= 999:
+                        sectors.add(number)
+                        break
+                except (TypeError, ValueError, OverflowError):
+                    pass
+            match = re.search(r"(?:s|sector[_-]?)(\d{1,4})", str(raw), re.IGNORECASE)
+            if match:
+                number = int(match.group(1))
+                if 1 <= number <= 999:
+                    sectors.add(number)
+                    break
+    if not sectors:
+        return "unknown", []
+    families = {"TGLC-based QLP (S94+)" if sector >= 94 else "legacy QLP"
+                for sector in sectors}
+    family = next(iter(families)) if len(families) == 1 else "mixed-QLP-eras"
+    return family, sorted(sectors)
+
+
 def split_for_host(seed: int, tic_id: str) -> str:
     return "blind" if int(stable_key(seed, tic_id)[:8], 16) % 2 else "calibration"
 
@@ -232,6 +260,7 @@ def fetch_planet_case(planet: dict, seed: int, out: Path, cache: Path,
                 "t_min": str(product["t_min"]) if "t_min" in search.table.colnames else "",
                 "t_max": str(product["t_max"]) if "t_max" in search.table.colnames else "",
             })
+        processing_family, product_sectors = qlp_processing_family(mast_products)
         lightcurve = collection.stitch()
         normalized = lightcurve.remove_nans().normalize()
         times = np.asarray(normalized.time.value, dtype=float)
@@ -281,6 +310,8 @@ def fetch_planet_case(planet: dict, seed: int, out: Path, cache: Path,
             "epoch_reference": planet.get("pl_tranmid_reflink", ""),
             "period_reference": planet.get("pl_orbper_reflink", ""),
             "time_reference": planet.get("pl_tranmid_systemref", ""),
+            "extraction_family": processing_family,
+            "product_sectors": json.dumps(product_sectors),
             "mast_products_json": json.dumps(mast_products, sort_keys=True),
             "lightcurve_sha256": hashes["planet"], "inverted_sha256": hashes["inverted"],
         }
@@ -312,8 +343,11 @@ def fetch_planet_case(planet: dict, seed: int, out: Path, cache: Path,
                 "depth_stratum": planet["stratum_depth"],
                 "depth_ppm_proxy": planet.get("depth_ppm_proxy") or "",
                 "cadence_days": cadence, "observations": count,
+                "cadence_stratum": "short" if cadence < 0.01 else "long",
                 "stellar_teff_k": planet.get("st_teff", ""),
                 "magnitude_stratum": metadata["magnitude_stratum"],
+                "extraction_family": processing_family,
+                "product_sectors": json.dumps(product_sectors),
                 "data_sha256": flux_hash, "planet_name": planet["pl_name"],
             })
         return {"split": split, "tic_id": tic, "planet_name": planet["pl_name"],

@@ -42,7 +42,7 @@ class BenchmarkRunnerTests(unittest.TestCase):
             sidecar = json.loads((case / "candidates.run.json").read_text())
             metrics = sidecar["metrics"]
             self.assertGreater(metrics["wall_seconds"], 0)
-            self.assertGreater(metrics["max_rss_mb"], 0)
+            self.assertEqual((metrics["exit_code"], metrics["timed_out"]), (0, False))
             self.assertEqual(metrics["observations"], 2000)
             self.assertTrue((case / "candidates.csv.provenance.json").exists())
             self.assertEqual([p.name for p in case.iterdir() if p.name.startswith(".")], [])

@@ -12,6 +12,8 @@ from pathlib import Path
 from survey_ledger import begin_run, config_digest, connect as connect_ledger
 from survey_ledger import claim_target, finish_run, record_target, should_defer
 from vetting.network import install_default_timeouts
+from run_metrics import build_identity as capture_build_identity, run_with_metrics
+from candidate_registry import ingest as register_candidates
 import requests
 from requests.adapters import HTTPAdapter
 
@@ -332,31 +334,31 @@ def one_target(row,a,binary):
         if density is not None: cmd.extend(("--stellar-density",str(density)))
         if a.periods: cmd.extend(("--periods",str(a.periods)))
         log=out/"search.log"
-        proc=None
         with tempfile.NamedTemporaryFile("w",dir=out,prefix=".search.",suffix=".tmp",
                                          delete=False) as stream:
             log_tmp=Path(stream.name)
-            try:
-                proc=subprocess.run(cmd,stdout=stream,stderr=subprocess.STDOUT,
-                                    check=False,timeout=a.search_timeout)
-            except subprocess.TimeoutExpired:
+        search_metrics=run_with_metrics(cmd,log_tmp,timeout=a.search_timeout)
+        if search_metrics["timed_out"]:
+            with log_tmp.open("a",encoding="utf-8") as stream:
                 stream.write(f"\nsearch timed out after {a.search_timeout}s\n")
-            stream.flush(); os.fsync(stream.fileno())
+        with log_tmp.open("rb") as stream:
+            os.fsync(stream.fileno())
         os.replace(log_tmp,log)
-        if proc is None:
+        if search_metrics["timed_out"]:
             candidates_stage.unlink(missing_ok=True)
             author_runs.append({"author":author,"status":"search_failed",
                 "reason":"search timeout","search_timeout_s":a.search_timeout,
                 "sectors":sectors,"products":products,"combined_csv":str(combined_file),
-                "search_log":str(log)})
+                "search_log":str(log),"search_metrics":search_metrics})
             continue
-        search_succeeded=proc.returncode==0 and candidates_stage.is_file()
+        search_succeeded=search_metrics["exit_code"]==0 and candidates_stage.is_file()
         if search_succeeded:
             os.replace(candidates_stage,candidates)
         else:
             candidates_stage.unlink(missing_ok=True)
         author_runs.append({"author":author,"status":"searched" if search_succeeded else "search_failed",
-            "exit_code":proc.returncode,"sectors":sectors,"products":products,
+            "exit_code":search_metrics["exit_code"],"search_metrics":search_metrics,
+            "sectors":sectors,"products":products,
             "excluded_noisy_sectors":[x["sector"] for x in products if x["excluded_noisy"]],
             "baseline_days":baseline,
             "recent_multiyear":qualifies,"priority_score":priority(row,len(sectors),baseline),
@@ -387,6 +389,7 @@ def one_target(row,a,binary):
                 author_runs[-1]["tls_status"]="timeout"
     manifest={"tic_id":ident,"created_utc":datetime.now(timezone.utc).isoformat(),
         "input_catalog_row":row,"authors":author_runs,
+        "source_revision":a.source_revision,"build_identity":a.build_identity,
         "lightkurve_version":getattr(lk,"__version__","unknown"),
         "search_config":{"min_sector":a.min_sector,"min_exptime_s":a.min_exptime,
             "min_baseline_days":a.min_baseline,"min_period_days":a.min_period,
@@ -405,6 +408,24 @@ def one_target(row,a,binary):
             "max_sector_noise_ratio":a.max_sector_noise_ratio},
         "warning":"Candidates are unvalidated triggers; scores are not false-alarm probabilities."}
     atomic_write_text(root/"manifest.json",json.dumps(manifest,indent=2,default=str)+"\n")
+    registry_path=(a.candidate_registry.expanduser().resolve() if a.candidate_registry
+                   else a.output.resolve()/"candidate_registry.sqlite")
+    registry_records=[]
+    for run in author_runs:
+        if run.get("status") != "searched":
+            continue
+        try:
+            registered=register_candidates(
+                registry_path, f"TIC{ident}:{run['author']}",
+                Path(run["combined_csv"]), Path(run["candidates_csv"]),
+                a.source_revision, root/"manifest.json")
+            registry_records.append({"author":run["author"],**registered})
+        except Exception as error:
+            registry_records.append({"author":run["author"],
+                                     "error":f"{type(error).__name__}: {error}"})
+    if registry_records:
+        atomic_write_text(root/"candidate_registry_ingest.json",
+                          json.dumps(registry_records,indent=2)+"\n")
     # A Rust search failure must remain retryable in the shared ledger. Data
     # availability outcomes (for example, no recent products) are completed
     # checks and can use the normal cooldown before being refreshed.
@@ -455,6 +476,8 @@ def main():
                    help="Optional cap on eligible TICs searched, after priority ordering")
     p.add_argument("--ledger",type=Path,
                    help="Shared SQLite survey ledger (default: project data/survey/survey-ledger.sqlite)")
+    p.add_argument("--candidate-registry",type=Path,
+                   help="Candidate database (default: <output>/candidate_registry.sqlite)")
     p.add_argument("--cache-dir",type=Path,
                    help="Shared MAST download cache (default: project data/survey/mast-cache)")
     p.add_argument("--revisit-after-days",type=int,default=30,
@@ -478,6 +501,14 @@ def main():
     a.require_distance = not a.allow_missing_distance
     rows=read_targets(a.targets)
     project_root=Path(__file__).resolve().parents[1]
+    a.source_revision="unknown"
+    try:
+        head=subprocess.run(["git","rev-parse","HEAD"],cwd=project_root,
+                            check=True,capture_output=True,text=True).stdout.strip()
+        dirty=subprocess.run(["git","diff","--quiet","HEAD"],cwd=project_root).returncode != 0
+        a.source_revision=head+("-dirty" if dirty else "")
+    except (OSError,subprocess.CalledProcessError):
+        pass
     ledger_path=(a.ledger.expanduser() if a.ledger else project_root/"data/survey/survey-ledger.sqlite")
     a.cache_dir=(a.cache_dir.expanduser() if a.cache_dir else project_root/"data/survey/mast-cache")
     a.cache_dir.mkdir(parents=True,exist_ok=True)
@@ -555,6 +586,9 @@ def main():
                     summary.append({"tic_id":row.get("tic_id",""),"status":"error","reason":str(error)})
     summary_by_index={}
     binary=binary_path(a.binary)
+    a.build_identity=capture_build_identity(project_root,binary)
+    a.source_revision=a.build_identity["source_revision"]+(
+        "-dirty" if a.build_identity["working_tree_dirty"] else "")
     if work_rows:
         configure_mast_timeout(a.network_timeout)
         install_default_timeouts(a.network_timeout)
@@ -607,6 +641,10 @@ def main():
         "run_id":run_id,"ledger":str(ledger_path.resolve()),"ranking":"local_snr_proxy",
         "config_sha256":config_sha,"targets_csv_sha256":sha256_file(a.targets),
         "astrosearch_binary":str(binary),"binary_sha256":sha256_file(binary),
+        "source_revision":a.source_revision,
+        "build_identity":a.build_identity,
+        "candidate_registry":str((a.candidate_registry.expanduser() if a.candidate_registry
+                                   else a.output.resolve()/"candidate_registry.sqlite")),
         "revisit_after_days":a.revisit_after_days,"forced_revisit":a.revisit,
         "catalog_eligible":len(catalog_eligible),"ledger_deferred":len(ledger_deferred),
         "selected":len(selected_set),"failed_targets":failures,"status":run_status,

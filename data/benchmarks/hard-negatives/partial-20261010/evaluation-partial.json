@@ -1,0 +1,445 @@
+{
+  "status": "partial hard-negative evaluation",
+  "catalog": "Kostov et al. (2025) vetted TESS eclipsing binaries",
+  "searched_cases": 12,
+  "threshold": 22.48764564027064,
+  "threshold_source": "frozen known-answer calibration report; jackknife_score",
+  "evaluation": {
+    "blind_case_count": 12,
+    "confirmed_planet_recovery": {
+      "successes": 0,
+      "trials": 0,
+      "fraction": null,
+      "wilson_95": null
+    },
+    "inverted_or_null_control_trigger_rate": {
+      "successes": 0,
+      "trials": 0,
+      "fraction": null,
+      "wilson_95": null
+    },
+    "known_false_positive_trigger_rate": {
+      "successes": 12,
+      "trials": 12,
+      "fraction": 1.0,
+      "wilson_95": [
+        0.7575059933447592,
+        1.0
+      ]
+    },
+    "known_false_positive_trigger_rate_by_type": {
+      "vetted_eclipsing_binary": {
+        "successes": 12,
+        "trials": 12,
+        "fraction": 1.0,
+        "wilson_95": [
+          0.7575059933447592,
+          1.0
+        ]
+      }
+    },
+    "planet_recovery_by_candidate_rank": {
+      "top_1": {
+        "successes": 0,
+        "trials": 0,
+        "fraction": null,
+        "wilson_95": null
+      },
+      "top_5": {
+        "successes": 0,
+        "trials": 0,
+        "fraction": null,
+        "wilson_95": null
+      },
+      "top_10": {
+        "successes": 0,
+        "trials": 0,
+        "fraction": null,
+        "wilson_95": null
+      },
+      "any_rank": {
+        "successes": 0,
+        "trials": 0,
+        "fraction": null,
+        "wilson_95": null
+      }
+    },
+    "strata": {
+      "baseline=short:known_false_positive": {
+        "planet_recovery": null,
+        "trigger_rate": {
+          "successes": 12,
+          "trials": 12,
+          "fraction": 1.0,
+          "wilson_95": [
+            0.7575059933447592,
+            1.0
+          ]
+        }
+      },
+      "cadence=unknown:known_false_positive": {
+        "planet_recovery": null,
+        "trigger_rate": {
+          "successes": 12,
+          "trials": 12,
+          "fraction": 1.0,
+          "wilson_95": [
+            0.7575059933447592,
+            1.0
+          ]
+        }
+      },
+      "depth=unknown:known_false_positive": {
+        "planet_recovery": null,
+        "trigger_rate": {
+          "successes": 12,
+          "trials": 12,
+          "fraction": 1.0,
+          "wilson_95": [
+            0.7575059933447592,
+            1.0
+          ]
+        }
+      },
+      "extraction_family=unknown:known_false_positive": {
+        "planet_recovery": null,
+        "trigger_rate": {
+          "successes": 12,
+          "trials": 12,
+          "fraction": 1.0,
+          "wilson_95": [
+            0.7575059933447592,
+            1.0
+          ]
+        }
+      },
+      "magnitude=unknown:known_false_positive": {
+        "planet_recovery": null,
+        "trigger_rate": {
+          "successes": 12,
+          "trials": 12,
+          "fraction": 1.0,
+          "wilson_95": [
+            0.7575059933447592,
+            1.0
+          ]
+        }
+      },
+      "mission=unknown:known_false_positive": {
+        "planet_recovery": null,
+        "trigger_rate": {
+          "successes": 12,
+          "trials": 12,
+          "fraction": 1.0,
+          "wilson_95": [
+            0.7575059933447592,
+            1.0
+          ]
+        }
+      },
+      "period=unknown:known_false_positive": {
+        "planet_recovery": null,
+        "trigger_rate": {
+          "successes": 12,
+          "trials": 12,
+          "fraction": 1.0,
+          "wilson_95": [
+            0.7575059933447592,
+            1.0
+          ]
+        }
+      },
+      "sector_count=unknown:known_false_positive": {
+        "planet_recovery": null,
+        "trigger_rate": {
+          "successes": 12,
+          "trials": 12,
+          "fraction": 1.0,
+          "wilson_95": [
+            0.7575059933447592,
+            1.0
+          ]
+        }
+      }
+    },
+    "case_outcomes": [
+      {
+        "case_id": "eb-tic-178002833",
+        "host_id": "178002833",
+        "truth_class": "known_false_positive",
+        "false_positive_type": "vetted_eclipsing_binary",
+        "trigger_count": 12,
+        "max_periodic_score": 60.21308,
+        "max_statistic": 54.39323,
+        "planet_recovered": null,
+        "matched_candidate_rank": null,
+        "any_trigger": true,
+        "mission": "unknown",
+        "extraction_family": "unknown",
+        "cadence_stratum": "unknown",
+        "sector_count": null,
+        "coverage_stratum": "short",
+        "period_stratum": "unknown",
+        "depth_stratum": "unknown",
+        "cadence_days": null,
+        "depth_ppm_proxy": null,
+        "stellar_teff_k": null,
+        "magnitude_stratum": "unknown"
+      },
+      {
+        "case_id": "eb-tic-299351145",
+        "host_id": "299351145",
+        "truth_class": "known_false_positive",
+        "false_positive_type": "vetted_eclipsing_binary",
+        "trigger_count": 12,
+        "max_periodic_score": 140.20133,
+        "max_statistic": 127.09805,
+        "planet_recovered": null,
+        "matched_candidate_rank": null,
+        "any_trigger": true,
+        "mission": "unknown",
+        "extraction_family": "unknown",
+        "cadence_stratum": "unknown",
+        "sector_count": null,
+        "coverage_stratum": "short",
+        "period_stratum": "unknown",
+        "depth_stratum": "unknown",
+        "cadence_days": null,
+        "depth_ppm_proxy": null,
+        "stellar_teff_k": null,
+        "magnitude_stratum": "unknown"
+      },
+      {
+        "case_id": "eb-tic-393939888",
+        "host_id": "393939888",
+        "truth_class": "known_false_positive",
+        "false_positive_type": "vetted_eclipsing_binary",
+        "trigger_count": 12,
+        "max_periodic_score": 81.86765,
+        "max_statistic": 78.4088,
+        "planet_recovered": null,
+        "matched_candidate_rank": null,
+        "any_trigger": true,
+        "mission": "unknown",
+        "extraction_family": "unknown",
+        "cadence_stratum": "unknown",
+        "sector_count": null,
+        "coverage_stratum": "short",
+        "period_stratum": "unknown",
+        "depth_stratum": "unknown",
+        "cadence_days": null,
+        "depth_ppm_proxy": null,
+        "stellar_teff_k": null,
+        "magnitude_stratum": "unknown"
+      },
+      {
+        "case_id": "eb-tic-73352010",
+        "host_id": "73352010",
+        "truth_class": "known_false_positive",
+        "false_positive_type": "vetted_eclipsing_binary",
+        "trigger_count": 12,
+        "max_periodic_score": 159.1645,
+        "max_statistic": 153.93829,
+        "planet_recovered": null,
+        "matched_candidate_rank": null,
+        "any_trigger": true,
+        "mission": "unknown",
+        "extraction_family": "unknown",
+        "cadence_stratum": "unknown",
+        "sector_count": null,
+        "coverage_stratum": "short",
+        "period_stratum": "unknown",
+        "depth_stratum": "unknown",
+        "cadence_days": null,
+        "depth_ppm_proxy": null,
+        "stellar_teff_k": null,
+        "magnitude_stratum": "unknown"
+      },
+      {
+        "case_id": "eb-tic-80429442",
+        "host_id": "80429442",
+        "truth_class": "known_false_positive",
+        "false_positive_type": "vetted_eclipsing_binary",
+        "trigger_count": 12,
+        "max_periodic_score": 108.359,
+        "max_statistic": 91.88322,
+        "planet_recovered": null,
+        "matched_candidate_rank": null,
+        "any_trigger": true,
+        "mission": "unknown",
+        "extraction_family": "unknown",
+        "cadence_stratum": "unknown",
+        "sector_count": null,
+        "coverage_stratum": "short",
+        "period_stratum": "unknown",
+        "depth_stratum": "unknown",
+        "cadence_days": null,
+        "depth_ppm_proxy": null,
+        "stellar_teff_k": null,
+        "magnitude_stratum": "unknown"
+      },
+      {
+        "case_id": "eb-tic-128397751",
+        "host_id": "128397751",
+        "truth_class": "known_false_positive",
+        "false_positive_type": "vetted_eclipsing_binary",
+        "trigger_count": 1,
+        "max_periodic_score": 30.33365,
+        "max_statistic": 29.69268,
+        "planet_recovered": null,
+        "matched_candidate_rank": null,
+        "any_trigger": true,
+        "mission": "unknown",
+        "extraction_family": "unknown",
+        "cadence_stratum": "unknown",
+        "sector_count": null,
+        "coverage_stratum": "short",
+        "period_stratum": "unknown",
+        "depth_stratum": "unknown",
+        "cadence_days": null,
+        "depth_ppm_proxy": null,
+        "stellar_teff_k": null,
+        "magnitude_stratum": "unknown"
+      },
+      {
+        "case_id": "eb-tic-334230897",
+        "host_id": "334230897",
+        "truth_class": "known_false_positive",
+        "false_positive_type": "vetted_eclipsing_binary",
+        "trigger_count": 12,
+        "max_periodic_score": 207.63231,
+        "max_statistic": 186.04813,
+        "planet_recovered": null,
+        "matched_candidate_rank": null,
+        "any_trigger": true,
+        "mission": "unknown",
+        "extraction_family": "unknown",
+        "cadence_stratum": "unknown",
+        "sector_count": null,
+        "coverage_stratum": "short",
+        "period_stratum": "unknown",
+        "depth_stratum": "unknown",
+        "cadence_days": null,
+        "depth_ppm_proxy": null,
+        "stellar_teff_k": null,
+        "magnitude_stratum": "unknown"
+      },
+      {
+        "case_id": "eb-tic-141140299",
+        "host_id": "141140299",
+        "truth_class": "known_false_positive",
+        "false_positive_type": "vetted_eclipsing_binary",
+        "trigger_count": 8,
+        "max_periodic_score": 40.50878,
+        "max_statistic": 39.91757,
+        "planet_recovered": null,
+        "matched_candidate_rank": null,
+        "any_trigger": true,
+        "mission": "unknown",
+        "extraction_family": "unknown",
+        "cadence_stratum": "unknown",
+        "sector_count": null,
+        "coverage_stratum": "short",
+        "period_stratum": "unknown",
+        "depth_stratum": "unknown",
+        "cadence_days": null,
+        "depth_ppm_proxy": null,
+        "stellar_teff_k": null,
+        "magnitude_stratum": "unknown"
+      },
+      {
+        "case_id": "eb-tic-206655063",
+        "host_id": "206655063",
+        "truth_class": "known_false_positive",
+        "false_positive_type": "vetted_eclipsing_binary",
+        "trigger_count": 12,
+        "max_periodic_score": 65.25292,
+        "max_statistic": 63.91128,
+        "planet_recovered": null,
+        "matched_candidate_rank": null,
+        "any_trigger": true,
+        "mission": "unknown",
+        "extraction_family": "unknown",
+        "cadence_stratum": "unknown",
+        "sector_count": null,
+        "coverage_stratum": "short",
+        "period_stratum": "unknown",
+        "depth_stratum": "unknown",
+        "cadence_days": null,
+        "depth_ppm_proxy": null,
+        "stellar_teff_k": null,
+        "magnitude_stratum": "unknown"
+      },
+      {
+        "case_id": "eb-tic-376594768",
+        "host_id": "376594768",
+        "truth_class": "known_false_positive",
+        "false_positive_type": "vetted_eclipsing_binary",
+        "trigger_count": 12,
+        "max_periodic_score": 111.10853,
+        "max_statistic": 109.79852,
+        "planet_recovered": null,
+        "matched_candidate_rank": null,
+        "any_trigger": true,
+        "mission": "unknown",
+        "extraction_family": "unknown",
+        "cadence_stratum": "unknown",
+        "sector_count": null,
+        "coverage_stratum": "short",
+        "period_stratum": "unknown",
+        "depth_stratum": "unknown",
+        "cadence_days": null,
+        "depth_ppm_proxy": null,
+        "stellar_teff_k": null,
+        "magnitude_stratum": "unknown"
+      },
+      {
+        "case_id": "eb-tic-401937420",
+        "host_id": "401937420",
+        "truth_class": "known_false_positive",
+        "false_positive_type": "vetted_eclipsing_binary",
+        "trigger_count": 2,
+        "max_periodic_score": 27.0597,
+        "max_statistic": 26.80546,
+        "planet_recovered": null,
+        "matched_candidate_rank": null,
+        "any_trigger": true,
+        "mission": "unknown",
+        "extraction_family": "unknown",
+        "cadence_stratum": "unknown",
+        "sector_count": null,
+        "coverage_stratum": "short",
+        "period_stratum": "unknown",
+        "depth_stratum": "unknown",
+        "cadence_days": null,
+        "depth_ppm_proxy": null,
+        "stellar_teff_k": null,
+        "magnitude_stratum": "unknown"
+      },
+      {
+        "case_id": "eb-tic-84826001",
+        "host_id": "84826001",
+        "truth_class": "known_false_positive",
+        "false_positive_type": "vetted_eclipsing_binary",
+        "trigger_count": 12,
+        "max_periodic_score": 58.15888,
+        "max_statistic": 57.184,
+        "planet_recovered": null,
+        "matched_candidate_rank": null,
+        "any_trigger": true,
+        "mission": "unknown",
+        "extraction_family": "unknown",
+        "cadence_stratum": "unknown",
+        "sector_count": null,
+        "coverage_stratum": "short",
+        "period_stratum": "unknown",
+        "depth_stratum": "unknown",
+        "cadence_days": null,
+        "depth_ppm_proxy": null,
+        "stellar_teff_k": null,
+        "magnitude_stratum": "unknown"
+      }
+    ]
+  },
+  "interpretation": "Measures how often known eclipsing binaries trigger the planet-search score threshold. It does not measure false positives after astrophysical vetting. The small partial sample is not representative of all catalog strata."
+}

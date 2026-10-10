@@ -98,7 +98,10 @@ def main() -> int:
            for value in (args.stellar_radius, args.stellar_mass)):
         parser.error("stellar radius and mass must be finite and positive")
     try:
-        from transitleastsquares import model as tls_model, transit_mask
+        # TLS 2.0 exposes the search class as ``transitleastsquares``. Earlier
+        # releases and examples have used ``model`` as an alias, which is not
+        # exported by the version currently pinned in this environment.
+        from transitleastsquares import transitleastsquares as tls_model, transit_mask
     except ImportError as error:
         parser.error(f"install TLS support with uv sync --extra tls: {error}")
 

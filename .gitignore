@@ -8,3 +8,6 @@ __pycache__/
 *.pyc
 .DS_Store
 data/benchmarks/generated-*/
+data/benchmarks/hard-negatives/survey-run/
+data/benchmarks/hard-negatives/survey-parallel/
+data/benchmarks/hard-negatives/survey-final/

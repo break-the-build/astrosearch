@@ -43,9 +43,31 @@ def case_values(case: dict, root: Path, name: str) -> tuple[float, float | None]
     matched = None
     if case["truth_class"] == "confirmed_planet":
         span = float(case.get("baseline_days") or 0) or 1.0
-        matched = next((statistic(r, name) for r in rows
-                        if any(ev.close_ephemeris(e, case, span, 1.0) for e in ev.ephemerides(r))), None)
+        matched_scores = [statistic(r, name) for r in rows
+                          if any(ev.close_ephemeris(e, case, span, 1.0)
+                                 for e in ev.ephemerides(r))]
+        matched = max(matched_scores, default=None)
     return best, matched
+
+
+def required_cases(rows: list[dict], root: Path) -> tuple[list[dict], list[dict]]:
+    """Return every case used for threshold selection/evaluation and intentionally
+    unsearched calibration positives. Missing required outputs are an error, not
+    silently dropped from a denominator.
+    """
+    required = [row for row in rows
+                if (row["split"] == "calibration"
+                    and row["truth_class"] in {"inverted_null", "null"})
+                or row["split"] == "blind"]
+    skipped = [row for row in rows
+               if row["split"] == "calibration" and row["truth_class"] == "confirmed_planet"]
+    missing = [row["case_id"] for row in required
+               if not (root / row["candidates_csv"]).is_file()]
+    if missing:
+        preview = ", ".join(missing[:5])
+        suffix = " …" if len(missing) > 5 else ""
+        raise ValueError(f"missing results for {len(missing)} required benchmark cases: {preview}{suffix}")
+    return required, skipped
 
 
 def threshold_for(maxima: list[float], target: float) -> float:
@@ -95,7 +117,10 @@ def main() -> int:
     a = p.parse_args()
     root = a.manifest.parent
     all_rows = ev.read_csv(a.manifest)
-    cases = [c for c in all_rows if (root / c["candidates_csv"]).exists()]
+    try:
+        cases, skipped_calibration_positives = required_cases(all_rows, root)
+    except ValueError as error:
+        p.error(str(error))
     records = []
     for case in cases:
         best, matched = case_values(case, root, a.statistic)
@@ -111,7 +136,11 @@ def main() -> int:
            "screening_threshold": 6.0,
            "created_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
            "manifest": str(a.manifest), "cases_used": len(cases),
-           "cases_missing_results": len(all_rows) - len(cases),
+           "case_coverage": {
+               "required_cases": len(cases), "missing_required_results": 0,
+               "calibration_positive_cases_not_searched_by_design": len(skipped_calibration_positives),
+               "unreferenced_result_sidecars": max(0, len(list(root.glob("results/*/*.run.json"))) - len(cases)),
+           },
            "context": {**run_context(cases, root), "flux_origin": a.flux_origin},
            "evaluation": {"threshold_from_calibration_split": evaluation,
                           "calibration": split_metrics(records, "calibration", evaluation),

@@ -154,19 +154,31 @@ def claim_target(db: sqlite3.Connection, run_id: str, tic_id: str,
 
 def record_target(db: sqlite3.Connection, run_id: str, tic_id: str,
                   row: dict[str, Any], config_sha: str,
-                  result: dict[str, Any], status: str | None = None) -> None:
+                  result: dict[str, Any], status: str | None = None) -> bool:
+    """Write a target's result if this run still holds its claim.
+
+    Returns False, writing nothing, when another run recovered the claim
+    after this run's lease expired; the newer run's state must not be
+    overwritten by a stale result."""
     now = datetime.now(timezone.utc).isoformat()
     final_status = status or str(result.get("status", "error"))
-    db.execute(
-        "INSERT INTO target_state(tic_id,status,last_run_id,updated_utc,metadata_sha256,config_sha256,output_path,result_json) "
-        "VALUES(?,?,?,?,?,?,?,?) "
-        "ON CONFLICT(tic_id) DO UPDATE SET status=excluded.status, last_run_id=excluded.last_run_id, "
-        "updated_utc=excluded.updated_utc, metadata_sha256=excluded.metadata_sha256, "
-        "config_sha256=excluded.config_sha256, output_path=excluded.output_path, result_json=excluded.result_json",
-        (tic_id, final_status, run_id, now, metadata_digest(row), config_sha,
-         result.get("output"), json.dumps(result, sort_keys=True, default=str)),
-    )
+    values = (final_status, now, metadata_digest(row), config_sha, result.get("output"),
+              json.dumps(result, sort_keys=True, default=str))
+    db.execute("BEGIN IMMEDIATE")
+    updated = db.execute(
+        "UPDATE target_state SET status=?, updated_utc=?, metadata_sha256=?, config_sha256=?, "
+        "output_path=?, result_json=? WHERE tic_id=? AND last_run_id=?",
+        (*values, tic_id, run_id)).rowcount
+    if updated == 0:
+        exists = db.execute("SELECT 1 FROM target_state WHERE tic_id=?", (tic_id,)).fetchone()
+        if exists:
+            db.rollback()
+            return False
+        db.execute(
+            "INSERT INTO target_state(status,updated_utc,metadata_sha256,config_sha256,output_path,"
+            "result_json,tic_id,last_run_id) VALUES(?,?,?,?,?,?,?,?)", (*values, tic_id, run_id))
     db.commit()
+    return True
 
 
 def finish_run(db: sqlite3.Connection, run_id: str, status: str = "complete") -> None:

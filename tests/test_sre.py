@@ -16,6 +16,16 @@ from tess_survey import RequestTimeoutAdapter, atomic_write_text, retry_network
 import requests
 
 
+def _claim_all(path: str, run_id: str, count: int) -> list[str]:
+    """Worker for the concurrency test: try to claim every target once."""
+    db = connect(Path(path))
+    begin_run(db, run_id, Path(path), "local", "config")
+    won = [str(t) for t in range(count)
+           if claim_target(db, run_id, str(t), {"tic_id": str(t)}, "config")]
+    db.close()
+    return won
+
+
 class SreOperationalTests(unittest.TestCase):
     def test_config_fingerprint_changes_with_candidate_grouping(self):
         config = SimpleNamespace(
@@ -59,6 +69,38 @@ class SreOperationalTests(unittest.TestCase):
             db.commit()
             self.assertTrue(claim_target(db, "run-2", "123", row, "config"))
             db.close()
+
+    def test_stale_run_cannot_overwrite_a_recovered_claim(self):
+        # Invariant: a target's result is written only by the run holding its claim.
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "ledger.sqlite"
+            first, second = connect(path), connect(path)
+            row = {"tic_id": "123", "teff_k": "3500"}
+            begin_run(first, "run-1", path, "local", "config")
+            begin_run(second, "run-2", path, "local", "config")
+            self.assertTrue(claim_target(first, "run-1", "123", row, "config"))
+            first.execute("UPDATE target_state SET updated_utc='2000-01-01T00:00:00+00:00'")
+            first.commit()  # run-1 stalls past its lease; run-2 recovers the target
+            self.assertTrue(claim_target(second, "run-2", "123", row, "config"))
+            self.assertFalse(record_target(first, "run-1", "123", row, "config",
+                                           {"status": "processed", "output": "stale"}))
+            saved = second.execute("SELECT status, last_run_id FROM target_state").fetchone()
+            self.assertEqual((saved["status"], saved["last_run_id"]), ("running", "run-2"))
+            self.assertTrue(record_target(second, "run-2", "123", row, "config",
+                                          {"status": "processed", "output": "fresh"}))
+            first.close(); second.close()
+
+    def test_concurrent_processes_claim_each_target_exactly_once(self):
+        import multiprocessing
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "ledger.sqlite"
+            connect(path).close()
+            context = multiprocessing.get_context("spawn")
+            with context.Pool(8) as pool:
+                claims = pool.starmap(_claim_all, [(str(path), f"run-{i}", 40) for i in range(8)])
+            owners = [tic for run in claims for tic in run]
+            self.assertEqual(sorted(owners), sorted(str(t) for t in range(40)))
 
     def test_interrupted_run_releases_target_for_immediate_retry(self):
         with tempfile.TemporaryDirectory() as directory:

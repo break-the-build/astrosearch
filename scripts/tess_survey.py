@@ -571,7 +571,12 @@ def main():
             result={"tic_id":row.get("tic_id",""),"status":"error","reason":f"{type(e).__name__}: {e}"}
         if result.get("status")=="error": failures+=1
         summary_by_index[index]=result
-        record_target(ledger,run_id,ident,row,config_sha,result)
+        if not record_target(ledger,run_id,ident,row,config_sha,result):
+            # Our lease expired and another run took the target over; keep its state.
+            result={**result,"status":"lost_claim",
+                    "reason":"lease expired and another run recovered this target; result not recorded"}
+            failures+=1
+            summary_by_index[index]=result
         print(f"[{i}/{len(work_rows)}] TIC {result.get('tic_id')}: {result['status']}",flush=True)
         time.sleep(max(0.,a.pause))
     for index,result in summary_by_index.items():

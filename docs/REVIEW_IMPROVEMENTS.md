@@ -80,3 +80,41 @@ The deployed threshold, 23.3, is the 5% point over all 400 controls.
 Planets with only two or three transits lose the most under this statistic.
 That is intended, because one-event signals are what the systematics
 produce, but it makes duo transits harder to promote.
+
+## Experiments B and F: completeness and a baseline at equal false-alarm rates
+
+**Injection-recovery into real light curves** (`scripts/injection_recovery.py`):
+20 benchmark hosts with their known planet removed, a batman transit
+injected at 7 target SNRs (140 injections), one search pass over 0.5–15 d.
+
+| Injected SNR | 7 | 10 | 15 | 20 | 30 | 40 | 60 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| In candidate list (score ≥ 6) | 10/20 | 17/20 | 19/20 | 20/20 | 20/20 | 20/20 | 20/20 |
+| Raw-score tier (≥ 37.88) | 0/20 | 0/20 | 0/20 | 0/20 | 0/20 | 12/20 | 18/20 |
+| Jackknife tier (≥ 23.3) | 0/20 | 0/20 | 0/20 | 2/20 | 14/20 | 18/20 | 20/20 |
+
+The search itself finds nearly every injection above SNR 15. The detection
+tier then sets the practical limit: about SNR 27 for 50% completeness. Null
+controls reach those scores, so the cause is systematics in real light curves,
+not search sensitivity.
+
+**BLS baseline** (`scripts/baseline_bls_benchmark.py`,
+`scripts/compare_methods_equal_far.py`): astropy BoxLeastSquares on the
+same 782 light curves. Setup: 1-day running-median flattening, 10-minute bins,
+1–8 h durations, SDE statistic. Recall is measured on blind planets at
+thresholds set so both methods have the same blind null trigger rate.
+
+| Blind FAR | astrosearch, jackknife | astrosearch, raw score | BLS (SDE) | Jackknife vs BLS (only-one counts, McNemar p) |
+| --- | --- | --- | --- | --- |
+| 2% | 58/199 | 38/199 | 27/199 | 38 vs 7, p = 3e-6 |
+| 4% | 80/199 | 61/199 | 48/199 | 33 vs 1, p = 4e-9 |
+| 5% | 80/199 | 75/199 | 51/199 | 31 vs 2, p = 1e-7 |
+| 7% | 85/199 | 80/199 | 66/199 | 22 vs 3, p = 2e-4 |
+| 10% | 95/199 | 84/199 | 75/199 | 24 vs 4, p = 2e-4 |
+
+With thresholds fixed on the calibration split (not equal-FAR), BLS
+recovered 70/199 blind planets at a 7.5% blind null rate, against 60/199 at
+4.0% for the raw-score tier. That comparison mixes false-alarm rates and
+should not be read as BLS being better. The baseline is one reasonable BLS
+configuration, not TLS or the SPOC pipeline; comparing against those is still
+open.

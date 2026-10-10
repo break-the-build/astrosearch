@@ -86,28 +86,88 @@ def part_consistency(lc: LightCurve, events: list[dict]) -> dict:
             "status": "PASS" if p >= 0.01 else "FAIL"}
 
 
+def scan_threshold(period: float, duration: float, false_alarm: float = 0.01) -> tuple[float, float]:
+    """One-sided Gaussian threshold for the strongest of the scan's
+    independent phase trials (one per duration), and that trial count."""
+    trials = max((period - 3 * duration) / duration, 1.0)
+    return float(stats.norm.isf(false_alarm / trials)), trials
+
+
 def secondary_scan(lc: LightCurve, epoch: float, period: float, duration: float,
-                   step_fraction: float = 1 / 3) -> dict:
+                   step_fraction: float = 1 / 3, false_alarm: float = 0.01,
+                   half_sigma: float = 3.0) -> dict:
     """Eclipse-like dips at every phase away from the transit (eccentric
-    secondaries need not sit at phase 0.5). Reports the most significant
-    phase and phase 0.5 separately; the scan's own look-elsewhere effect
-    means a single-phase 3 sigma is not significant, so the scan uses 4 sigma.
+    secondaries need not sit at phase 0.5), modeled on the Kepler Robovetter
+    model-shift test (Coughlin et al. 2016, ApJS 224, 12):
+
+    * Per-event errors are white; the robust scatter of the SNR across all
+      scanned phases measures how much correlated noise inflates it (the
+      red-noise factor, floored at 1). SNRs are divided by it.
+    * The strongest phase is compared with a threshold that holds the scan's
+      false-alarm probability at `false_alarm` given ~P/T independent phases.
+    * Phase 0.5 is a single pre-specified trial, tested at `half_sigma`.
+    * A real eclipse recurs, so the strongest phase must stay above threshold
+      with its most significant single event removed (jackknife), and must
+      exceed the strongest positive excursion (bump) of the scan by the
+      Robovetter FA2 margin, sqrt(2) erfcinv(T/P); systematics make bumps
+      as readily as dips.
     """
     step = max(duration * step_fraction, 1e-4)
     shifts = np.arange(1.5 * duration, period - 1.5 * duration, step)
-    best = None
+    scanned = []
     for shift in shifts:
-        summary = combine(event_depths(lc, epoch + shift, period, duration))
-        if summary["depth_ppm"] is None or summary["events"] < 1:
-            continue
-        if best is None or summary["snr"] > best["snr"]:
-            best = {"phase": float(shift / period), **summary}
-    half = combine(event_depths(lc, epoch + period / 2, period, duration))
-    best_snr = best["snr"] if best else None
+        events = event_depths(lc, epoch + shift, period, duration)
+        summary = combine(events)
+        if summary["depth_ppm"] is not None and summary["events"] >= 1:
+            scanned.append({"phase": float(shift / period), **summary, "_events": events})
+    half_events = event_depths(lc, epoch + period / 2, period, duration)
+    half = combine(half_events)
+    threshold, trials = scan_threshold(period, duration, false_alarm)
+    if not scanned:
+        return {"status": "NOT_EVALUATED", "strongest": None, "phase_half": half,
+                "phases_tested": int(len(shifts)), "threshold_sigma": threshold}
+    snr = np.array([s["snr"] for s in scanned])
+    best = max(scanned, key=lambda s: s["snr"])
+    best_events = best.pop("_events")
+    for s in scanned:
+        s.pop("_events", None)
+    # Phases whose local baseline (1.5-3 durations away) overlaps the transit
+    # or the strongest dip show mirror-image "bumps"; leave them out of the
+    # noise and bump statistics.
+    shift = np.array([s["phase"] for s in scanned]) * period
+    from_transit = np.minimum(shift, period - shift)
+    gap = np.abs(shift - best["phase"] * period)
+    from_best = np.minimum(gap, period - gap)
+    clean = (from_transit >= 3.5 * duration) & (from_best >= 3.5 * duration)
+    reference = snr[clean] if clean.sum() >= 5 else snr
+    red = max(1.0, float(1.4826 * np.median(np.abs(reference - np.median(reference)))))
+    best_sigma = best["snr"] / red
+    jackknife_sigma = _jackknife_snr(best_events) / red
+    bump_sigma = max(0.0, -float(reference.min())) / red
+    margin = float(stats.norm.isf(min(duration / period, 0.5)))
+    best_failed = (best_sigma >= threshold and jackknife_sigma >= threshold
+                   and best_sigma - bump_sigma >= margin)
     half_snr = half.get("snr")
-    failed = (best_snr is not None and best_snr >= 4) or (half_snr is not None and half_snr >= 3)
-    return {"status": "FAIL" if failed else ("PASS" if best else "NOT_EVALUATED"),
-            "strongest": best, "phase_half": half, "phases_tested": int(len(shifts))}
+    half_sigma_value = None if half_snr is None else half_snr / red
+    half_jackknife = _jackknife_snr(half_events) / red if half_events else None
+    half_failed = (half_sigma_value is not None and half_sigma_value >= half_sigma
+                   and half_jackknife is not None and half_jackknife >= half_sigma)
+    return {"status": "FAIL" if best_failed or half_failed else "PASS", "strongest": best,
+            "phase_half": half, "phases_tested": int(len(shifts)), "independent_trials": trials,
+            "red_noise_factor": red, "threshold_sigma": threshold,
+            "strongest_sigma_red": best_sigma, "strongest_jackknife_sigma_red": jackknife_sigma,
+            "strongest_bump_sigma_red": bump_sigma, "bump_margin_sigma": margin,
+            "phase_half_sigma_red": half_sigma_value, "phase_half_jackknife_sigma_red": half_jackknife,
+            "half_threshold_sigma": half_sigma, "false_alarm": false_alarm,
+            "method": ("model-shift style: red-noise-scaled SNR vs look-elsewhere threshold, "
+                       "single-event jackknife, and positive-excursion margin")}
+
+
+def _jackknife_snr(events: list[dict]) -> float:
+    """Smallest combined SNR after dropping any one event (0 with < 2 events)."""
+    if len(events) < 2:
+        return 0.0
+    return float(min(combine(events[:i] + events[i + 1:])["snr"] for i in range(len(events))))
 
 
 def quality_overlap(lc: LightCurve, events: list[dict], duration: float) -> dict:

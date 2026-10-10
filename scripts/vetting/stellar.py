@@ -51,9 +51,14 @@ def _row_dict(row, keys) -> dict:
     return out
 
 
-TIC_KEYS = ["ID", "ra", "dec", "Tmag", "Teff", "e_Teff", "logg", "e_logg", "rad", "e_rad",
-            "mass", "e_mass", "rho", "e_rho", "d", "e_d", "contratio", "GAIA", "objType",
-            "disposition", "lumclass"]
+TIC_KEYS = ["ID", "ra", "dec", "pmRA", "pmDEC", "Tmag", "Teff", "e_Teff", "logg", "e_logg",
+            "rad", "e_rad", "mass", "e_mass", "rho", "e_rho", "d", "e_d", "contratio", "GAIA",
+            "objType", "disposition", "lumclass"]
+#: TIC 8 positions are at epoch J2000; Gaia DR3 positions at J2016.0.
+TIC_EPOCH_YEAR = 2000.0
+GAIA_DR3_EPOCH_YEAR = 2016.0
+BTJD_OFFSET = 2457000.0
+JD_J2000 = 2451545.0
 
 
 def query_tic(tic_id: int, cache_dir: Path | None = None) -> dict:
@@ -68,28 +73,103 @@ def query_tic(tic_id: int, cache_dir: Path | None = None) -> dict:
         cone = Catalogs.query_region(f"{star['ra']} {star['dec']}", radius=radius, catalog="Tic")
         neighbors = []
         for row in cone:
-            entry = _row_dict(row, ["ID", "ra", "dec", "Tmag", "dstArcSec", "disposition"])
+            entry = _row_dict(row, ["ID", "ra", "dec", "pmRA", "pmDEC", "Tmag", "dstArcSec",
+                                    "disposition"])
             if int(entry.get("ID") or 0) != int(tic_id):
                 neighbors.append(entry)
         return {"star": star, "neighbors": neighbors, "source": "MAST TIC 8.2"}
-    return _cached(cache_dir / f"tic{tic_id}_tic.json" if cache_dir else None, fetch)
+    # v2 adds proper motions; older caches without them are not reused.
+    return _cached(cache_dir / f"tic{tic_id}_tic_v2.json" if cache_dir else None, fetch)
 
 
-def query_gaia_ruwe(ra: float, dec: float, tic_id: int, cache_dir: Path | None = None) -> dict:
-    """Gaia DR3 RUWE of the brightest source within 2 arcsec of the TIC position."""
+def gaia_query_by_dr2_id(dr2_id) -> str:
+    """ADQL for the Gaia DR3 counterpart of a Gaia DR2 source (the TIC stores
+    DR2 identifiers), nearest match first."""
+    text = str(dr2_id).strip()
+    if not text.isdigit():
+        raise ValueError(f"Gaia DR2 source_id must be an integer, got {dr2_id!r}")
+    return ("SELECT g.source_id, g.ruwe, g.phot_g_mean_mag, n.angular_distance AS sep "
+            "FROM gaiadr3.dr2_neighbourhood AS n "
+            "JOIN gaiadr3.gaia_source AS g ON g.source_id = n.dr3_source_id "
+            f"WHERE n.dr2_source_id = {text} ORDER BY n.angular_distance ASC")
+
+
+def _cone_query(ra: float, dec: float, radius_arcsec: float) -> str:
+    return ("SELECT TOP 5 source_id, ruwe, phot_g_mean_mag, "
+            f"DISTANCE(POINT('ICRS', ra, dec), POINT('ICRS', {ra}, {dec})) AS sep "
+            "FROM gaiadr3.gaia_source "
+            f"WHERE 1 = CONTAINS(POINT('ICRS', ra, dec), CIRCLE('ICRS', {ra}, {dec}, "
+            f"{radius_arcsec / 3600})) ORDER BY phot_g_mean_mag ASC")
+
+
+def query_gaia_ruwe(star: dict, tic_id: int, cache_dir: Path | None = None) -> dict:
+    """Gaia DR3 RUWE of the TIC target.
+
+    Matches by the TIC's Gaia DR2 source_id through `gaiadr3.dr2_neighbourhood`;
+    without one, cones 2 arcsec around the TIC position propagated with its
+    proper motion to the Gaia epoch (J2016.0). A J2000 cone alone misses
+    high-proper-motion stars (LHS 3844 moved ~20 arcsec)."""
     def fetch():
         from astroquery.gaia import Gaia
-        query = ("SELECT TOP 5 source_id, ruwe, phot_g_mean_mag, "
-                 f"DISTANCE(POINT('ICRS', ra, dec), POINT('ICRS', {ra}, {dec})) AS sep "
-                 "FROM gaiadr3.gaia_source "
-                 f"WHERE 1 = CONTAINS(POINT('ICRS', ra, dec), CIRCLE('ICRS', {ra}, {dec}, {2/3600})) "
-                 "ORDER BY phot_g_mean_mag ASC")
-        rows = Gaia.launch_job(query).get_results()
+        if star.get("GAIA"):
+            rows = Gaia.launch_job(gaia_query_by_dr2_id(star["GAIA"])).get_results()
+            if len(rows):
+                best = _row_dict(rows[0], ["source_id", "ruwe", "phot_g_mean_mag", "sep"])
+                return {**best, "source": "Gaia DR3", "match": "dr2_neighbourhood",
+                        "dr2_source_id": str(star["GAIA"])}
+        ra, dec = propagate_position(star["ra"], star["dec"], star.get("pmRA"), star.get("pmDEC"),
+                                     TIC_EPOCH_YEAR, GAIA_DR3_EPOCH_YEAR)
+        rows = Gaia.launch_job(_cone_query(ra, dec, 2.0)).get_results()
         if len(rows) == 0:
-            return {"ruwe": None, "source": "Gaia DR3", "note": "no source within 2 arcsec"}
+            return {"ruwe": None, "source": "Gaia DR3", "match": "cone (J2016 position)",
+                    "note": "no source within 2 arcsec of the J2016 position"}
         best = _row_dict(rows[0], ["source_id", "ruwe", "phot_g_mean_mag", "sep"])
-        return {**best, "source": "Gaia DR3", "matches_within_2_arcsec": len(rows)}
-    return _cached(cache_dir / f"tic{tic_id}_gaia.json" if cache_dir else None, fetch)
+        return {**best, "source": "Gaia DR3", "match": "cone (J2016 position)",
+                "matches_within_2_arcsec": len(rows)}
+    return _cached(cache_dir / f"tic{tic_id}_gaia_dr3.json" if cache_dir else None, fetch)
+
+
+# --- astrometry --------------------------------------------------------------
+
+def btjd_to_year(btjd: float) -> float:
+    """Julian epoch year of a BTJD time (TDB; time-scale offsets are negligible here)."""
+    return 2000.0 + (btjd + BTJD_OFFSET - JD_J2000) / 365.25
+
+
+def propagate_position(ra: float, dec: float, pm_ra, pm_dec, from_year: float,
+                       to_year: float) -> tuple[float, float]:
+    """Linear proper-motion propagation; pm_ra includes cos(dec), in mas/yr (TIC, Gaia)."""
+    if pm_ra is None or pm_dec is None:
+        return ra, dec
+    years = to_year - from_year
+    dec_new = dec + pm_dec * years / 3.6e6
+    ra_new = ra + pm_ra * years / 3.6e6 / max(math.cos(math.radians(dec)), 1e-9)
+    return ra_new, dec_new
+
+
+def _separation_arcsec(ra1, dec1, ra2, dec2) -> float:
+    r1, d1, r2, d2 = map(math.radians, (ra1, dec1, ra2, dec2))
+    hav = math.sin((d2 - d1) / 2) ** 2 + math.cos(d1) * math.cos(d2) * math.sin((r2 - r1) / 2) ** 2
+    return math.degrees(2 * math.asin(min(1.0, math.sqrt(hav)))) * 3600
+
+
+def neighbors_at_epoch(star: dict, neighbors: list[dict], year: float) -> list[dict]:
+    """Neighbor separations at `year`, propagating the target and each neighbor
+    from the TIC epoch. Entries without positions keep their J2000 `dstArcSec`."""
+    if star.get("ra") is None or star.get("dec") is None:
+        return [dict(nb) for nb in neighbors]
+    ra0, dec0 = propagate_position(star["ra"], star["dec"], star.get("pmRA"), star.get("pmDEC"),
+                                   TIC_EPOCH_YEAR, year)
+    out = []
+    for nb in neighbors:
+        entry = {**nb, "dstArcSec_j2000": nb.get("dstArcSec")}
+        if nb.get("ra") is not None and nb.get("dec") is not None:
+            ra1, dec1 = propagate_position(nb["ra"], nb["dec"], nb.get("pmRA"), nb.get("pmDEC"),
+                                           TIC_EPOCH_YEAR, year)
+            entry["dstArcSec"] = _separation_arcsec(ra0, dec0, ra1, dec1)
+            entry["epoch_year"] = year
+        out.append(entry)
+    return out
 
 
 # --- derivations -------------------------------------------------------------
@@ -183,10 +263,38 @@ def density_consistency(transit: dict | None, star: dict) -> dict:
             "ratio": ratio, "z_log": z}
 
 
+def _contact_ratio(k: float, b: float) -> float:
+    """T12/T13 for a circular orbit, with T13 = (T14 + T23) / 2; 1 when grazing."""
+    t14 = math.sqrt(max((1 + k) ** 2 - b ** 2, 0.0))
+    t23 = math.sqrt(max((1 - k) ** 2 - b ** 2, 0.0)) if b < 1 - k else 0.0
+    if t14 <= 0:
+        return 1.0
+    return min(1.0, (t14 - t23) / (t14 + t23))
+
+
+def shape_delta_mag_limit(fit: dict, depth_ppm: float, n_sigma: float = 2.0) -> dict:
+    """Largest magnitude difference a blended eclipsing source could have and
+    still produce this transit shape: dm <= 2.5 log10((T12/T13)^2 / depth)
+    (Vanderburg et al. 2019, ApJL 881, L19). Rp/R* and b are pushed n_sigma
+    toward a longer ingress, which can only raise (loosen) the limit."""
+    k, b = fit.get("rp_rs"), fit.get("impact")
+    if k is None or b is None or not depth_ppm or depth_ppm <= 0:
+        return {"delta_mag_max": None, "reason": "needs fitted Rp/R*, impact, and a positive depth"}
+    k_hi = k + n_sigma * abs(fit.get("rp_rs_sigma") or 0.0)
+    b_hi = max(b, 0.0) + n_sigma * abs(fit.get("impact_sigma") or 0.0)
+    ratio = _contact_ratio(k_hi, b_hi)
+    depth = depth_ppm * 1e-6
+    limit = 2.5 * math.log10(ratio ** 2 / depth) if ratio ** 2 > depth else 0.0
+    return {"delta_mag_max": limit, "t12_over_t13": ratio, "rp_rs_used": k_hi,
+            "impact_used": b_hi, "n_sigma": n_sigma,
+            "reference": "Vanderburg et al. 2019, ApJL 881, L19"}
+
+
 def blend_capability(star: dict, neighbors: list[dict], depth_ppm: float,
-                     radius_pixels: float = 2.0) -> list[dict]:
+                     radius_pixels: float = 2.0, delta_mag_max: float | None = None) -> list[dict]:
     """Neighbors within `radius_pixels` TESS pixels that could produce the
-    observed depth if fully eclipsed: F_nb / (F_target + F_nb) >= depth."""
+    observed depth: bright enough if fully eclipsed (F_nb / (F_target + F_nb)
+    >= depth) and, when a shape limit is given, no fainter than delta_mag_max."""
     tmag = star.get("Tmag")
     if tmag is None:
         return []
@@ -197,7 +305,11 @@ def blend_capability(star: dict, neighbors: list[dict], depth_ppm: float,
             continue
         ratio = 10 ** (-0.4 * (nb_tmag - tmag))
         max_depth_ppm = ratio / (1 + ratio) * 1e6
+        delta = nb_tmag - tmag
+        flux_ok = max_depth_ppm >= depth_ppm
+        shape_ok = True if delta_mag_max is None else delta <= delta_mag_max
         out.append({"tic": nb.get("ID"), "separation_arcsec": separation, "tmag": nb_tmag,
-                    "delta_tmag": nb_tmag - tmag, "max_eclipse_depth_ppm": max_depth_ppm,
-                    "can_produce_depth": max_depth_ppm >= depth_ppm})
+                    "delta_tmag": delta, "max_eclipse_depth_ppm": max_depth_ppm,
+                    "flux_allows_depth": flux_ok, "shape_allows_dilution": shape_ok,
+                    "can_produce_depth": flux_ok and shape_ok})
     return sorted(out, key=lambda e: e["separation_arcsec"])

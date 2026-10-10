@@ -41,11 +41,37 @@ class Candidate:
     row: dict
 
 
+#: BTJD = BJD_TDB - 2457000. Times above this are taken as full BJD.
+BTJD_OFFSET = 2457000.0
+FULL_BJD_MINIMUM = 2_400_000.0
+TIME_COLUMNS = ("time", "btjd", "bjd", "t")
+
+
+def normalize_time(time: np.ndarray) -> tuple[np.ndarray, float]:
+    """Express times in BTJD; returns the times and the offset subtracted.
+    astrosearch accepts `bjd` columns, but the gate's windows, catalogs and
+    CTOI row assume BTJD, so full BJD inputs are shifted here once."""
+    if time.size and np.nanmedian(time) > FULL_BJD_MINIMUM:
+        return time - BTJD_OFFSET, BTJD_OFFSET
+    return time, 0.0
+
+
+def normalize_epoch(epoch: float) -> float:
+    return epoch - BTJD_OFFSET if epoch > FULL_BJD_MINIMUM else epoch
+
+
 def read_table(path: Path) -> np.ndarray:
     with path.open(newline="", encoding="utf-8-sig") as stream:
-        rows = [(float(r["time"]), float(r["flux"]), float(r.get("flux_err") or "nan"))
-                for r in csv.DictReader(stream)]
-    return np.array(rows, dtype=float).reshape(-1, 3)
+        reader = csv.DictReader(stream)
+        fields = {name.strip().lower(): name for name in reader.fieldnames or []}
+        key = next((fields[c] for c in TIME_COLUMNS if c in fields), None)
+        if key is None:
+            raise ValueError(f"{path}: needs one of the time columns {TIME_COLUMNS}")
+        rows = [(float(r[key]), float(r["flux"]), float(r.get("flux_err") or "nan"))
+                for r in reader]
+    data = np.array(rows, dtype=float).reshape(-1, 3)
+    data[:, 0], _ = normalize_time(data[:, 0])
+    return data
 
 
 def read_lightcurve(path: Path) -> LightCurve:
@@ -89,9 +115,10 @@ def read_candidates(path: Path, classes=TRANSIT_CLASSES) -> list[Candidate]:
         rows = [r for r in csv.DictReader(stream) if r.get("class") in classes]
     return [Candidate(
         rank=int(r["rank"]), kind=r["class"], score=float(r["score"]),
-        period=float(r["period_days"]), epoch=float(r["epoch"]),
+        period=float(r["period_days"]), epoch=normalize_epoch(float(r["epoch"])),
         duration=float(r["duration_days"]), depth_ppm=float(r["depth_ppm"]),
-        n_events=int(r["n_events"]), event_epochs=parse_event_epochs(r.get("event_evidence", "")),
+        n_events=int(r["n_events"]),
+        event_epochs=tuple(normalize_epoch(t) for t in parse_event_epochs(r.get("event_evidence", ""))),
         row=r) for r in rows]
 
 

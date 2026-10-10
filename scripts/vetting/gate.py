@@ -6,7 +6,9 @@ when every automated criterion passes; the gate never submits anything.
 """
 from __future__ import annotations
 
+import json
 import math
+from pathlib import Path
 
 PASS, FAIL, NE, ACTION = "PASS", "FAIL", "NOT_EVALUATED", "ACTION_REQUIRED"
 TESS_PIXEL_ARCSEC = 21.0
@@ -73,15 +75,38 @@ def criterion_not_known(known: dict) -> dict:
     return {"status": known.get("status", NE), "details": known}
 
 
-def criterion_significance(fap: dict | None, fpp: dict | None, limit: float = 0.01) -> dict:
+def load_calibration(path: Path | None) -> dict | None:
+    """Detection-tier calibration written by calibrate_detection_threshold.py."""
+    if path is None or not Path(path).exists():
+        return None
+    return json.loads(Path(path).read_text())
+
+
+def detection_tier(score: float, calibration: dict | None) -> dict:
+    """Score >= 6 is a screening tier only: 97% of inverted null controls in
+    the known-answer benchmark exceed it. The detection tier is the score
+    whose calibration-split null trigger rate is the target false-alarm rate."""
+    if not calibration or calibration.get("threshold") is None:
+        return {"status": NE, "reason": "no detection-tier calibration file"}
+    threshold = float(calibration["threshold"])
+    return {"status": PASS if score >= threshold else FAIL, "score": score, "threshold": threshold,
+            "target_false_alarm_rate": calibration.get("target_false_alarm_rate"),
+            "context": calibration.get("context", {}),
+            "tier": "detection" if score >= threshold else "screening"}
+
+
+def criterion_significance(fap: dict | None, fpp: dict | None, limit: float = 0.01,
+                           tier: dict | None = None) -> dict:
     fap_status = NE
     if fap:
         fap_status = PASS if fap["fap_upper_95"] < limit else FAIL
     fpp_status = NE if not fpp else fpp.get("status", NE)
-    return {"status": worst([fap_status, fpp_status]),
-            "checks": {"empirical_fap_upper95_below_1pct": fap_status,
-                       "triceratops_fpp_below_1pct": fpp_status},
-            "fap": fap, "fpp": fpp}
+    checks = {"empirical_fap_upper95_below_1pct": fap_status,
+              "triceratops_fpp_below_1pct": fpp_status}
+    if tier is not None:
+        checks["score_at_or_above_calibrated_detection_tier"] = tier.get("status", NE)
+    return {"status": worst(checks.values()), "checks": checks, "fap": fap, "fpp": fpp,
+            "detection_tier": tier}
 
 
 def criterion_ephemeris(fit: dict, windows: list[dict]) -> dict:

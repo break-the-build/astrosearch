@@ -29,8 +29,9 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from vetting import aliases, crosscheck, diagnostics, fap, fpp, gate, stellar  # noqa: E402
-from vetting.io import TRANSIT_CLASSES, read_candidates, read_lightcurve, write_json  # noqa: E402
+from vetting import aliases, crosscheck, diagnostics, fap, fpp, gate, provenance, siblings, stellar  # noqa: E402
+from vetting.io import (  # noqa: E402
+    TRANSIT_CLASSES, normalize_epoch, read_candidates, read_lightcurve, write_json)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -91,6 +92,9 @@ def physical_fit(lightcurve: Path, candidates: Path, candidate, out_dir: Path,
             fit[name] = median[i]
             fit[f"{name}_sigma"] = 0.5 * (upper[i] - lower[i])
         fit["uncertainty_source"] = f"emcee posterior ({mcmc_steps} steps per walker)"
+    # refine_candidates.py fits in the input's own time system; the gate works in BTJD.
+    if fit.get("epoch") is not None:
+        fit["epoch"] = normalize_epoch(fit["epoch"])
     return fit
 
 
@@ -142,6 +146,12 @@ def main() -> int:
     p.add_argument("--predict-days", type=float, default=730.0)
     p.add_argument("--offline", action="store_true", help="skip catalog, Gaia, and FPP queries")
     p.add_argument("--skip-fpp", action="store_true")
+    p.add_argument("--detection-calibration", type=Path,
+                   default=ROOT / "data/calibration/detection_threshold.json",
+                   help="detection-tier calibration from calibrate_detection_threshold.py")
+    p.add_argument("--sibling-score-fraction", type=float, default=0.5,
+                   help="mask other transit candidates scoring at least this fraction of the "
+                        "candidate's score (0 disables sibling masking)")
     p.add_argument("--out-dir", type=Path, required=True)
     a = p.parse_args()
     a.out_dir.mkdir(parents=True, exist_ok=True)
@@ -165,14 +175,26 @@ def main() -> int:
     duration = fit.get("duration") or candidate.duration
 
     star, neighbors, ruwe = {}, [], None
+    observation_year = stellar.btjd_to_year(float(np.median(lc.time)))
     if not a.offline:
         try:
             tic = stellar.query_tic(a.tic, a.out_dir / "cache")
-            star, neighbors = tic["star"], tic["neighbors"]
-            ruwe = stellar.query_gaia_ruwe(star["ra"], star["dec"], a.tic, a.out_dir / "cache").get("ruwe")
+            star = tic["star"]
+            neighbors = stellar.neighbors_at_epoch(star, tic["neighbors"], observation_year)
+            gaia = stellar.query_gaia_ruwe(star, a.tic, a.out_dir / "cache")
+            ruwe = gaia.get("ruwe")
+            report["gaia"] = gaia
         except Exception as error:
             report["stellar_error"] = f"{type(error).__name__}: {error}"
-    report["star"], report["ruwe"] = star, ruwe
+    report["star"], report["ruwe"], report["observation_year"] = star, ruwe, observation_year
+
+    # Other significant, non-commensurate transit signals are masked so they
+    # cannot masquerade as this candidate's secondary or odd/even difference.
+    full_lc = lc
+    if a.sibling_score_fraction > 0:
+        baseline = float(lc.time[-1] - lc.time[0])
+        lc, report["siblings"] = siblings.mask_siblings(
+            full_lc, candidate, candidates, baseline, min_score_fraction=a.sibling_score_fraction)
 
     raw_events = diagnostics.event_depths(lc, epoch, period, duration)
     events, depth_factor = correct_dilution(lc, raw_events, star.get("contratio"))
@@ -187,9 +209,12 @@ def main() -> int:
     shape = diagnostics.grazing(fit)
     planet = stellar.derive_planet(star, fit, depth_correction=depth_factor) if star else {}
     density = stellar.density_consistency(planet.get("transit_density_g_cm3"), star)
-    blends = stellar.blend_capability(star, neighbors, observed_depth["depth_ppm"] or 0.0)
+    shape_limit = stellar.shape_delta_mag_limit(fit, observed_depth["depth_ppm"] or 0.0)
+    blends = stellar.blend_capability(star, neighbors, observed_depth["depth_ppm"] or 0.0,
+                                      delta_mag_max=shape_limit["delta_mag_max"])
     report.update(coverage=coverage, parts=parts, odd_even=oe, secondary=secondary,
-                  quality=quality, grazing=shape, planet=planet, density=density, blends=blends)
+                  quality=quality, grazing=shape, planet=planet, density=density, blends=blends,
+                  blend_shape_limit=shape_limit)
 
     if duo and len(candidate.event_epochs) >= 2:
         t1, t2 = sorted(candidate.event_epochs)[:2]
@@ -198,7 +223,7 @@ def main() -> int:
             depth["sigma_ppm"] or candidate.depth_ppm / 3)
 
     report["fap"] = fap.empirical_fap(
-        lc, a.binary, candidate.score, epoch, period, duration, search_args,
+        full_lc, a.binary, candidate.score, epoch, period, duration, search_args,
         trials=a.null_trials, workers=a.workers, threads=a.threads,
         work_dir=a.out_dir / "nulls") if a.null_trials > 0 else None
     report["bls"] = crosscheck.bls_recovery(lc, period, epoch, duration)
@@ -232,7 +257,9 @@ def main() -> int:
         "3_no_false_positive_indicators": gate.criterion_false_positive(
             secondary, oe, shape, quality, blends, ruwe, pixel_reports, duo),
         "4_not_already_known": gate.criterion_not_known(known),
-        "5_significance": gate.criterion_significance(report["fap"], fpp_result),
+        "5_significance": gate.criterion_significance(
+            report["fap"], fpp_result,
+            tier=gate.detection_tier(candidate.score, gate.load_calibration(a.detection_calibration))),
         "6_preregistered_ephemeris": gate.criterion_ephemeris(fit, windows),
     }
     decision = gate.verdict(criteria)
@@ -241,6 +268,12 @@ def main() -> int:
     ctoi = gate.ctoi_row(a.tic, {**fit, "period": period, "epoch": epoch, "duration": duration},
                          depth, planet, notes)
     report.update(criteria=criteria, verdict=decision, ctoi_row=ctoi, ephemeris_windows=windows)
+    binary_provenance = Path(str(a.candidates) + ".provenance.json")
+    report["provenance"] = provenance.record({
+        "lightcurve": a.lightcurve, "candidates": a.candidates,
+        "detection_calibration": a.detection_calibration, "binary": a.binary})
+    if binary_provenance.exists():
+        report["provenance"]["search"] = json.loads(binary_provenance.read_text())
 
     write_json(a.out_dir / "gate.json", report)
     (a.out_dir / "gate.md").write_text(gate.render_markdown(

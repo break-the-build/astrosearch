@@ -15,6 +15,7 @@ import math
 from pathlib import Path
 
 import numpy as np
+from scipy import sparse
 from scipy.optimize import least_squares
 csv.field_size_limit(2**31 - 1)  # candidate rows carry long evidence/alias cells
 
@@ -241,6 +242,19 @@ def vet_diagnostics(time, flux, error, sector, epoch, period, duration):
             "sector_depth_consistency_dof": consistency_dof}
 
 
+#: Above this many observed transits the fit uses a sparse finite-difference Jacobian.
+SPARSE_JACOBIAN_EVENTS = 40
+
+
+def event_jacobian_sparsity(event_index, n_events):
+    """Sparsity of d(residual)/d(baseline, slope) per event: sample i depends
+    only on its own event's two nuisance parameters."""
+    rows = np.repeat(np.arange(len(event_index)), 2)
+    columns = np.ravel(np.column_stack([2 * event_index, 2 * event_index + 1]))
+    return sparse.csr_matrix((np.ones(len(rows)), (rows, columns)),
+                             shape=(len(event_index), 2 * n_events))
+
+
 def fit_candidate(time, flux, error, exposure, sector, row, args):
     period0, epoch0 = float(row["period_days"]), float(row["epoch"])
     duration0 = max(float(row["duration_days"]), np.median(exposure) * 2)
@@ -260,7 +274,8 @@ def fit_candidate(time, flux, error, exposure, sector, row, args):
     unique_events = list(dict.fromkeys(event_keys.tolist()))
     if len(unique_events) < 2:
         raise ValueError("fewer than two observed transit epochs; physical fit is underconstrained")
-    event_index = np.array([unique_events.index(key) for key in event_keys])
+    position = {key: i for i, key in enumerate(unique_events)}
+    event_index = np.array([position[key] for key in event_keys])
     # Initialize a/R* from the small-planet, circular duration approximation.
     b0 = min(0.6, max(0.05, args.initial_impact))
     a0 = max(2.0, period0 / (math.pi * duration0) * math.sqrt(max(1 - b0 * b0, 0.05)))
@@ -292,11 +307,26 @@ def fit_candidate(time, flux, error, exposure, sector, row, args):
                     + baseline_parameters[1::2][event_index] * centered_time)
         return (y - baseline * profile) / sigma
 
+    # Each event's baseline and slope touch only that event's samples, so the
+    # Jacobian is sparse; declaring it lets finite differences perturb all
+    # baseline columns at once (about 7 model evaluations per Jacobian instead
+    # of 5 + 2 x events, which made multi-year fits take tens of minutes).
+    # With few events the exact dense solver is fast and reaches a marginally
+    # better optimum than the iterative sparse one, so sparsity is used only
+    # when there are many events (measured: 203 events, 3482 s -> 181 s, and
+    # the dense fit had not converged; 28 events, 59 s either way).
+    transit_sparsity = null_sparsity = None
+    if n_events > SPARSE_JACOBIAN_EVENTS:
+        null_sparsity = event_jacobian_sparsity(event_index, n_events)
+        transit_sparsity = sparse.hstack([sparse.csr_matrix(np.ones((len(t), 5))),
+                                          null_sparsity]).tocsr()
     result = least_squares(lambda x: residual(x, True), p0, bounds=(lower, upper),
-                           loss="soft_l1", f_scale=args.robust_scale, max_nfev=args.max_evaluations)
+                           loss="soft_l1", f_scale=args.robust_scale, max_nfev=args.max_evaluations,
+                           jac_sparsity=transit_sparsity)
     null = least_squares(lambda x: residual(x, False), p0[5:],
                          bounds=(lower[5:], upper[5:]), loss="soft_l1",
-                         f_scale=args.robust_scale, max_nfev=args.max_evaluations)
+                         f_scale=args.robust_scale, max_nfev=args.max_evaluations,
+                         jac_sparsity=null_sparsity)
     physical_resid = residual(result.x, True)
     # The null model has only per-event baselines; pass its own parameters.
     null_resid = residual(null.x, False)
@@ -308,7 +338,8 @@ def fit_candidate(time, flux, error, exposure, sector, row, args):
     errors = [None] * 5
     epoch_period_covariance = None
     try:
-        covariance = np.linalg.pinv(result.jac.T @ result.jac) * chi2 / max(1, n - k_transit)
+        jacobian = result.jac.toarray() if sparse.issparse(result.jac) else result.jac
+        covariance = np.linalg.pinv(jacobian.T @ jacobian) * chi2 / max(1, n - k_transit)
         errors = np.sqrt(np.maximum(0, np.diag(covariance)[:5])).tolist()
         epoch_period_covariance = float(covariance[0, 1])
     except np.linalg.LinAlgError:

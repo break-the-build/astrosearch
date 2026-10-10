@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -209,9 +210,20 @@ def phase_offset(time: np.ndarray, epoch: float, period: float) -> np.ndarray:
     return (time - epoch + 0.5 * period) % period - 0.5 * period
 
 
-def write_json(path: Path, payload: dict) -> None:
+def atomic_write_text(path: Path, text: str) -> None:
+    """Write via a temporary file in the same directory and rename, so a
+    reader never sees a truncated file after a crash or kill."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=1, sort_keys=True, default=_jsonable) + "\n")
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    try:
+        temporary.write_text(text)
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def write_json(path: Path, payload: dict) -> None:
+    atomic_write_text(path, json.dumps(payload, indent=1, sort_keys=True, default=_jsonable) + "\n")
 
 
 def _jsonable(value):

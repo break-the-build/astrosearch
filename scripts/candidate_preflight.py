@@ -132,7 +132,7 @@ def check_spoc_tces(tic_id, candidate_rows, requested_sectors):
         checked.append({"url":url,"sector_start":start,"sector_stop":stop,
                         "rows":len(rows),"tic_rows":len(target_rows),
                         "schema_status":"ok" if period_key else "no_period_column"})
-    return {"requested_sectors":sorted(requested),"files_checked":checked,"matches":matches}
+    return {"requested_sectors":sorted(set(requested_sectors)),"files_checked":checked,"matches":matches}
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)

@@ -34,5 +34,10 @@ jobs:
         run: cargo test --release
       - name: Check Python syntax
         run: uv run --frozen python -m py_compile scripts/*.py scripts/vetting/*.py tests/*.py
+      # Correctness rules only (undefined names, unused imports and variables,
+      # redefinitions); style is not enforced. An undefined name in the TCE
+      # check once disabled the gate's "not already known" criterion.
+      - name: Lint for Python correctness defects
+        run: uvx ruff@0.17.0 check --select F scripts tests
       - name: Run Python unit, parity-fuzz and gate integration tests
         run: uv run --frozen python -m unittest discover -s tests -p 'test_*.py'

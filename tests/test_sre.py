@@ -47,6 +47,32 @@ class SreOperationalTests(unittest.TestCase):
         self.assertEqual(len(files), 1)
         self.assertEqual(next(iter(files.values())), (1, 55))
 
+    def test_spoc_tce_check_returns_matches_offline(self):
+        # check_spoc_tces once returned sorted(requested), a name defined only in
+        # select_tce_files, so every TCE check raised NameError after its downloads
+        # and the gate could never mark a candidate "not already known".
+        import candidate_preflight as preflight
+
+        index = '<a href="/tess/tess-s0032-s0032_dvr-tcestats.csv">s32</a>'
+        table = "ticid,tceperiod,tceepoch,tceduration\n4206066,3.1828,1468.423,2.0\n999,1.0,1400.0,1.0\n"
+
+        class Reply:
+            def __init__(self, text):
+                self.text = text
+
+            def raise_for_status(self):
+                return None
+
+        def fake_get(url, timeout=None):
+            return Reply(index if url.endswith(".html") else table)
+
+        candidate = {"period_days": "3.18278", "epoch": "1468.42299", "duration_days": "0.083"}
+        with patch.object(preflight.SESSION, "get", side_effect=fake_get):
+            result = preflight.check_spoc_tces(4206066, [candidate], [32])
+        self.assertEqual(result["requested_sectors"], [32])
+        self.assertEqual(len(result["matches"]), 1)
+        self.assertTrue(result["matches"][0]["ephemeris_matches"])
+
     def test_atomic_claim_prevents_two_runs_from_owning_one_target(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "ledger.sqlite"

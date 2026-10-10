@@ -96,7 +96,7 @@ def phase_distance(a: float, b: float, period: float) -> float:
 def matching_candidate(rows, period, epoch, duration, span):
     for rank, row in enumerate(rows, 1):
         try:
-            p, e, d = float(row["period_days"]), float(row["epoch"]), float(row["duration_days"])
+            p, e, _ = float(row["period_days"]), float(row["epoch"]), float(row["duration_days"])
         except (KeyError, ValueError):
             continue
         if abs(p - period) * span / period <= duration and phase_distance(e, epoch, period) <= duration:

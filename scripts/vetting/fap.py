@@ -93,55 +93,85 @@ def clopper_pearson_upper(k: int, n: int, level: float = 0.95) -> float:
     return 1.0 if k >= n else float(stats.beta.ppf(level, k + 1, n - k))
 
 
+def clopper_pearson_lower(k: int, n: int, level: float = 0.99) -> float:
+    """One-sided lower confidence bound on a binomial proportion."""
+    return 0.0 if k <= 0 else float(stats.beta.ppf(1 - level, k, n - k + 1))
+
+
 def empirical_fap(lc: LightCurve, binary: Path, statistic: float, epoch: float, period: float,
                   duration: float, search_args: list[str], trials: int = 100,
                   workers: int = 4, threads: int = 6, seed: int = 20261010,
                   work_dir: Path | None = None, null_timeout: float = 900.0,
-                  budget_seconds: float = 7200.0, min_nulls: int = 20) -> dict:
-    """Search `trials` nulls (one inverted, the rest block-shuffled) within a
-    time budget. Each null search gets at most `null_timeout` seconds and
-    nothing starts after `budget_seconds`; failed, timed-out and skipped
-    nulls are counted, and the FAP uses the completed ones. With fewer than
-    `min_nulls` completed the result is NOT_EVALUATED rather than a FAP."""
+                  budget_seconds: float = 7200.0, min_nulls: int = 20,
+                  sequential: bool = True, limit: float = 0.01) -> dict:
+    """Search up to `trials` nulls (one inverted, the rest block-shuffled)
+    within a time budget. Each null search gets at most `null_timeout`
+    seconds and nothing starts after `budget_seconds`; failed, timed-out and
+    skipped nulls are counted, and the FAP uses the completed ones. With
+    fewer than `min_nulls` completed the result is NOT_EVALUATED.
+
+    Sequential mode runs nulls in batches and stops once the one-sided 99%
+    Clopper-Pearson lower bound on the FAP exceeds `limit`: the candidate is
+    then decisively not significant, and further nulls cannot change the
+    verdict (a PASS needs the 95% upper bound below `limit`, which with
+    zero exceedances takes >= 299 nulls and is never cut short)."""
     rng = np.random.default_rng(seed)
     args = [a for a in search_args] + ["--transit-search-passes", "1"]
     work = Path(work_dir or tempfile.mkdtemp(prefix="nulls-"))
     work.mkdir(parents=True, exist_ok=True)
-    curves = []
-    path = work / "null_inverted.csv"
-    write_curve(path, *inverted(lc))
-    curves.append(("inverted", path))
-    for i in range(trials - 1):
-        path = work / f"null_shuffled_{i:04d}.csv"
-        write_curve(path, *block_shuffled(lc, rng, epoch, period, duration))
-        curves.append(("shuffled", path))
     deadline = time.monotonic() + budget_seconds
 
-    def search(curve):
+    def make(index: int) -> Path:
+        # Same generation order as a one-shot run: inverted first, then the
+        # shuffles in sequence from one generator.
+        if index == 0:
+            path = work / "null_inverted.csv"
+            write_curve(path, *inverted(lc))
+        else:
+            path = work / f"null_shuffled_{index - 1:04d}.csv"
+            write_curve(path, *block_shuffled(lc, rng, epoch, period, duration))
+        return path
+
+    def search(path: Path):
         remaining = deadline - time.monotonic()
         if remaining <= 0:
             return None, "budget exhausted before start"
         try:
-            return best_transit_score(binary, curve[1], args, threads,
+            return best_transit_score(binary, path, args, threads,
                                       timeout=min(null_timeout, remaining)), None
         except subprocess.TimeoutExpired:
             return None, "timed out"
         except (subprocess.CalledProcessError, OSError, ValueError) as error:
             return None, f"failed: {type(error).__name__}"
 
+    outcomes: list[tuple] = []
+    stopped = None
+    batch = max(2 * workers, 8)
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        outcomes = list(pool.map(search, curves))
+        while len(outcomes) < trials:
+            paths = [make(i) for i in range(len(outcomes), min(trials, len(outcomes) + batch))]
+            outcomes.extend(pool.map(search, paths))
+            scores = [score for score, _ in outcomes if score is not None]
+            exceed = sum(score >= statistic for score in scores)
+            if (sequential and len(scores) >= min_nulls
+                    and clopper_pearson_lower(exceed, len(scores)) > limit):
+                stopped = (f"stopped after {len(scores)} nulls: 99% lower bound "
+                           f"{clopper_pearson_lower(exceed, len(scores)):.3g} > {limit}")
+                break
+            if time.monotonic() >= deadline:
+                break
     maxima = [score for score, _ in outcomes if score is not None]
     failures: dict[str, int] = {}
     for _, reason in outcomes:
         if reason:
             failures[reason] = failures.get(reason, 0) + 1
-    budget = {"requested": len(curves), "completed": len(maxima), "failures": failures,
-              "null_timeout_s": null_timeout, "budget_s": budget_seconds, "min_nulls": min_nulls}
+    budget = {"requested": trials, "attempted": len(outcomes), "completed": len(maxima),
+              "failures": failures, "null_timeout_s": null_timeout, "budget_s": budget_seconds,
+              "min_nulls": min_nulls, "sequential": sequential, "stopped_early": stopped}
     if len(maxima) < min_nulls:
         return {"status": "NOT_EVALUATED", "statistic": statistic, "nulls": len(maxima),
                 "fap_empirical": None, "fap_upper_95": None, "budget": budget,
-                "reason": f"only {len(maxima)} of {len(curves)} null searches completed"}
+                "reason": f"only {len(maxima)} of {trials} null searches completed"}
     maxima_arr = np.array(maxima)
     exceed = int((maxima_arr >= statistic).sum())
     n = len(maxima)
@@ -149,6 +179,7 @@ def empirical_fap(lc: LightCurve, binary: Path, statistic: float, epoch: float, 
         "status": "OK", "statistic": statistic, "nulls": n, "exceeding": exceed,
         "fap_empirical": (exceed + 1) / (n + 1),
         "fap_upper_95": clopper_pearson_upper(exceed, n),
+        "fap_lower_99": clopper_pearson_lower(exceed, n),
         "fap_gumbel_extrapolated": gumbel_tail(maxima_arr, statistic),
         "inverted_null_max": outcomes[0][0],
         "null_max_quantiles": {q: float(np.quantile(maxima_arr, q)) for q in (0.5, 0.9, 0.99)},

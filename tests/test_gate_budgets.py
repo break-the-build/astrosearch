@@ -84,6 +84,27 @@ class FapBudgetTests(unittest.TestCase):
         criterion = gate.criterion_significance(result, {"status": gate.PASS})
         self.assertEqual(criterion["checks"]["empirical_fap_upper95_below_1pct"], gate.NE)
 
+    def test_sequential_test_stops_once_clearly_not_significant(self):
+        # Every null scores 7.5; a candidate at 5.0 is exceeded by all of them.
+        weak = fap.empirical_fap(self.lc, fake_binary(self.dir, 0.0), 5.0, 1.0, 3.0, 0.1, [],
+                                 trials=300, workers=8, threads=1, work_dir=self.dir / "weak")
+        self.assertEqual(weak["status"], "OK")
+        self.assertLess(weak["nulls"], 60)
+        self.assertIn("stopped after", weak["budget"]["stopped_early"])
+        self.assertGreater(weak["fap_lower_99"], 0.01)
+        criterion = gate.criterion_significance(weak, {"status": gate.PASS})
+        self.assertEqual(criterion["checks"]["empirical_fap_upper95_below_1pct"], gate.FAIL)
+        full = fap.empirical_fap(self.lc, fake_binary(self.dir, 0.0), 5.0, 1.0, 3.0, 0.1, [],
+                                 trials=40, workers=8, threads=1, work_dir=self.dir / "full",
+                                 sequential=False)
+        self.assertEqual(full["nulls"], 40)
+
+    def test_strong_candidate_is_never_stopped_early(self):
+        strong = fap.empirical_fap(self.lc, fake_binary(self.dir, 0.0), 50.0, 1.0, 3.0, 0.1, [],
+                                   trials=48, workers=8, threads=1, work_dir=self.dir / "strong")
+        self.assertEqual((strong["nulls"], strong["exceeding"]), (48, 0))
+        self.assertIsNone(strong["budget"]["stopped_early"])
+
     def test_stage_budget_skips_remaining_nulls(self):
         result = self.run_fap(0.6, budget_seconds=1.5, trials=40, min_nulls=20)
         failures = result["budget"]["failures"]

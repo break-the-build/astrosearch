@@ -27,7 +27,7 @@ Data used:
 | 6 | Gate assumes BTJD | BJD inputs normalized to BTJD | unit tests | done |
 | 7 | Default threshold triggers on 97% of nulls | Calibrated detection tier; `tier` column; gate criterion 5 | 783 benchmark cases | screening floor 6 kept; detection tier added |
 | 8 | Harness crashed before vetting any false positive; one data product | Per-target isolation; QLP second product | known-systems run | see table |
-| 9 | FAP nulls use 1 pass; the search uses 5 | measurement (`compare_fap_passes.py`) | TIC 4206066 nulls | pending |
+| 9 | FAP nulls use 1 pass; the search uses 5 | measurement (`compare_fap_passes.py`) | 16 nulls of TIC 4206066 searched both ways | 5-pass null maximum equal in 14/16, higher in 2/16 (22.63 to 23.58; 26.62 to 26.63; worst ratio 1.04). Single-pass nulls are very slightly anti-conservative; impact negligible at 1/5 the cost. Kept and documented |
 | 10 | Low recall at the detection tier | Jackknife score as the tier statistic | 783 benchmark cases | blind recall 61/200 → 86/200 at calibration-set thresholds; better at every equal blind FAR from 2 to 10% |
 | — | No version control or license file | git repository; commit in all provenance; LICENSE (MIT, as Cargo.toml declares); CITATION.cff | — | done |
 | — | Pixel vetting not run by default; centroid ignored proper motion and uncertainty | `vetting.pixel`; the gate runs it on 2 SPOC sectors | unit tests (`PixelCentroidTests`) | see known-systems table |
@@ -118,3 +118,24 @@ recovered 70/199 blind planets at a 7.5% blind null rate, against 60/199 at
 should not be read as BLS being better. The baseline is one reasonable BLS
 configuration, not TLS or the SPOC pipeline; comparing against those is still
 open.
+
+## Known-systems benchmark with the fixed gate
+
+Run: `benchmark_known_systems.py` with QLP as the second product; no nulls,
+no FPP, local-covariance fit (`--mcmc-steps 0`).
+
+| Object | Baseline criterion 3 | Current criterion 3 | Notes |
+| --- | --- | --- | --- |
+| L 98-59 b | NOT_EVALUATED (no RUWE) | PASS | 3 siblings masked; criterion 1 PASS with QLP |
+| L 98-59 c | NOT_EVALUATED (no RUWE) | PASS | QLP depth disagrees (criterion 1 FAIL) |
+| L 98-59 d | FAIL (secondary 5.5σ, odd/even 6.2σ) | PASS | 3 siblings masked; criterion 1 PASS |
+| LHS 3844 b | FAIL (neighbor Δm 4.7) | PASS | RUWE 1.16 now found by source_id |
+| TOI-700 b | not recovered | not recovered | shallow (~1 R⊕) |
+| TOI-700 c | FAIL (neighbor Δm 6.2) | FAIL | 3 transits: local fit leaves b = 0.00 ± 0.90, so the shape limit loosens to the grazing case; density ×11. Use MCMC for few-transit candidates (the gate default) |
+| TOI-1120.01 (TFOPWG FP) | not run (harness crashed) | FAIL | RUWE 4.43 and a neighbor able to produce the eclipse: correctly rejected |
+| TOI-1113.01, -1122.01, -1126.01 | not run | not run | no SPOC 2-minute data; the harness needs FFI products to cover them |
+
+All known planets correctly fail criterion 4 (already known). Before the
+engineering fix in `candidate_preflight.check_spoc_tces` (a NameError), the
+SPOC TCE part of criterion 4 always errored. The TIC 4206066 gate run on this
+branch therefore cannot reach PASS on criterion 4 until it is rerun with the fix.

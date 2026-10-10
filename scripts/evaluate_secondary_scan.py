@@ -19,16 +19,13 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-import sys
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-from vetting import diagnostics  # noqa: E402
-from vetting.io import LightCurve, phase_offset, read_table  # noqa: E402
+from vetting import diagnostics
+from vetting.io import LightCurve, phase_offset, read_table
 
 csv.field_size_limit(2**31 - 1)
 

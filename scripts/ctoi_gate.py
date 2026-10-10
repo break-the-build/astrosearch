@@ -26,11 +26,9 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-from vetting import (  # noqa: E402
+from vetting import (
     aliases, crosscheck, diagnostics, fap, fpp, gate, network, provenance, siblings, stellar)
-from vetting.io import (  # noqa: E402
+from vetting.io import (
     TRANSIT_CLASSES, atomic_write_text, normalize_epoch, read_candidates, read_lightcurve, write_json)
 
 ROOT = Path(__file__).resolve().parents[1]

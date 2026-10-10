@@ -39,5 +39,11 @@ jobs:
       # check once disabled the gate's "not already known" criterion.
       - name: Lint for Python correctness defects
         run: uvx ruff@0.17.0 check --select F scripts tests
-      - name: Run Python unit, parity-fuzz and gate integration tests
-        run: uv run --frozen python -m unittest discover -s tests -p 'test_*.py'
+      # The project installs editable (uv sync), so scripts/ needs no path hacks.
+      # Coverage scope is the shipped package (pyproject [tool.coverage]),
+      # with CLIs run as subprocesses measured too.
+      - name: Run Python tests under coverage (package gate 60%)
+        run: |
+          uv run --frozen python -m coverage run -m unittest discover -s tests -p 'test_*.py'
+          uv run --frozen python -m coverage combine
+          uv run --frozen python -m coverage report --fail-under=60

@@ -21,9 +21,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import candidate_preflight as preflight  # noqa: E402
-from vetting import network  # noqa: E402
+import candidate_preflight as preflight
+from vetting import network
 
 ROOT = Path(__file__).resolve().parents[1]
 PLANETS = ["LHS 3844 b", "L 98-59 b", "L 98-59 c", "L 98-59 d", "TOI-700 b", "TOI-700 c"]

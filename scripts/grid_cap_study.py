@@ -25,13 +25,10 @@ import csv
 import json
 import math
 import random
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-import evaluate_benchmark as ev  # noqa: E402
-from vetting.tier import statistic  # noqa: E402
+import evaluate_benchmark as ev
+from vetting.tier import statistic
 
 csv.field_size_limit(2**31 - 1)
 VARIANTS = ("A_cap250k", "B_cap1M", "C_density")

@@ -19,5 +19,76 @@ fpp = ["triceratops>=1.0.15"]
 gp = ["celerite2>=0.3"]
 pointing = ["tess-point>=0.9"]
 
+[dependency-groups]
+dev = ["coverage>=7.10"]
+
+[project.scripts]
+astrosearch-gate = "ctoi_gate:main"
+astrosearch-survey = "tess_survey:main"
+astrosearch-export = "export_tess:main"
+astrosearch-pixel-check = "pixel_difference_check:main"
+astrosearch-refine = "refine_candidates:main"
+astrosearch-preflight = "candidate_preflight:main"
+astrosearch-registry = "candidate_registry:main"
+astrosearch-calibrate-tier = "calibrate_detection_threshold:main"
+astrosearch-benchmark-run = "run_known_answer_benchmark:main"
+astrosearch-benchmark-evaluate = "evaluate_benchmark:main"
+astrosearch-known-systems = "benchmark_known_systems:main"
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+# The vetting package and the operational tools live in scripts/. The gate
+# runs refine_candidates.py and the astrosearch binary from the checkout, so
+# install editable (uv sync does). One-off research scripts in scripts/ are
+# not part of the package.
+[tool.setuptools]
+package-dir = {"" = "scripts"}
+packages = ["vetting"]
+py-modules = [
+  "benchmark_known_systems", "build_known_answer_benchmark", "calibrate_detection_threshold",
+  "candidate_preflight", "candidate_registry", "ctoi_gate", "evaluate_benchmark",
+  "export_tess", "gp_detrend", "pixel_difference_check", "predict_transits",
+  "refine_candidates", "run_known_answer_benchmark", "run_metrics", "survey_ledger",
+  "tess_survey", "tls_search",
+]
+
 [tool.uv]
-package = false
+package = true
+
+# Coverage gate for the shipped package (CI: --fail-under 60). Subprocess
+# patching measures the CLIs the tests run as child processes.
+[tool.coverage.run]
+# Package scope: everything in scripts/ except one-off research scripts,
+# so untested package modules count as 0% instead of being skipped.
+source = ["scripts"]
+omit = [
+  "scripts/ab_benchmark.py",
+  "scripts/analyze_null_features.py",
+  "scripts/audit_known_answer_benchmark.py",
+  "scripts/baseline_bls_benchmark.py",
+  "scripts/build_hard_negative_manifest.py",
+  "scripts/build_survey_hard_negative_labels.py",
+  "scripts/compare_detection_statistics.py",
+  "scripts/compare_detrenders.py",
+  "scripts/compare_fap_passes.py",
+  "scripts/compare_methods_equal_far.py",
+  "scripts/diagnose_missed_signal.py",
+  "scripts/evaluate_secondary_scan.py",
+  "scripts/fetch_calibration_curves.py",
+  "scripts/grid_cap_study.py",
+  "scripts/injection_recovery.py",
+  "scripts/known_answer_benchmark.py",
+  "scripts/prepare_tess_eb_hard_negatives.py",
+  "scripts/probe_tess_lightcurve_products.py",
+  "scripts/real_curve_validation.py",
+  "scripts/run_hard_negative_survey.py",
+  "scripts/run_tls_benchmark.py",
+]
+parallel = true
+patch = ["subprocess"]
+concurrency = ["multiprocessing", "thread"]
+
+[tool.coverage.report]
+sort = "Cover"

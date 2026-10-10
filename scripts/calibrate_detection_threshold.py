@@ -23,14 +23,11 @@ import argparse
 import csv
 import json
 import math
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-import evaluate_benchmark as ev  # noqa: E402
-from vetting.tier import STATISTICS, statistic  # noqa: E402
+import evaluate_benchmark as ev
+from vetting.tier import STATISTICS, statistic
 
 csv.field_size_limit(2**31 - 1)
 

@@ -21,18 +21,15 @@ import argparse
 import csv
 import json
 import math
-import sys
 import time
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-import evaluate_benchmark as ev  # noqa: E402
-from vetting.fap import segments  # noqa: E402
-from vetting.io import read_table  # noqa: E402
+import evaluate_benchmark as ev
+from vetting.fap import segments
+from vetting.io import read_table
 
 csv.field_size_limit(2**31 - 1)
 DURATIONS_H = (1.0, 2.0, 4.0, 8.0)

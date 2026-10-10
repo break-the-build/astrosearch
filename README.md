@@ -250,14 +250,17 @@ The CLI is a thin wrapper around `astrosearch::analyze_file` and `astrosearch::a
 | `parallel`, `math` | Deterministic parallel trial scheduling; medians and robust scatter |
 
 ```sh
-uv sync --frozen --extra inference          # the locked Python environment CI uses
+uv sync --frozen --extra inference          # locked environment; installs this project editable
 cargo fmt --check
 cargo clippy --all-targets -- -D warnings
 cargo test --release                        # also builds target/release/astrosearch
-uv run --frozen python -m unittest discover -s tests -p 'test_*.py'
+uv run --frozen python -m coverage run -m unittest discover -s tests -p 'test_*.py'
+uv run --frozen python -m coverage combine && uv run --frozen python -m coverage report --fail-under=60
 ```
 
-GitHub Actions runs exactly these steps on pushes and pull requests. The Python suite includes tests that need the release binary (set `ASTROSEARCH_BIN` to use another build; they skip if it is missing):
+GitHub Actions runs exactly these steps on pushes and pull requests.
+
+The Python side is an installable package: `scripts/vetting` plus the operational tools as modules. `uv sync` installs it editable. It is editable because the gate runs `refine_candidates.py` and the release binary from the checkout. Console commands: `astrosearch-gate`, `astrosearch-survey`, `astrosearch-export`, `astrosearch-pixel-check`, `astrosearch-refine`, `astrosearch-preflight`, `astrosearch-registry`, `astrosearch-calibrate-tier`, `astrosearch-benchmark-run`, `astrosearch-benchmark-evaluate` and `astrosearch-known-systems`. One-off research scripts stay in `scripts/` outside the package and outside the coverage gate. The gate is 60% of package lines; 67% at the time of writing, with `tess_survey` at 85%. The Python suite includes tests that need the release binary (set `ASTROSEARCH_BIN` to use another build; they skip if it is missing):
 
 - `test_parser_parity.py`: differential fuzzing of the Rust and Python light-curve readers on randomized messy files.
 - `test_cli_fuzz.py`: CLI mutation fuzzing.

@@ -21,16 +21,13 @@ import csv
 import json
 import math
 import subprocess
-import sys
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-import evaluate_benchmark as ev  # noqa: E402
-from vetting.io import phase_offset, read_table  # noqa: E402
+import evaluate_benchmark as ev
+from vetting.io import phase_offset, read_table
 
 csv.field_size_limit(2**31 - 1)
 SNR_LEVELS = (7.0, 10.0, 15.0, 20.0, 30.0, 40.0, 60.0)

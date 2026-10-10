@@ -11,16 +11,13 @@ from __future__ import annotations
 
 import argparse
 import json
-import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-from vetting import fap  # noqa: E402
-from vetting.io import read_lightcurve  # noqa: E402
+from vetting import fap
+from vetting.io import read_lightcurve
 
 
 def main() -> int:

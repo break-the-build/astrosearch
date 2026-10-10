@@ -12,14 +12,11 @@ from __future__ import annotations
 import argparse
 import json
 import math
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-import baseline_bls_benchmark as bls  # noqa: E402
-import evaluate_benchmark as ev  # noqa: E402
-from vetting.tier import statistic  # noqa: E402
+import baseline_bls_benchmark as bls
+import evaluate_benchmark as ev
+from vetting.tier import statistic
 
 
 def astrosearch_rows(cases, root, name):

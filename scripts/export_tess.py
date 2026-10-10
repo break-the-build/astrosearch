@@ -14,8 +14,7 @@ from pathlib import Path
 
 import lightkurve as lk
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from vetting.network import install_default_timeouts  # noqa: E402
+from vetting.network import install_default_timeouts
 import numpy as np
 
 # SPOC quality bits (TESS Science Data Products Description Document).

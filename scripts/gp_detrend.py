@@ -14,15 +14,13 @@ from __future__ import annotations
 
 import argparse
 import math
-import sys
 from pathlib import Path
 
 import numpy as np
 from scipy.optimize import minimize
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from vetting.fap import segments  # noqa: E402
-from vetting.io import phase_offset, read_table  # noqa: E402
+from vetting.fap import segments
+from vetting.io import phase_offset, read_table
 
 
 def fit_segment(t: np.ndarray, y: np.ndarray, e: np.ndarray, use: np.ndarray) -> np.ndarray:

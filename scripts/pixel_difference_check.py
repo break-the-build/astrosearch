@@ -9,14 +9,11 @@ from __future__ import annotations
 
 import argparse
 import json
-import sys
 from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-from vetting import network, pixel, stellar  # noqa: E402
+from vetting import network, pixel, stellar
 
 WARNING = ("Single-sector image diagnostic. Pixel S/N assumes independent cadences; systematics, "
            "crowding and few transits can bias the centroid. Inspect the images before relying on it.")

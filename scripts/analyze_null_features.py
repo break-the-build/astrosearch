@@ -20,14 +20,11 @@ import argparse
 import csv
 import json
 import math
-import sys
 from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-import evaluate_benchmark as ev  # noqa: E402
+import evaluate_benchmark as ev
 
 csv.field_size_limit(2**31 - 1)
 

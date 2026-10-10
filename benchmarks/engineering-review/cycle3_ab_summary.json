@@ -1,0 +1,32 @@
+ "A": {
+  "user_median": 40.685,
+  "real_median": 154.39999999999998,
+  "rss_mb_median": 16.734375,
+  "digests": [
+   "b883cc55ebd7400f"
+  ]
+ },
+ "B": {
+  "user_median": 39.025000000000006,
+  "real_median": 156.32999999999998,
+  "rss_mb_median": 17.484375,
+  "digests": [
+   "b883cc55ebd7400f"
+  ]
+ },
+ "user_speedup_A_over_B": 1.0425368353619473,
+ "identical_output": true,
+ "load_average_at_end": [
+  91.5556640625,
+  100.9111328125,
+  106.8037109375
+ ],
+ "args": [
+  "--threads",
+  "1",
+  "--transit-search-passes",
+  "1"
+ ]
+}
+
+[exited with code 0]

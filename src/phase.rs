@@ -87,12 +87,14 @@ impl PhaseWorkspace {
             let in_sum = sum[end] - sum[start];
             let out_background = total_background - (background[end] - background[start]);
             let numerator = out_background * in_weight - in_sum * out_weight;
-            let possible = count[end] - count[start] >= 4
-                && in_weight > 0.0
-                && out_weight > 0.0
-                && numerator > 0.0
-                && numerator * numerator
-                    >= limit * in_weight * out_weight * (in_weight + out_weight);
+            // Non-short-circuit `&`: every term is cheap and branch-free
+            // evaluation lets the compiler vectorize the loop body.
+            let possible = (count[end] - count[start] >= 4)
+                & (in_weight > 0.0)
+                & (out_weight > 0.0)
+                & (numerator > 0.0)
+                & (numerator * numerator
+                    >= limit * in_weight * out_weight * (in_weight + out_weight));
             if possible {
                 survivors.push(start);
             }
@@ -108,9 +110,14 @@ impl PhaseWorkspace {
         let observations = self.point_bins.len();
         self.red.resize(knots * bins, 0.0);
         self.red.fill(0.0);
-        for (i, &b) in self.point_bins.iter().enumerate() {
-            for knot in 0..knots {
-                self.red[knot * bins + b] += point_weights[knot * observations + i];
+        // Knot-major: each knot's weights are read sequentially (they are
+        // stored knot-major). Each bin still accumulates in sample order, so
+        // the sums are bit-identical to a sample-major loop.
+        for knot in 0..knots {
+            let histogram = &mut self.red[knot * bins..(knot + 1) * bins];
+            let weights = &point_weights[knot * observations..(knot + 1) * observations];
+            for (&b, &w) in self.point_bins.iter().zip(weights) {
+                histogram[b] += w;
             }
         }
         let stride = 2 * bins + 1;

@@ -45,3 +45,22 @@ def triceratops_fpp(tic_id: int, lc: LightCurve, sectors: list[int], period: flo
             "sectors_used": usable, "sectors_dropped": [s for s in sectors if s not in usable],
             "draws": draws,
             "validation_thresholds": "FPP < 0.015 and NFPP < 0.001 plus high-resolution imaging"}
+
+
+def triceratops_fpp_budgeted(tic_id: int, lc: LightCurve, sectors: list[int], period: float,
+                             epoch: float, duration: float, depth_ppm: float,
+                             timeout: float = 3600.0, **kwargs) -> dict:
+    """triceratops_fpp in a child process with a wall-clock budget: a run that
+    stalls (network or non-converging model) yields NOT_EVALUATED instead of
+    holding the gate indefinitely."""
+    from .budget import run_with_deadline
+
+    try:
+        result = run_with_deadline(triceratops_fpp,
+                                   (tic_id, lc, sectors, period, epoch, duration, depth_ppm),
+                                   kwargs, timeout=timeout)
+    except TimeoutError:
+        return {"status": "NOT_EVALUATED", "reason": f"TRICERATOPS exceeded its {timeout:g} s budget"}
+    except RuntimeError as error:
+        return {"status": "NOT_EVALUATED", "reason": f"TRICERATOPS process failed: {error}"}
+    return {**result, "budget_seconds": timeout}

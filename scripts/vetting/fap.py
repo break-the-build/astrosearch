@@ -15,6 +15,7 @@ import csv
 import math
 import subprocess
 import tempfile
+import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -64,12 +65,15 @@ def write_curve(path: Path, time, flux, error) -> None:
     np.savetxt(path, rows, delimiter=",", header="time,flux,flux_err", comments="", fmt="%.8f")
 
 
-def best_transit_score(binary: Path, curve: Path, args: list[str], threads: int) -> float:
+def best_transit_score(binary: Path, curve: Path, args: list[str], threads: int,
+                       timeout: float | None = None) -> float:
+    """Best transit-class score of one null search. Raises
+    subprocess.TimeoutExpired (the child is killed) or CalledProcessError."""
     with tempfile.TemporaryDirectory() as tmp:
         out = Path(tmp) / "candidates.csv"
         subprocess.run([str(binary), "--input", str(curve), "--output", str(out),
                         "--threads", str(threads), *args],
-                       check=True, capture_output=True, text=True)
+                       check=True, capture_output=True, text=True, timeout=timeout)
         with out.open(newline="") as stream:
             scores = [float(r["score"]) for r in csv.DictReader(stream)
                       if r.get("class") in TRANSIT_CLASSES]
@@ -92,8 +96,13 @@ def clopper_pearson_upper(k: int, n: int, level: float = 0.95) -> float:
 def empirical_fap(lc: LightCurve, binary: Path, statistic: float, epoch: float, period: float,
                   duration: float, search_args: list[str], trials: int = 100,
                   workers: int = 4, threads: int = 6, seed: int = 20261010,
-                  work_dir: Path | None = None) -> dict:
-    """Search `trials` nulls (one inverted, the rest block-shuffled)."""
+                  work_dir: Path | None = None, null_timeout: float = 900.0,
+                  budget_seconds: float = 7200.0, min_nulls: int = 20) -> dict:
+    """Search `trials` nulls (one inverted, the rest block-shuffled) within a
+    time budget. Each null search gets at most `null_timeout` seconds and
+    nothing starts after `budget_seconds`; failed, timed-out and skipped
+    nulls are counted, and the FAP uses the completed ones. With fewer than
+    `min_nulls` completed the result is NOT_EVALUATED rather than a FAP."""
     rng = np.random.default_rng(seed)
     args = [a for a in search_args] + ["--transit-search-passes", "1"]
     work = Path(work_dir or tempfile.mkdtemp(prefix="nulls-"))
@@ -106,19 +115,45 @@ def empirical_fap(lc: LightCurve, binary: Path, statistic: float, epoch: float, 
         path = work / f"null_shuffled_{i:04d}.csv"
         write_curve(path, *block_shuffled(lc, rng, epoch, period, duration))
         curves.append(("shuffled", path))
+    deadline = time.monotonic() + budget_seconds
+
+    def search(curve):
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            return None, "budget exhausted before start"
+        try:
+            return best_transit_score(binary, curve[1], args, threads,
+                                      timeout=min(null_timeout, remaining)), None
+        except subprocess.TimeoutExpired:
+            return None, "timed out"
+        except (subprocess.CalledProcessError, OSError, ValueError) as error:
+            return None, f"failed: {type(error).__name__}"
+
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        maxima = list(pool.map(lambda c: best_transit_score(binary, c[1], args, threads), curves))
+        outcomes = list(pool.map(search, curves))
+    maxima = [score for score, _ in outcomes if score is not None]
+    failures: dict[str, int] = {}
+    for _, reason in outcomes:
+        if reason:
+            failures[reason] = failures.get(reason, 0) + 1
+    budget = {"requested": len(curves), "completed": len(maxima), "failures": failures,
+              "null_timeout_s": null_timeout, "budget_s": budget_seconds, "min_nulls": min_nulls}
+    if len(maxima) < min_nulls:
+        return {"status": "NOT_EVALUATED", "statistic": statistic, "nulls": len(maxima),
+                "fap_empirical": None, "fap_upper_95": None, "budget": budget,
+                "reason": f"only {len(maxima)} of {len(curves)} null searches completed"}
     maxima_arr = np.array(maxima)
     exceed = int((maxima_arr >= statistic).sum())
     n = len(maxima)
     return {
-        "statistic": statistic, "nulls": n, "exceeding": exceed,
+        "status": "OK", "statistic": statistic, "nulls": n, "exceeding": exceed,
         "fap_empirical": (exceed + 1) / (n + 1),
         "fap_upper_95": clopper_pearson_upper(exceed, n),
         "fap_gumbel_extrapolated": gumbel_tail(maxima_arr, statistic),
-        "inverted_null_max": float(maxima[0]),
+        "inverted_null_max": outcomes[0][0],
         "null_max_quantiles": {q: float(np.quantile(maxima_arr, q)) for q in (0.5, 0.9, 0.99)},
-        "search_args": args, "seed": seed, "block_days": 1.0,
-        "note": ("nulls use one search pass, matching the first-pass winner; "
-                 "candidates found in later passes get a conservative comparison"),
+        "search_args": args, "seed": seed, "block_days": 1.0, "budget": budget,
+        "note": ("nulls use one search pass; on TIC 4206066 the 5-pass null maximum matched "
+                 "the 1-pass one in 14/16 nulls (worst ratio 1.04), so this is very slightly "
+                 "anti-conservative"),
     }

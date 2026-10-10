@@ -167,6 +167,12 @@ def main() -> int:
     p.add_argument("--predict-days", type=float, default=730.0)
     p.add_argument("--offline", action="store_true", help="skip catalog, Gaia, and FPP queries")
     p.add_argument("--skip-fpp", action="store_true")
+    p.add_argument("--fap-budget", type=float, default=7200.0,
+                   help="wall-clock seconds for all null searches; later nulls are skipped")
+    p.add_argument("--null-timeout", type=float, default=900.0,
+                   help="seconds before one null search is killed and counted as failed")
+    p.add_argument("--fpp-timeout", type=float, default=3600.0,
+                   help="seconds before TRICERATOPS is stopped (criterion 5 FPP NOT_EVALUATED)")
     p.add_argument("--detection-calibration", type=Path,
                    default=ROOT / "data/calibration/detection_threshold.json",
                    help="detection-tier calibration from calibrate_detection_threshold.py")
@@ -250,7 +256,8 @@ def main() -> int:
     report["fap"] = fap.empirical_fap(
         full_lc, a.binary, candidate.score, epoch, period, duration, search_args,
         trials=a.null_trials, workers=a.workers, threads=a.threads,
-        work_dir=a.out_dir / "nulls") if a.null_trials > 0 else None
+        work_dir=a.out_dir / "nulls", null_timeout=a.null_timeout,
+        budget_seconds=a.fap_budget) if a.null_trials > 0 else None
     report["bls"] = crosscheck.bls_recovery(lc, period, epoch, duration)
     report["products"] = (crosscheck.product_depths(lc, a.products, epoch, period, duration)
                           if a.products else None)
@@ -264,8 +271,10 @@ def main() -> int:
         tce = [int(s) for s in a.tce_sectors.split(",") if s.strip()] or sectors
         known = catalogs.known_object_check(a.tic, period, epoch, duration, tce)
         fpp_result = ({"status": gate.NE, "reason": "--skip-fpp"} if a.skip_fpp else
-                      fpp.triceratops_fpp(a.tic, lc, sectors, period, epoch, duration,
-                                          observed_depth["depth_ppm"] or candidate.depth_ppm))
+                      fpp.triceratops_fpp_budgeted(
+                          a.tic, lc, sectors, period, epoch, duration,
+                          observed_depth["depth_ppm"] or candidate.depth_ppm,
+                          timeout=a.fpp_timeout))
     report["known"], report["fpp"] = known, fpp_result
 
     end = float(lc.time[-1])
@@ -293,7 +302,8 @@ def main() -> int:
     }
     decision = gate.verdict(criteria)
     notes = (f"astrosearch {candidate.kind}; FAP {report['fap']['fap_empirical']:.3g}"
-             if report["fap"] else f"astrosearch {candidate.kind}")
+             if report["fap"] and report["fap"].get("fap_empirical") is not None
+             else f"astrosearch {candidate.kind}")
     ctoi = gate.ctoi_row(a.tic, {**fit, "period": period, "epoch": epoch, "duration": duration},
                          depth, planet, notes)
     report.update(criteria=criteria, verdict=decision, ctoi_row=ctoi, ephemeris_windows=windows)

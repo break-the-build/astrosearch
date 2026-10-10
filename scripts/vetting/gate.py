@@ -110,7 +110,7 @@ def detection_tier(candidate, calibration: dict | None) -> dict:
 def criterion_significance(fap: dict | None, fpp: dict | None, limit: float = 0.01,
                            tier: dict | None = None) -> dict:
     fap_status = NE
-    if fap:
+    if fap and fap.get("fap_upper_95") is not None:
         fap_status = PASS if fap["fap_upper_95"] < limit else FAIL
     fpp_status = NE if not fpp else fpp.get("status", NE)
     checks = {"empirical_fap_upper95_below_1pct": fap_status,

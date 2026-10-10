@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from survey_ledger import begin_run, config_digest, connect as connect_ledger
 from survey_ledger import claim_target, finish_run, record_target, should_defer
+from vetting.network import install_default_timeouts
 import requests
 from requests.adapters import HTTPAdapter
 
@@ -556,6 +557,7 @@ def main():
     binary=binary_path(a.binary)
     if work_rows:
         configure_mast_timeout(a.network_timeout)
+        install_default_timeouts(a.network_timeout)
     failures=0
     for i,(index,row) in enumerate(work_rows,1):
         ident=tic(row)

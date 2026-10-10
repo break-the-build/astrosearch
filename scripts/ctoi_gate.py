@@ -29,7 +29,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from vetting import aliases, crosscheck, diagnostics, fap, fpp, gate, provenance, siblings, stellar  # noqa: E402
+from vetting import (  # noqa: E402
+    aliases, crosscheck, diagnostics, fap, fpp, gate, network, provenance, siblings, stellar)
 from vetting.io import (  # noqa: E402
     TRANSIT_CLASSES, atomic_write_text, normalize_epoch, read_candidates, read_lightcurve, write_json)
 
@@ -173,8 +174,11 @@ def main() -> int:
     p.add_argument("--sibling-score-fraction", type=float, default=0.5,
                    help="mask other transit candidates scoring at least this fraction of the "
                         "candidate's score (0 disables sibling masking)")
+    p.add_argument("--network-timeout", type=float, default=300.0,
+                   help="seconds before a stalled MAST/Gaia/archive request fails")
     p.add_argument("--out-dir", type=Path, required=True)
     a = p.parse_args()
+    network.install_default_timeouts(a.network_timeout)
     a.out_dir.mkdir(parents=True, exist_ok=True)
     search_args = shlex.split(a.search_args)
 

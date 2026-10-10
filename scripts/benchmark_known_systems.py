@@ -23,6 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import candidate_preflight as preflight  # noqa: E402
+from vetting import network  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 PLANETS = ["LHS 3844 b", "L 98-59 b", "L 98-59 c", "L 98-59 d", "TOI-700 b", "TOI-700 c"]
@@ -196,6 +197,7 @@ def main() -> int:
     r.add_argument("--skip-search", action="store_true",
                    help="reuse existing exports and candidates; rerun only the gate")
     a = p.parse_args()
+    network.install_default_timeouts()
     if a.command == "build":
         build(a.manifest)
     else:

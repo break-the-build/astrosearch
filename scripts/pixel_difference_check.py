@@ -16,7 +16,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from vetting import pixel, stellar  # noqa: E402
+from vetting import network, pixel, stellar  # noqa: E402
 
 WARNING = ("Single-sector image diagnostic. Pixel S/N assumes independent cadences; systematics, "
            "crowding and few transits can bias the centroid. Inspect the images before relying on it.")
@@ -84,6 +84,7 @@ def main() -> None:
     parser.add_argument("--author", default="SPOC")
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
+    network.install_default_timeouts()
     if args.period <= 0 or args.duration_days <= 0:
         parser.error("period and duration must be positive")
     try:

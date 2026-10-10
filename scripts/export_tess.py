@@ -13,6 +13,9 @@ import sys
 from pathlib import Path
 
 import lightkurve as lk
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from vetting.network import install_default_timeouts  # noqa: E402
 import numpy as np
 
 # SPOC quality bits (TESS Science Data Products Description Document).
@@ -90,6 +93,7 @@ def export(out_dir: Path, target: str, spec: str):
 
 
 def main() -> None:
+    install_default_timeouts()
     out_dir, target = Path(sys.argv[1]), sys.argv[2]
     out_dir.mkdir(parents=True, exist_ok=True)
     combined, metas = [], []

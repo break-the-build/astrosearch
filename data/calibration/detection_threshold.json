@@ -1,0 +1,150 @@
+{
+ "blind": {
+  "null_trigger": {
+   "count": 8,
+   "rate": 0.04,
+   "total": 200,
+   "wilson_95": [
+    0.020405632066152306,
+    0.07693206820093293
+   ]
+  },
+  "null_trigger_at_screening": {
+   "count": 194,
+   "rate": 0.97,
+   "total": 200,
+   "wilson_95": [
+    0.9361057075454807,
+    0.9861796856598887
+   ]
+  },
+  "planet_in_candidate_list": {
+   "count": 159,
+   "rate": 0.7989949748743719,
+   "total": 199,
+   "wilson_95": [
+    0.737892648500416,
+    0.8487724282144606
+   ]
+  },
+  "planet_recall": {
+   "count": 60,
+   "rate": 0.3015075376884422,
+   "total": 199,
+   "wilson_95": [
+    0.2420010294198634,
+    0.3685322389795041
+   ]
+  },
+  "planet_recall_by_depth": {
+   "deep": {
+    "count": 41,
+    "rate": 0.6833333333333333,
+    "total": 60,
+    "wilson_95": [
+     0.5576623297382323,
+     0.7869413244763347
+    ]
+   },
+   "medium": {
+    "count": 19,
+    "rate": 0.168141592920354,
+    "total": 113,
+    "wilson_95": [
+     0.11036732074923335,
+     0.24773723599807995
+    ]
+   },
+   "shallow": {
+    "count": 0,
+    "rate": 0.0,
+    "total": 26,
+    "wilson_95": [
+     0.0,
+     0.1287289218592153
+    ]
+   }
+  }
+ },
+ "calibration": {
+  "null_trigger": {
+   "count": 10,
+   "rate": 0.05,
+   "total": 200,
+   "wilson_95": [
+    0.02738264560076393,
+    0.08957814813877599
+   ]
+  },
+  "null_trigger_at_screening": {
+   "count": 197,
+   "rate": 0.985,
+   "total": 200,
+   "wilson_95": [
+    0.9568342712073097,
+    0.9948857622067417
+   ]
+  },
+  "planet_in_candidate_list": {
+   "count": 148,
+   "rate": 0.8087431693989071,
+   "total": 183,
+   "wilson_95": [
+    0.7456462687361525,
+    0.8591445561334101
+   ]
+  },
+  "planet_recall": {
+   "count": 58,
+   "rate": 0.31693989071038253,
+   "total": 183,
+   "wilson_95": [
+    0.25388162144162085,
+    0.38752558859147046
+   ]
+  },
+  "planet_recall_by_depth": {
+   "deep": {
+    "count": 43,
+    "rate": 0.7678571428571429,
+    "total": 56,
+    "wilson_95": [
+     0.6423184678498916,
+     0.8590062089079139
+    ]
+   },
+   "medium": {
+    "count": 14,
+    "rate": 0.14736842105263157,
+    "total": 95,
+    "wilson_95": [
+     0.08986080653616779,
+     0.2322859849074605
+    ]
+   },
+   "shallow": {
+    "count": 1,
+    "rate": 0.03125,
+    "total": 32,
+    "wilson_95": [
+     0.005537860164003122,
+     0.15744263820012558
+    ]
+   }
+  }
+ },
+ "cases_missing_results": 18,
+ "cases_used": 782,
+ "context": {
+  "binary_sha256": "638f51dece3099b37bafed67ea88ea60753137d6f10fcb8b6e04666a16760c84",
+  "flux_origin": "QLP",
+  "max_period": 30,
+  "min_period": 0.15,
+  "transit_search_passes": 1
+ },
+ "created_utc": "2026-10-10T12:37:03+00:00",
+ "manifest": "data/benchmarks/generated-20261009/truth-manifest.csv",
+ "screening_threshold": 6.0,
+ "target_false_alarm_rate": 0.05,
+ "threshold": 37.88146
+}

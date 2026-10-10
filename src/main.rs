@@ -1,5 +1,6 @@
 use astrosearch::{
-    analyze_file, provenance_json, render_csv, CandidateGrouping, Config, TrendMethod,
+    analyze_file, provenance_json, render_csv, render_csv_with_tier, CandidateGrouping, Config,
+    TrendMethod,
 };
 use std::{
     env, fs,
@@ -61,6 +62,9 @@ fn run() -> Result<(), String> {
             "--min-transit-score" => {
                 config.min_transit_score = parse_num(&value(&mut args)?, "min-transit-score")?
             }
+            "--detection-threshold" => {
+                config.detection_threshold = parse_num(&value(&mut args)?, "detection-threshold")?
+            }
             "--transit-candidates" => {
                 config.transit_candidates = parse_num(&value(&mut args)?, "transit-candidates")?
             }
@@ -98,7 +102,7 @@ fn run() -> Result<(), String> {
         // One row per trial period with an accepted window, in period order.
         atomic_write(path, render_csv(&report.periodogram).as_bytes())?;
     }
-    let csv = render_csv(&report.candidates);
+    let csv = render_csv_with_tier(&report.candidates, config.detection_threshold);
     if let Some(path) = output {
         atomic_write(&path, csv.as_bytes())?;
         // Version, configuration, and input digest that produced this file.
@@ -226,5 +230,5 @@ fn parse_num<T: std::str::FromStr>(value: &str, name: &str) -> Result<T, String>
 }
 
 fn help() {
-    println!("astrosearch — TESS-style light-curve candidate search\n\nUSAGE:\n  astrosearch --input lightcurve.csv [--output candidates.csv]\n              [--min-period DAYS] [--max-period DAYS] [--periods N]\n              [--stellar-density G_PER_CM3]\n              [--durations N] [--trend-days DAYS] [--segment-gap-days DAYS]\n              [--trend-method median|biweight|none] [--transit-search-passes N]\n              [--min-event-points N] [--threads N] [--scoring correlated|white]\n              [--candidate-grouping ephemeris|events] [--min-transit-score X]\n              [--transit-candidates N] [--periodogram trials.csv] [--invert]\n\nInput needs a time/BTJD/BJD and positive-flux column; errors and quality are optional.\nCSV or TSV, including quoted fields, supported. Period bounds apply to both periodic detectors.\nThreads default to 0 (automatic); use 1 for serial execution.\nScoring defaults to correlated (per-segment, duration-dependent noise); white is the\noriginal independent-error statistic. Both appear in the output (score, white_score).\n--stellar-density uses g/cm^3 and assumes b <= 0.95 and e <= 0.9 for a target-specific\nduration floor; omit it for the cadence-only completeness search.\nTrend defaults to a sliding-window Tukey biweight with a 1.05-day window (three times the 0.35-day maximum searched duration).\n--candidate-grouping defaults to events: aliases sharing observed transit events are grouped and kept in the CSV;\nephemeris is the earlier period-drift deduplication.\n--transit-search-passes (default 5) masks each pass's strongest event windows and reruns the transit search;\nruntime grows with passes, and 1 disables masking.\n--invert reflects flux about its median for an inverted-flux systematic control.\nEpochs are window centers; scores rank unvalidated light-curve triggers.");
+    println!("astrosearch — TESS-style light-curve candidate search\n\nUSAGE:\n  astrosearch --input lightcurve.csv [--output candidates.csv]\n              [--min-period DAYS] [--max-period DAYS] [--periods N]\n              [--stellar-density G_PER_CM3]\n              [--durations N] [--trend-days DAYS] [--segment-gap-days DAYS]\n              [--trend-method median|biweight|none] [--transit-search-passes N]\n              [--min-event-points N] [--threads N] [--scoring correlated|white]\n              [--candidate-grouping ephemeris|events] [--min-transit-score X]\n              [--detection-threshold X]\n              [--transit-candidates N] [--periodogram trials.csv] [--invert]\n\nInput needs a time/BTJD/BJD and positive-flux column; errors and quality are optional.\nCSV or TSV, including quoted fields, supported. Period bounds apply to both periodic detectors.\nThreads default to 0 (automatic); use 1 for serial execution.\nScoring defaults to correlated (per-segment, duration-dependent noise); white is the\noriginal independent-error statistic. Both appear in the output (score, white_score).\n--stellar-density uses g/cm^3 and assumes b <= 0.95 and e <= 0.9 for a target-specific\nduration floor; omit it for the cadence-only completeness search.\nTrend defaults to a sliding-window Tukey biweight with a 1.05-day window (three times the 0.35-day maximum searched duration).\n--candidate-grouping defaults to events: aliases sharing observed transit events are grouped and kept in the CSV;\nephemeris is the earlier period-drift deduplication.\n--transit-search-passes (default 5) masks each pass's strongest event windows and reruns the transit search;\nruntime grows with passes, and 1 disables masking.\n--min-transit-score (default 6) is a screening floor: 97% of inverted null controls in the\nknown-answer benchmark exceed it. The tier column marks transit candidates at or above\n--detection-threshold (default 37.88, a 5% null trigger rate on the benchmark calibration\nsplit; QLP, one pass) as detection, others as screening.\n--invert reflects flux about its median for an inverted-flux systematic control.\nEpochs are window centers; scores rank unvalidated light-curve triggers.");
 }

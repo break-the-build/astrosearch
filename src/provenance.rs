@@ -104,8 +104,10 @@ pub fn provenance_json(input_path: &str, input: &[u8], config: &Config, report: 
         .map(|d| d.as_secs())
         .unwrap_or(0);
     format!(
-        "{{\n  \"tool\": \"astrosearch\",\n  \"version\": {},\n  \"created_unix_seconds\": {created},\n  \"input_path\": {},\n  \"input_bytes\": {},\n  \"input_sha256\": {},\n  \"config\": {},\n  \"config_sha256\": {},\n  \"observations\": {},\n  \"span_days\": {},\n  \"segments\": {},\n  \"transit_trials\": {},\n  \"candidates\": {},\n  \"transit_candidates\": {transit},\n  \"warnings\": [{}]\n}}\n",
+        "{{\n  \"tool\": \"astrosearch\",\n  \"version\": {},\n  \"git_commit\": {},\n  \"git_dirty\": {},\n  \"created_unix_seconds\": {created},\n  \"input_path\": {},\n  \"input_bytes\": {},\n  \"input_sha256\": {},\n  \"config\": {},\n  \"config_sha256\": {},\n  \"observations\": {},\n  \"span_days\": {},\n  \"segments\": {},\n  \"transit_trials\": {},\n  \"candidates\": {},\n  \"transit_candidates\": {transit},\n  \"warnings\": [{}]\n}}\n",
         json_string(env!("CARGO_PKG_VERSION")),
+        json_string(env!("ASTROSEARCH_GIT_COMMIT")),
+        json_string(env!("ASTROSEARCH_GIT_DIRTY")),
         json_string(input_path),
         input.len(),
         json_string(&sha256_hex(input)),

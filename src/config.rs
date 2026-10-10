@@ -1,6 +1,8 @@
 //! Search options, their defaults, and validation.
 
 pub const MAX_PERIOD_TRIALS: usize = 250_000;
+/// Calibrated detection-tier score (see `Config::detection_threshold`).
+pub const DETECTION_THRESHOLD: f64 = 37.88;
 
 /// Statistic that selects and ranks periodic-dip windows.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -90,7 +92,14 @@ pub struct Config {
     /// Event-based alias grouping is selectable; ephemeris grouping is the baseline.
     pub candidate_grouping: CandidateGrouping,
     /// Periodic-dip windows below this score are discarded before vetting.
+    /// This is a screening floor: 97% of inverted null controls in the
+    /// known-answer benchmark produce a candidate above it.
     pub min_transit_score: f64,
+    /// Transit candidates at or above this score are labeled `detection`,
+    /// the rest `screening`. The default is the score with a 5% trigger rate
+    /// on the benchmark's calibration-split null controls
+    /// (`data/calibration/detection_threshold.json`; QLP, one search pass).
+    pub detection_threshold: f64,
     /// Distinct periodic-dip ephemerides kept after deduplication.
     pub transit_candidates: usize,
     /// Maximum number of sequential masked transit searches.
@@ -117,6 +126,7 @@ impl Default for Config {
             scoring: Scoring::Correlated,
             candidate_grouping: CandidateGrouping::Events,
             min_transit_score: 6.0,
+            detection_threshold: DETECTION_THRESHOLD,
             transit_candidates: 12,
             transit_search_passes: 5,
             invert: false,
@@ -161,6 +171,9 @@ impl Config {
         }
         if !(self.min_transit_score.is_finite() && self.min_transit_score > 0.0) {
             return Err("min-transit-score must be a finite, positive number".into());
+        }
+        if !(self.detection_threshold.is_finite() && self.detection_threshold > 0.0) {
+            return Err("detection-threshold must be a finite, positive number".into());
         }
         if !(1..=100_000).contains(&self.transit_candidates) {
             return Err("transit-candidates must be between 1 and 100000".into());

@@ -1,4 +1,4 @@
-use astrosearch::{analyze, Config, Point, Report};
+use astrosearch::{analyze, render_csv, render_csv_with_tier, Config, Point, Report};
 
 struct Noise(u64);
 
@@ -379,4 +379,32 @@ fn candidate_limit_not_number_of_search_passes_bounds_transit_output() {
     assert!(dips(2, 12) > 2, "output stopped at the number of passes");
     assert!(dips(2, 12) <= 12);
     assert!(dips(5, 4) <= 4);
+}
+
+#[test]
+fn tier_column_separates_detection_from_screening_transits() {
+    let mut points = curve(3000, 83);
+    inject(&mut points, 3.0, 0.37, 0.12, 0.004);
+    let report = analyze(points, config(2.8, 3.6)).unwrap();
+    let best = report
+        .candidates
+        .iter()
+        .filter(|c| c.kind.is_transit())
+        .map(|c| c.score)
+        .fold(0.0, f64::max);
+    assert!(best > 0.0, "{:?}", report.candidates);
+    let csv = render_csv_with_tier(&report.candidates, best);
+    let mut lines = csv.lines();
+    assert!(lines.next().unwrap().ends_with(",tier"));
+    let tiers: Vec<&str> = lines.map(|l| l.rsplit(',').next().unwrap()).collect();
+    assert_eq!(tiers.iter().filter(|t| **t == "detection").count(), 1);
+    // A threshold above every score leaves only screening-tier transits.
+    let none = render_csv_with_tier(&report.candidates, best + 1.0);
+    assert!(!none.contains(",detection"));
+    // The plain renderer keeps the original header for existing consumers.
+    assert!(render_csv(&report.candidates)
+        .lines()
+        .next()
+        .unwrap()
+        .ends_with(",note"));
 }

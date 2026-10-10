@@ -26,8 +26,10 @@ mod transit;
 mod types;
 mod variability;
 
-pub use config::{CandidateGrouping, Config, Scoring, TrendMethod, MAX_PERIOD_TRIALS};
-pub use output::render_csv;
+pub use config::{
+    CandidateGrouping, Config, Scoring, TrendMethod, DETECTION_THRESHOLD, MAX_PERIOD_TRIALS,
+};
+pub use output::{render_csv, render_csv_with_tier};
 pub use provenance::{provenance_json, sha256_hex};
 pub use types::{
     AliasEphemeris, AliasType, Candidate, CandidateKind, EventEvidence, Point, Report,

@@ -4,17 +4,43 @@ use crate::Candidate;
 
 /// CSV includes both display order and rank within each detector class.
 pub fn render_csv(candidates: &[Candidate]) -> String {
+    render(candidates, None)
+}
+
+/// `render_csv` plus a `tier` column: transit candidates scoring at least
+/// `detection_threshold` are `detection`, other transit candidates
+/// `screening`; non-transit classes are left blank.
+pub fn render_csv_with_tier(candidates: &[Candidate], detection_threshold: f64) -> String {
+    render(candidates, Some(detection_threshold))
+}
+
+fn tier(candidate: &Candidate, threshold: f64) -> &'static str {
+    if !candidate.kind.is_transit() {
+        ""
+    } else if candidate.score >= threshold {
+        "detection"
+    } else {
+        "screening"
+    }
+}
+
+fn render(candidates: &[Candidate], detection_threshold: Option<f64>) -> String {
     use std::collections::BTreeMap;
     use std::fmt::Write;
     let mut output = String::from(
-        "rank,class,class_rank,score,period_days,epoch,duration_days,depth_ppm,amplitude_ppm,n_events,odd_even_sigma,white_score,noise_factor,event_evidence,alias_ephemerides,note\n",
+        "rank,class,class_rank,score,period_days,epoch,duration_days,depth_ppm,amplitude_ppm,n_events,odd_even_sigma,white_score,noise_factor,event_evidence,alias_ephemerides,note",
     );
+    output.push_str(if detection_threshold.is_some() {
+        ",tier\n"
+    } else {
+        "\n"
+    });
     let mut ranks = BTreeMap::new();
     for (i, c) in candidates.iter().enumerate() {
         let rank = ranks.entry(c.kind).or_insert(0);
         *rank += 1;
         let optional = |v: Option<f64>| v.map(|v| format!("{v:.3}")).unwrap_or_default();
-        writeln!(
+        write!(
             output,
             "{},{},{},{:.5},{:.8},{:.8},{:.8},{:.4},{:.4},{},{},{:.5},{},\"{}\",\"{}\",\"{}\"",
             i + 1,
@@ -59,6 +85,10 @@ pub fn render_csv(candidates: &[Candidate]) -> String {
             c.note.replace('"', "\"\"")
         )
         .unwrap();
+        if let Some(threshold) = detection_threshold {
+            write!(output, ",{}", tier(c, threshold)).unwrap();
+        }
+        output.push('\n');
     }
     output
 }

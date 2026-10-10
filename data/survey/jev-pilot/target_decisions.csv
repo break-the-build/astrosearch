@@ -1,0 +1,2 @@
+input_row,tic_id,selected,status,jev_score,jev_confidence,jev_probabilities,jev_model,jev_input_tokens,jev_output_tokens,jev_request_sha256
+1,4206066,True,selected,3.07,0.8,"{""0"": 0.01, ""1"": 0.01, ""2"": 0.04, ""3"": 0.79, ""4"": 0.15}",jev-1.13.0,500,19,53be82920c37e3d718a5d64d65f68a591d38b1eaea1fdef7461402710d671d6d

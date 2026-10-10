@@ -1,0 +1,92 @@
+{
+  "tic_id": "249076418",
+  "created_utc": "2026-10-10T01:28:06.550035+00:00",
+  "input_catalog_row": {
+    "tic_id": "249076418",
+    "ra": "79.8027515742349",
+    "dec": "-3.07381585299474",
+    "teff_k": "4872",
+    "distance_pc": "15.7034",
+    "radius_solar": "0.647965",
+    "tmag": "6.8258",
+    "local_snr_proxy": "10.27393714"
+  },
+  "authors": [
+    {
+      "author": "QLP",
+      "status": "searched",
+      "exit_code": 0,
+      "sectors": [
+        5,
+        32,
+        98
+      ],
+      "products": [
+        {
+          "index": 0,
+          "sector": 5,
+          "exptime": 1800.0,
+          "author": "QLP",
+          "mission": "TESS Sector 05",
+          "dataURI": "mast:HLSP/qlp/s0005/0000/0002/4907/6418/hlsp_qlp_tess_ffi_s0005-0000000249076418_tess_v01_llc.fits",
+          "productFilename": "hlsp_qlp_tess_ffi_s0005-0000000249076418_tess_v01_llc.fits",
+          "obs_id": "hlsp_qlp_tess_ffi_s0005-0000000249076418_tess_v01_llc",
+          "rows": 1024,
+          "file": "sector_005.csv",
+          "time_start": 1438.2656491329558,
+          "time_end": 1463.3494564205853,
+          "sha256": "b06705b83c63fbb83680b64e8c10df80c81fddfd6162da1549dd79eafe3c6102"
+        },
+        {
+          "index": 1,
+          "sector": 32,
+          "exptime": 600.0,
+          "author": "QLP",
+          "mission": "TESS Sector 32",
+          "dataURI": "mast:HLSP/qlp/s0032/0000/0002/4907/6418/hlsp_qlp_tess_ffi_s0032-0000000249076418_tess_v01_llc.fits",
+          "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000249076418_tess_v01_llc.fits",
+          "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000249076418_tess_v01_llc",
+          "rows": 3076,
+          "file": "sector_032.csv",
+          "time_start": 2174.3210558433234,
+          "time_end": 2199.5018600272047,
+          "sha256": "870eb3b5c78a9a40fa69f35218390151b130777fb3fe48971fed5a092d32a5e6"
+        },
+        {
+          "index": 2,
+          "sector": 98,
+          "exptime": 200.0,
+          "author": "QLP",
+          "mission": "TESS Sector 98",
+          "dataURI": "mast:HLSP/qlp/s0098/0000/0002/4907/6418/hlsp_qlp_tess_ffi_s0098-0000000249076418_tess_v01_llc.fits",
+          "productFilename": "hlsp_qlp_tess_ffi_s0098-0000000249076418_tess_v01_llc.fits",
+          "obs_id": "hlsp_qlp_tess_ffi_s0098-0000000249076418_tess_v01_llc",
+          "rows": 16442,
+          "file": "sector_098.csv",
+          "time_start": 3993.360180427089,
+          "time_end": 4045.8578769042665,
+          "sha256": "ea44dded32bc616b529a7bd6fbf3f62ebaac4869e7ae88a77fd752641561d783"
+        }
+      ],
+      "baseline_days": 2607.59222777131,
+      "recent_multiyear": true,
+      "priority_score": 74.358,
+      "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-local/TIC249076418/QLP/combined.csv",
+      "candidates_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-local/TIC249076418/QLP/candidates.csv",
+      "search_log": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-local/TIC249076418/QLP/search.log"
+    }
+  ],
+  "lightkurve_version": "2.6.0",
+  "search_config": {
+    "min_sector": 90,
+    "min_exptime_s": 200,
+    "min_baseline_days": 1095,
+    "min_period_days": 1.0,
+    "max_period_days": 10.0,
+    "period_trials": 12000,
+    "threads": 24,
+    "decision_engine": "local",
+    "max_targets": 4
+  },
+  "warning": "Candidates are unvalidated triggers; scores are not false-alarm probabilities."
+}

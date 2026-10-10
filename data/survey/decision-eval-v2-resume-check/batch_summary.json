@@ -1,0 +1,22 @@
+[
+  {
+    "tic_id": "249076418",
+    "status": "ledger_deferred",
+    "reason": "already processed within the 30-day ledger cooldown"
+  },
+  {
+    "tic_id": "50587969",
+    "status": "ledger_deferred",
+    "reason": "already processed within the 30-day ledger cooldown"
+  },
+  {
+    "tic_id": "264588636",
+    "status": "ledger_deferred",
+    "reason": "already processed within the 30-day ledger cooldown"
+  },
+  {
+    "tic_id": "4204875",
+    "status": "ledger_deferred",
+    "reason": "already processed within the 30-day ledger cooldown"
+  }
+]

@@ -1,0 +1,11 @@
+label,kind,tic,period_days,epoch_btjd,duration_hours,source
+L 98-59 b,planet,307210830,2.253114,1366.1705599999987,1.01,NASA Exoplanet Archive pscomppars
+L 98-59 c,planet,307210830,3.6906764,1367.2730299998075,1.28,NASA Exoplanet Archive pscomppars
+L 98-59 d,planet,307210830,7.450729,1362.7400199999101,0.84,NASA Exoplanet Archive pscomppars
+LHS 3844 b,planet,410153553,0.462929709,3178.8330899998546,0.5242,NASA Exoplanet Archive pscomppars
+TOI-700 b,planet,150428135,9.97722,1880.099400000181,2.13,NASA Exoplanet Archive pscomppars
+TOI-700 c,planet,150428135,16.0511039,1821.6219000001438,1.399,NASA Exoplanet Archive pscomppars
+TOI-1113.01,false_positive,290348382,6.4410082,3140.2212049998343,1.798,"NASA Exoplanet Archive TOI table, tfopwg_disp=FP, depth > 1000 ppm"
+TOI-1120.01,false_positive,143257766,1.66226,1656.450819999911,3.321,"NASA Exoplanet Archive TOI table, tfopwg_disp=FP, depth > 1000 ppm"
+TOI-1122.01,false_positive,304774444,3.6245513,3115.852574000135,3.042,"NASA Exoplanet Archive TOI table, tfopwg_disp=FP, depth > 1000 ppm"
+TOI-1126.01,false_positive,405862830,1.6268695,3122.432107999921,3.231,"NASA Exoplanet Archive TOI table, tfopwg_disp=FP, depth > 1000 ppm"

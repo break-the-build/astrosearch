@@ -1,0 +1,9 @@
+tic_id,author,recent_multiyear,priority_score,sectors,baseline_days,candidates_csv
+4068716,QLP,True,77.161,5;32;98,2607.59223182363,/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC4068716/QLP/candidates.csv
+50659288,QLP,True,76.954,6;32;98,2577.4460253262196,/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC50659288/QLP/candidates.csv
+220044948,QLP,True,76.659,6;32;98,2577.44605098266,/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC220044948/QLP/candidates.csv
+4008911,QLP,True,73.201,5;32;98,2578.60200241413,/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC4008911/QLP/candidates.csv
+464838617,QLP,False,53.746,6;32,731.0899174313602,
+138899660,QLP,False,49.236,6;32,731.0899189412003,
+249071639,QLP,False,48.941,5;32,761.2361865077403,
+50745105,QLP,False,48.786,6;32,731.0899193023499,

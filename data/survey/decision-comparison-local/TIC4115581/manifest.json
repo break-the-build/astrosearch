@@ -1,0 +1,59 @@
+{
+  "tic_id": "4115581",
+  "created_utc": "2026-10-10T00:58:11.373549+00:00",
+  "input_catalog_row": {
+    "tic_id": "4115581",
+    "teff_k": "3536",
+    "distance_pc": "90.7014",
+    "radius_solar": "0.406342",
+    "tmag": "13.3141",
+    "comparison_role": "eligible"
+  },
+  "authors": [
+    {
+      "author": "QLP",
+      "status": "insufficient_multiyear_baseline",
+      "sectors": [
+        32
+      ],
+      "products": [
+        {
+          "index": 0,
+          "sector": 32,
+          "exptime": 600.0,
+          "author": "QLP",
+          "mission": "TESS Sector 32",
+          "dataURI": "mast:HLSP/qlp/s0032/0000/0000/0411/5581/hlsp_qlp_tess_ffi_s0032-0000000004115581_tess_v01_llc.fits",
+          "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000004115581_tess_v01_llc.fits",
+          "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000004115581_tess_v01_llc",
+          "rows": 3076,
+          "file": "sector_032.csv",
+          "time_start": 2174.3210800971774,
+          "time_end": 2199.5019156318576,
+          "sha256": "be2e389a33f130d350d220bfbe1b015fd61287d9f9b091efb274da41c3cf78ca"
+        }
+      ],
+      "baseline_days": 25.180835534679773,
+      "recent_multiyear": false,
+      "priority_score": 18.34,
+      "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-comparison-local/TIC4115581/QLP/combined.csv"
+    },
+    {
+      "author": "SPOC",
+      "status": "no_sector_metadata"
+    }
+  ],
+  "lightkurve_version": "2.6.0",
+  "search_config": {
+    "min_sector": 90,
+    "min_exptime_s": 200,
+    "min_baseline_days": 1095,
+    "min_period_days": 0.15,
+    "max_period_days": 30,
+    "period_trials": null,
+    "threads": 0,
+    "decision_engine": "local",
+    "max_targets": 3
+  },
+  "warning": "Candidates are unvalidated triggers; scores are not false-alarm probabilities."
+}

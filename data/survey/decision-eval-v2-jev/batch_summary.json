@@ -1,0 +1,1683 @@
+[
+  {
+    "tic_id": "4008911",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC4008911",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "searched",
+        "exit_code": 0,
+        "sectors": [
+          5,
+          32,
+          98
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 5,
+            "exptime": 1800.0,
+            "author": "QLP",
+            "mission": "TESS Sector 05",
+            "dataURI": "mast:HLSP/qlp/s0005/0000/0000/0400/8911/hlsp_qlp_tess_ffi_s0005-0000000004008911_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0005-0000000004008911_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0005-0000000004008911_tess_v01_llc",
+            "rows": 1024,
+            "file": "sector_005.csv",
+            "time_start": 1438.2655404379434,
+            "time_end": 1463.3493306701503,
+            "sha256": "1c094a186ba7b70eaf0e3f1fb121c0a7483ce7c99a5c1048e636849f0876294d"
+          },
+          {
+            "index": 1,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0000/0400/8911/hlsp_qlp_tess_ffi_s0032-0000000004008911_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000004008911_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000004008911_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.3209416254485,
+            "time_end": 2199.501733542988,
+            "sha256": "f493d585d2b94c90d37aadf67c8b55c32f229b871e532cab2ae4019862a0b56f"
+          },
+          {
+            "index": 2,
+            "sector": 98,
+            "exptime": 200.0,
+            "author": "QLP",
+            "mission": "TESS Sector 98",
+            "dataURI": "mast:HLSP/qlp/s0098/0000/0000/0400/8911/hlsp_qlp_tess_ffi_s0098-0000000004008911_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0098-0000000004008911_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0098-0000000004008911_tess_v01_llc",
+            "rows": 8499,
+            "file": "sector_098.csv",
+            "time_start": 3993.3600758305806,
+            "time_end": 4016.8675428520696,
+            "sha256": "c5a022e24973b1838acf4476a141d89745cc0cf867168090e278f18e76a882dd"
+          }
+        ],
+        "baseline_days": 2578.60200241413,
+        "recent_multiyear": true,
+        "priority_score": 73.201,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC4008911/QLP/combined.csv",
+        "candidates_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC4008911/QLP/candidates.csv",
+        "search_log": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC4008911/QLP/search.log"
+      }
+    ],
+    "jev_decision": {
+      "jev_score": 3.15,
+      "jev_confidence": 0.82,
+      "jev_model": "jev-1.13.0",
+      "jev_request_sha256": "f24769d2239f787e631b00d785d38e2168212506f705f57c348b29ee8f1efe5b",
+      "jev_input_tokens": 12709,
+      "jev_output_tokens": 794
+    }
+  },
+  {
+    "tic_id": "4067562",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4068383",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4068716",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC4068716",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "searched",
+        "exit_code": 0,
+        "sectors": [
+          5,
+          32,
+          98
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 5,
+            "exptime": 1800.0,
+            "author": "QLP",
+            "mission": "TESS Sector 05",
+            "dataURI": "mast:HLSP/qlp/s0005/0000/0000/0406/8716/hlsp_qlp_tess_ffi_s0005-0000000004068716_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0005-0000000004068716_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0005-0000000004068716_tess_v01_llc",
+            "rows": 1024,
+            "file": "sector_005.csv",
+            "time_start": 1438.2655846534165,
+            "time_end": 1463.3493870006903,
+            "sha256": "5dbf2e706ddd05af2ae9bdd8c08eac78e38ecd6372f5ff9481711c61fbb9084e"
+          },
+          {
+            "index": 1,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0000/0406/8716/hlsp_qlp_tess_ffi_s0032-0000000004068716_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000004068716_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000004068716_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.3209894495258,
+            "time_end": 2199.5017912786466,
+            "sha256": "110f58e63268db61ade79400fd44850174c6dac313f29ab4174ce09cda412486"
+          },
+          {
+            "index": 2,
+            "sector": 98,
+            "exptime": 200.0,
+            "author": "QLP",
+            "mission": "TESS Sector 98",
+            "dataURI": "mast:HLSP/qlp/s0098/0000/0000/0406/8716/hlsp_qlp_tess_ffi_s0098-0000000004068716_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0098-0000000004068716_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0098-0000000004068716_tess_v01_llc",
+            "rows": 16442,
+            "file": "sector_098.csv",
+            "time_start": 3993.3601180910846,
+            "time_end": 4045.8578164770497,
+            "sha256": "b72d21abbe7513494062d39f625eeb4df9b137bc22d76792a879edfba1b7ea57"
+          }
+        ],
+        "baseline_days": 2607.59223182363,
+        "recent_multiyear": true,
+        "priority_score": 77.161,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC4068716/QLP/combined.csv",
+        "candidates_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC4068716/QLP/candidates.csv",
+        "search_log": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC4068716/QLP/search.log"
+      }
+    ],
+    "jev_decision": {
+      "jev_score": 3.4,
+      "jev_confidence": 0.6,
+      "jev_model": "jev-1.13.0",
+      "jev_request_sha256": "f24769d2239f787e631b00d785d38e2168212506f705f57c348b29ee8f1efe5b",
+      "jev_input_tokens": 12709,
+      "jev_output_tokens": 794
+    }
+  },
+  {
+    "tic_id": "4069311",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4069472",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4069747",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4070275",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4070804",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4071211",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4109952",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4111001",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4113133",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4114668",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4115581",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4156823",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4156874",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4156906",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4157693",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4159824",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4204750",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4204875",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4205785",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4206066",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4207779",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4254380",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4254809",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4256579",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4256936",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4290856",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4292919",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4351566",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4351900",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4352583",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4353755",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4354025",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4354056",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4355984",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4378771",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11194450",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11195828",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11196079",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11199202",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11285420",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11289235",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11291154",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11355946",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11359622",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11360460",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11362516",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11362807",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11411102",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11411197",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11411966",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "11413227",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "24457175",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "24522418",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "24569036",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "24604832",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50529922",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50583839",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50585296",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50587969",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50618674",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50618703",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50622976",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50624012",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50624616",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50656129",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50657227",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50657953",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50659049",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50659288",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC50659288",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "searched",
+        "exit_code": 0,
+        "sectors": [
+          6,
+          32,
+          98
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 6,
+            "exptime": 1800.0,
+            "author": "QLP",
+            "mission": "TESS Sector 06",
+            "dataURI": "mast:HLSP/qlp/s0006/0000/0000/5065/9288/hlsp_qlp_tess_ffi_s0006-0000000050659288_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0006-0000000050659288_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0006-0000000050659288_tess_v01_llc",
+            "rows": 824,
+            "file": "sector_006.csv",
+            "time_start": 1468.4119381332923,
+            "time_end": 1489.7239900939403,
+            "sha256": "9ccb75a243f1a9481f8759a4f69b5ab952a32c45fda309b377a10b6ef3941f93"
+          },
+          {
+            "index": 1,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0000/5065/9288/hlsp_qlp_tess_ffi_s0032-0000000050659288_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000050659288_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000050659288_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.3209391439777,
+            "time_end": 2199.50185648309,
+            "sha256": "23337ad9622f32039b71f7f2cb46c86c53beb765e282fca2bb453c9a977d3cd3"
+          },
+          {
+            "index": 2,
+            "sector": 98,
+            "exptime": 200.0,
+            "author": "QLP",
+            "mission": "TESS Sector 98",
+            "dataURI": "mast:HLSP/qlp/s0098/0000/0000/5065/9288/hlsp_qlp_tess_ffi_s0098-0000000050659288_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0098-0000000050659288_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0098-0000000050659288_tess_v01_llc",
+            "rows": 16442,
+            "file": "sector_098.csv",
+            "time_start": 3993.3600339843906,
+            "time_end": 4045.857963459506,
+            "sha256": "b54968f4b26219731d0db639a2faffa7f160819bea6375b8473cb80a848f7301"
+          }
+        ],
+        "baseline_days": 2577.4460253262196,
+        "recent_multiyear": true,
+        "priority_score": 76.954,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC50659288/QLP/combined.csv",
+        "candidates_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC50659288/QLP/candidates.csv",
+        "search_log": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC50659288/QLP/search.log"
+      }
+    ],
+    "jev_decision": {
+      "jev_score": 3.12,
+      "jev_confidence": 0.67,
+      "jev_model": "jev-1.13.0",
+      "jev_request_sha256": "4c988f6f03b223e177dba4a5801a9bdfe56d383abf0d758885ceb007aee8bebd",
+      "jev_input_tokens": 12818,
+      "jev_output_tokens": 804
+    }
+  },
+  {
+    "tic_id": "50659426",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50660646",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50661419",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50662287",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50663680",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50721317",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50727313",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50727529",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50743730",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50745105",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC50745105",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "insufficient_multiyear_baseline",
+        "sectors": [
+          6,
+          32
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 6,
+            "exptime": 1800.0,
+            "author": "QLP",
+            "mission": "TESS Sector 06",
+            "dataURI": "mast:HLSP/qlp/s0006/0000/0000/5074/5105/hlsp_qlp_tess_ffi_s0006-0000000050745105_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0006-0000000050745105_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0006-0000000050745105_tess_v01_llc",
+            "rows": 824,
+            "file": "sector_006.csv",
+            "time_start": 1468.4119851330202,
+            "time_end": 1489.724054663904,
+            "sha256": "6f22032f4d8308b95b0793365e421ec4626717f8b702c0e06e42bb743c6168fd"
+          },
+          {
+            "index": 1,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0000/5074/5105/hlsp_qlp_tess_ffi_s0032-0000000050745105_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000050745105_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000050745105_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.3209581127376,
+            "time_end": 2199.5019044353717,
+            "sha256": "0d51d9480b7e5a08828328a5957c409e2de0ed6242691f434ebf8966337dc2cf"
+          }
+        ],
+        "baseline_days": 731.0899193023499,
+        "recent_multiyear": false,
+        "priority_score": 48.786,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC50745105/QLP/combined.csv"
+      }
+    ],
+    "jev_decision": {
+      "jev_score": 3.19,
+      "jev_confidence": 0.71,
+      "jev_model": "jev-1.13.0",
+      "jev_request_sha256": "4c988f6f03b223e177dba4a5801a9bdfe56d383abf0d758885ceb007aee8bebd",
+      "jev_input_tokens": 12818,
+      "jev_output_tokens": 804
+    }
+  },
+  {
+    "tic_id": "50745533",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50745567",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50745568",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50747512",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50749303",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50790407",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50791058",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50793017",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50793802",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "50794288",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "138856700",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "138859330",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "138899660",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC138899660",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "insufficient_multiyear_baseline",
+        "sectors": [
+          6,
+          32
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 6,
+            "exptime": 1800.0,
+            "author": "QLP",
+            "mission": "TESS Sector 06",
+            "dataURI": "mast:HLSP/qlp/s0006/0000/0001/3889/9660/hlsp_qlp_tess_ffi_s0006-0000000138899660_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0006-0000000138899660_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0006-0000000138899660_tess_v01_llc",
+            "rows": 824,
+            "file": "sector_006.csv",
+            "time_start": 1468.4122025383438,
+            "time_end": 1489.724259821689,
+            "sha256": "b4c03465d4604efbd2440650572de8b939fdd69e9c0f52c8a86148ec0fa7b395"
+          },
+          {
+            "index": 1,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0001/3889/9660/hlsp_qlp_tess_ffi_s0032-0000000138899660_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000138899660_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000138899660_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.321151274821,
+            "time_end": 2199.502121479537,
+            "sha256": "f5ad4fbc9cc865a12ee32c9a6d73bf1e8a743977906241c59f589b6d30620afc"
+          }
+        ],
+        "baseline_days": 731.0899189412003,
+        "recent_multiyear": false,
+        "priority_score": 49.236,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC138899660/QLP/combined.csv"
+      }
+    ],
+    "jev_decision": {
+      "jev_score": 3.22,
+      "jev_confidence": 0.68,
+      "jev_model": "jev-1.13.0",
+      "jev_request_sha256": "4c988f6f03b223e177dba4a5801a9bdfe56d383abf0d758885ceb007aee8bebd",
+      "jev_input_tokens": 12818,
+      "jev_output_tokens": 804
+    }
+  },
+  {
+    "tic_id": "138904885",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "138935386",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "138936438",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "199821308",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "199887309",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "213077997",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "213078986",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "213079647",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "213104482",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "213107104",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "213107243",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "220044948",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC220044948",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "searched",
+        "exit_code": 0,
+        "sectors": [
+          6,
+          32,
+          98
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 6,
+            "exptime": 1800.0,
+            "author": "QLP",
+            "mission": "TESS Sector 06",
+            "dataURI": "mast:HLSP/qlp/s0006/0000/0002/2004/4948/hlsp_qlp_tess_ffi_s0006-0000000220044948_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0006-0000000220044948_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0006-0000000220044948_tess_v01_llc",
+            "rows": 824,
+            "file": "sector_006.csv",
+            "time_start": 1468.412157856271,
+            "time_end": 1489.7242379336042,
+            "sha256": "ddea2b60fb2a0fdbc782fee615cec3a5cf675c10b65c15c5c283543ae6b7a40e"
+          },
+          {
+            "index": 1,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0002/2004/4948/hlsp_qlp_tess_ffi_s0032-0000000220044948_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000220044948_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000220044948_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.321088712659,
+            "time_end": 2199.5020777819564,
+            "sha256": "9fdda97f67b0ca187b1c2a323e5a910e34d79e2bd9229c3c1bffd59affd273e4"
+          },
+          {
+            "index": 2,
+            "sector": 98,
+            "exptime": 200.0,
+            "author": "QLP",
+            "mission": "TESS Sector 98",
+            "dataURI": "mast:HLSP/qlp/s0098/0000/0002/2004/4948/hlsp_qlp_tess_ffi_s0098-0000000220044948_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0098-0000000220044948_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0098-0000000220044948_tess_v01_llc",
+            "rows": 16442,
+            "file": "sector_098.csv",
+            "time_start": 3993.3601533899623,
+            "time_end": 4045.8582088389317,
+            "sha256": "334eadde58aafcd7cdd5a0a3f85afa941f16b1b34bd818f07e6612dc02d958d0"
+          }
+        ],
+        "baseline_days": 2577.44605098266,
+        "recent_multiyear": true,
+        "priority_score": 76.659,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC220044948/QLP/combined.csv",
+        "candidates_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC220044948/QLP/candidates.csv",
+        "search_log": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC220044948/QLP/search.log"
+      }
+    ],
+    "jev_decision": {
+      "jev_score": 3.56,
+      "jev_confidence": 0.62,
+      "jev_model": "jev-1.13.0",
+      "jev_request_sha256": "fe32220c2661ca85746bf347c4a1c072094e04efdca86ee0681f10b666c242c7",
+      "jev_input_tokens": 12944,
+      "jev_output_tokens": 854
+    }
+  },
+  {
+    "tic_id": "220045405",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "220052951",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "220055865",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "220063629",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "220064093",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "220075774",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248398012",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248431598",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248431600",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248433966",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248436830",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248437493",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248439061",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248439786",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248439912",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248443532",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248446220",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248447920",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248448912",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248990433",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248997816",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "248999999",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249028857",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249031383",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249033867",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249036158",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249038479",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249039211",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249039928",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249040177",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249041594",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249041679",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249063945",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249064695",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249064742",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249064854",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249067112",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249068330",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249070706",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249071639",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC249071639",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "insufficient_multiyear_baseline",
+        "sectors": [
+          5,
+          32
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 5,
+            "exptime": 1800.0,
+            "author": "QLP",
+            "mission": "TESS Sector 05",
+            "dataURI": "mast:HLSP/qlp/s0005/0000/0002/4907/1639/hlsp_qlp_tess_ffi_s0005-0000000249071639_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0005-0000000249071639_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0005-0000000249071639_tess_v01_llc",
+            "rows": 1024,
+            "file": "sector_005.csv",
+            "time_start": 1438.2655803755868,
+            "time_end": 1463.3493661050823,
+            "sha256": "3f7c79cb970036151f99b8b390cba1d0680f4170bf1c0f1ec2e04c7bc2fe7fef"
+          },
+          {
+            "index": 1,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0002/4907/1639/hlsp_qlp_tess_ffi_s0032-0000000249071639_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000249071639_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000249071639_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.320981147491,
+            "time_end": 2199.501766883325,
+            "sha256": "5ca429c8baee6a3f189717161f3d3d6f066bbca6c2c8acb4191d34d86ebe133a"
+          }
+        ],
+        "baseline_days": 761.2361865077403,
+        "recent_multiyear": false,
+        "priority_score": 48.941,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC249071639/QLP/combined.csv"
+      }
+    ],
+    "jev_decision": {
+      "jev_score": 3.13,
+      "jev_confidence": 0.78,
+      "jev_model": "jev-1.13.0",
+      "jev_request_sha256": "fe32220c2661ca85746bf347c4a1c072094e04efdca86ee0681f10b666c242c7",
+      "jev_input_tokens": 12944,
+      "jev_output_tokens": 854
+    }
+  },
+  {
+    "tic_id": "249076317",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249076418",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "249076771",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "262325558",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "262398297",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "262400343",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264459029",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264459187",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264463045",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264463063",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264485406",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264540709",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264541755",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264588636",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264589085",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264630812",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264631371",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264682980",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264741205",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264742242",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "264743563",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "269117125",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "269118264",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "269200074",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "276662055",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "276663026",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "276663492",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "280972697",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "343863181",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "397121827",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427334498",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427335233",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427346661",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427346731",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427348120",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427348229",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427348926",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427349620",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427349829",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427352739",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427376138",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427376139",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427393105",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427449707",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427451232",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "427458919",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "449256678",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "449256702",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "449364384",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "449364512",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "449364688",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "449424056",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "449427712",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "454162277",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "454162428",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "454183286",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "454183305",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "454183860",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "454185003",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "454185379",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "454189635",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "454192167",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "454196756",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "454198827",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "454221679",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "455026252",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "455026486",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "455031985",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "455032017",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "455032060",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC455032060",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "no_sector_metadata"
+      }
+    ],
+    "jev_decision": {
+      "jev_score": 3.37,
+      "jev_confidence": 0.55,
+      "jev_model": "jev-1.13.0",
+      "jev_request_sha256": "a1438f5f05511a49d1b64288cc2862a71221d6478d689799012bc25b9ba9408a",
+      "jev_input_tokens": 7620,
+      "jev_output_tokens": 497
+    }
+  },
+  {
+    "tic_id": "455059467",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "455059671",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "455073594",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "455073971",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "455074154",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "457230759",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC457230759",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "no_usable_products"
+      }
+    ],
+    "jev_decision": {
+      "jev_score": 3.13,
+      "jev_confidence": 0.76,
+      "jev_model": "jev-1.13.0",
+      "jev_request_sha256": "a1438f5f05511a49d1b64288cc2862a71221d6478d689799012bc25b9ba9408a",
+      "jev_input_tokens": 7620,
+      "jev_output_tokens": 497
+    }
+  },
+  {
+    "tic_id": "457248952",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "459974226",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "464833963",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "464838617",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC464838617",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "insufficient_multiyear_baseline",
+        "sectors": [
+          6,
+          32
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 6,
+            "exptime": 1800.0,
+            "author": "QLP",
+            "mission": "TESS Sector 06",
+            "dataURI": "mast:HLSP/qlp/s0006/0000/0004/6483/8617/hlsp_qlp_tess_ffi_s0006-0000000464838617_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0006-0000000464838617_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0006-0000000464838617_tess_v01_llc",
+            "rows": 824,
+            "file": "sector_006.csv",
+            "time_start": 1468.4121934414486,
+            "time_end": 1489.7242220824614,
+            "sha256": "4bdb60eb1d2caea12ca66ed6d3d2c6bae7556528b705bd811b7096138d619514"
+          },
+          {
+            "index": 1,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0004/6483/8617/hlsp_qlp_tess_ffi_s0032-0000000464838617_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000464838617_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000464838617_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.3211760350814,
+            "time_end": 2199.502110872808,
+            "sha256": "bce4f7d752b50717571e88d6c0d7674406d130165a80cf1eb2da05480af3b945"
+          }
+        ],
+        "baseline_days": 731.0899174313602,
+        "recent_multiyear": false,
+        "priority_score": 53.746,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-jev/TIC464838617/QLP/combined.csv"
+      }
+    ],
+    "jev_decision": {
+      "jev_score": 3.53,
+      "jev_confidence": 0.6,
+      "jev_model": "jev-1.13.0",
+      "jev_request_sha256": "a1438f5f05511a49d1b64288cc2862a71221d6478d689799012bc25b9ba9408a",
+      "jev_input_tokens": 7620,
+      "jev_output_tokens": 497
+    }
+  },
+  {
+    "tic_id": "712838907",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  }
+]

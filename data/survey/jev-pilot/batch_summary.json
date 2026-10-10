@@ -1,0 +1,84 @@
+[
+  {
+    "tic_id": "4206066",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/jev-pilot/TIC4206066",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "searched",
+        "exit_code": 0,
+        "sectors": [
+          6,
+          32,
+          98
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 6,
+            "exptime": 1800.0,
+            "author": "QLP",
+            "mission": "TESS Sector 06",
+            "dataURI": "mast:HLSP/qlp/s0006/0000/0000/0420/6066/hlsp_qlp_tess_ffi_s0006-0000000004206066_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0006-0000000004206066_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0006-0000000004206066_tess_v01_llc",
+            "rows": 824,
+            "file": "sector_006.csv",
+            "time_start": 1468.412026000987,
+            "time_end": 1489.7240158204772,
+            "sha256": "b0f3ab93dcd7e0ca742956427209ecd0071f8e0d368b682db0e6e816ea00fa88"
+          },
+          {
+            "index": 1,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0000/0420/6066/hlsp_qlp_tess_ffi_s0032-0000000004206066_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000004206066_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000004206066_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.321081794986,
+            "time_end": 2199.50194163608,
+            "sha256": "0e1dd39ce93937934274173a844a4ac5f90f3f8f382d6113864e43b9192a1297"
+          },
+          {
+            "index": 2,
+            "sector": 98,
+            "exptime": 200.0,
+            "author": "QLP",
+            "mission": "TESS Sector 98",
+            "dataURI": "mast:HLSP/qlp/s0098/0000/0000/0420/6066/hlsp_qlp_tess_ffi_s0098-0000000004206066_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0098-0000000004206066_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0098-0000000004206066_tess_v01_llc",
+            "rows": 16442,
+            "file": "sector_098.csv",
+            "time_start": 3993.3601875050563,
+            "time_end": 4045.857990522578,
+            "sha256": "a69c6e0753d7641c1a4af972f25c71f4df348cef3182acb45ebeb99c878f654c"
+          }
+        ],
+        "baseline_days": 2577.44596452159,
+        "recent_multiyear": true,
+        "priority_score": 64.884,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/jev-pilot/TIC4206066/QLP/combined.csv",
+        "candidates_csv": "/Users/danny/dev/astronomy/data/survey/jev-pilot/TIC4206066/QLP/candidates.csv",
+        "search_log": "/Users/danny/dev/astronomy/data/survey/jev-pilot/TIC4206066/QLP/search.log"
+      },
+      {
+        "author": "SPOC",
+        "status": "no_recent_ffi_products"
+      }
+    ],
+    "jev_decision": {
+      "jev_score": 3.07,
+      "jev_confidence": 0.8,
+      "jev_model": "jev-1.13.0",
+      "jev_request_sha256": "53be82920c37e3d718a5d64d65f68a591d38b1eaea1fdef7461402710d671d6d",
+      "jev_input_tokens": 500,
+      "jev_output_tokens": 19
+    }
+  }
+]

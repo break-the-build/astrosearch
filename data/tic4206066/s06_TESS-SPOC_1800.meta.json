@@ -1,0 +1,36 @@
+{
+ "author": "TESS-SPOC",
+ "crowding_corrected": true,
+ "exptime_s": 1800,
+ "file": "s06_TESS-SPOC_1800.csv",
+ "flux_origin": "pdcsap_flux",
+ "header": {
+  "CAMERA": 1.0,
+  "CCD": 1.0,
+  "CROWDSAP": 0.99504185,
+  "DEC_OBJ": -1.32727827489794,
+  "FLFRCSAP": 0.92497361,
+  "RADIUS": 0.64813298,
+  "RA_OBJ": 80.8598409616627,
+  "SECTOR": 6.0,
+  "TEFF": 4010.0,
+  "TESSMAG": 9.68169975,
+  "TICID": 4206066.0
+ },
+ "median_flux_err": 0.00021705821563955396,
+ "momentum_dump_times": [
+  1468.3911517870774,
+  1471.516123708531,
+  1474.6410728582307,
+  1481.286765785929,
+  1484.4116753930527,
+  1487.5365630870917
+ ],
+ "quality_convention": "SPOC bits: 32 momentum dump, 2048|4096 scattered light",
+ "rows": 975,
+ "scattered_light_intervals": [],
+ "sector": 6,
+ "target": "TIC 4206066",
+ "time_max": 1490.0364573927943,
+ "time_min": 1468.307818877046
+}

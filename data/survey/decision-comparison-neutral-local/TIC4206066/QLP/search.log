@@ -1,0 +1,10 @@
+warning: transit search needs 5899334 trials for target resolution; capped at 250000, so narrow peaks may be missed
+segment 1: 1468.4120-1476.8911, 384 observations, cadence 1800.0 s, noise 215 ppm
+segment 2: 1478.9327-1489.7240, 440 observations, cadence 1799.9 s, noise 206 ppm
+segment 3: 2174.3211-2184.6894, 1416 observations, cadence 600.0 s, noise 404 ppm
+segment 4: 2187.3561-2199.5019, 1660 observations, cadence 600.0 s, noise 399 ppm
+segment 5: 3993.3602-4005.2032, 4843 observations, cadence 200.0 s, noise 598 ppm
+segment 6: 4007.9903-4019.4187, 4548 observations, cadence 200.0 s, noise 651 ppm
+segment 7: 4022.2404-4033.8352, 4187 observations, cadence 200.0 s, noise 681 ppm
+segment 8: 4036.7055-4045.8580, 2864 observations, cadence 200.0 s, noise 630 ppm
+searched 20342 valid observations across 2577.446 days; 34 ranked candidates

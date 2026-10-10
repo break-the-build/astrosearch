@@ -1,0 +1,57 @@
+{
+  "tic_id": "449427712",
+  "created_utc": "2026-10-10T01:13:13.779674+00:00",
+  "input_catalog_row": {
+    "tic_id": "449427712",
+    "ra": "80.4142396854702",
+    "dec": "1.74908717249969",
+    "teff_k": "3263",
+    "distance_pc": "40.5987",
+    "radius_solar": "0.284677",
+    "tmag": "12.7642",
+    "local_snr_proxy": "3.455057179"
+  },
+  "authors": [
+    {
+      "author": "QLP",
+      "status": "insufficient_multiyear_baseline",
+      "sectors": [
+        32
+      ],
+      "products": [
+        {
+          "index": 0,
+          "sector": 32,
+          "exptime": 600.0,
+          "author": "QLP",
+          "mission": "TESS Sector 32",
+          "dataURI": "mast:HLSP/qlp/s0032/0000/0004/4942/7712/hlsp_qlp_tess_ffi_s0032-0000000449427712_tess_v01_llc.fits",
+          "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000449427712_tess_v01_llc.fits",
+          "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000449427712_tess_v01_llc",
+          "rows": 3076,
+          "file": "sector_032.csv",
+          "time_start": 2174.3212024592976,
+          "time_end": 2199.502059623091,
+          "sha256": "41ba3d410106cfc6a506ed38006e5e61700e300af0fa20aaf6725a795a1f4854"
+        }
+      ],
+      "baseline_days": 25.18085716379028,
+      "recent_multiyear": false,
+      "priority_score": 32.386,
+      "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-eval-jev/TIC449427712/QLP/combined.csv"
+    }
+  ],
+  "lightkurve_version": "2.6.0",
+  "search_config": {
+    "min_sector": 90,
+    "min_exptime_s": 200,
+    "min_baseline_days": 1095,
+    "min_period_days": 0.15,
+    "max_period_days": 30,
+    "period_trials": null,
+    "threads": 0,
+    "decision_engine": "jev",
+    "max_targets": 20
+  },
+  "warning": "Candidates are unvalidated triggers; scores are not false-alarm probabilities."
+}

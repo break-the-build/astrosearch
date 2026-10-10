@@ -1,0 +1,255 @@
+[
+  {
+    "tic_id": "4206066",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-comparison-neutral-local/TIC4206066",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "searched",
+        "exit_code": 0,
+        "sectors": [
+          6,
+          32,
+          98
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 6,
+            "exptime": 1800.0,
+            "author": "QLP",
+            "mission": "TESS Sector 06",
+            "dataURI": "mast:HLSP/qlp/s0006/0000/0000/0420/6066/hlsp_qlp_tess_ffi_s0006-0000000004206066_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0006-0000000004206066_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0006-0000000004206066_tess_v01_llc",
+            "rows": 824,
+            "file": "sector_006.csv",
+            "time_start": 1468.412026000987,
+            "time_end": 1489.7240158204772,
+            "sha256": "b0f3ab93dcd7e0ca742956427209ecd0071f8e0d368b682db0e6e816ea00fa88"
+          },
+          {
+            "index": 1,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0000/0420/6066/hlsp_qlp_tess_ffi_s0032-0000000004206066_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000004206066_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000004206066_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.321081794986,
+            "time_end": 2199.50194163608,
+            "sha256": "0e1dd39ce93937934274173a844a4ac5f90f3f8f382d6113864e43b9192a1297"
+          },
+          {
+            "index": 2,
+            "sector": 98,
+            "exptime": 200.0,
+            "author": "QLP",
+            "mission": "TESS Sector 98",
+            "dataURI": "mast:HLSP/qlp/s0098/0000/0000/0420/6066/hlsp_qlp_tess_ffi_s0098-0000000004206066_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0098-0000000004206066_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0098-0000000004206066_tess_v01_llc",
+            "rows": 16442,
+            "file": "sector_098.csv",
+            "time_start": 3993.3601875050563,
+            "time_end": 4045.857990522578,
+            "sha256": "a69c6e0753d7641c1a4af972f25c71f4df348cef3182acb45ebeb99c878f654c"
+          }
+        ],
+        "baseline_days": 2577.44596452159,
+        "recent_multiyear": true,
+        "priority_score": 69.378,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-comparison-neutral-local/TIC4206066/QLP/combined.csv",
+        "candidates_csv": "/Users/danny/dev/astronomy/data/survey/decision-comparison-neutral-local/TIC4206066/QLP/candidates.csv",
+        "search_log": "/Users/danny/dev/astronomy/data/survey/decision-comparison-neutral-local/TIC4206066/QLP/search.log"
+      },
+      {
+        "author": "SPOC",
+        "status": "no_recent_ffi_products"
+      }
+    ]
+  },
+  {
+    "tic_id": "4205785",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-comparison-neutral-local/TIC4205785",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "searched",
+        "exit_code": 0,
+        "sectors": [
+          6,
+          32,
+          98
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 6,
+            "exptime": 1800.0,
+            "author": "QLP",
+            "mission": "TESS Sector 06",
+            "dataURI": "mast:HLSP/qlp/s0006/0000/0000/0420/5785/hlsp_qlp_tess_ffi_s0006-0000000004205785_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0006-0000000004205785_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0006-0000000004205785_tess_v01_llc",
+            "rows": 824,
+            "file": "sector_006.csv",
+            "time_start": 1468.412010207972,
+            "time_end": 1489.7239981761877,
+            "sha256": "d0cedfe61bc0e627c39f4e55bd9de122d73cb0a16c76696ecec3f69db301f6ff"
+          },
+          {
+            "index": 1,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0000/0420/5785/hlsp_qlp_tess_ffi_s0032-0000000004205785_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000004205785_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000004205785_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.321070838876,
+            "time_end": 2199.5019257349036,
+            "sha256": "d02ca0cff4c09e0a56ef8a81b21c753d8e1388773408a7ce776f03d64da64316"
+          },
+          {
+            "index": 2,
+            "sector": 98,
+            "exptime": 200.0,
+            "author": "QLP",
+            "mission": "TESS Sector 98",
+            "dataURI": "mast:HLSP/qlp/s0098/0000/0000/0420/5785/hlsp_qlp_tess_ffi_s0098-0000000004205785_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0098-0000000004205785_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0098-0000000004205785_tess_v01_llc",
+            "rows": 16442,
+            "file": "sector_098.csv",
+            "time_start": 3993.3601786609015,
+            "time_end": 4045.8579730620777,
+            "sha256": "009e2977f30166489175f3014b589d582916893c74ab9934a49956c3534739b7"
+          }
+        ],
+        "baseline_days": 2577.44596285411,
+        "recent_multiyear": true,
+        "priority_score": 67.914,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-comparison-neutral-local/TIC4205785/QLP/combined.csv",
+        "candidates_csv": "/Users/danny/dev/astronomy/data/survey/decision-comparison-neutral-local/TIC4205785/QLP/candidates.csv",
+        "search_log": "/Users/danny/dev/astronomy/data/survey/decision-comparison-neutral-local/TIC4205785/QLP/search.log"
+      },
+      {
+        "author": "SPOC",
+        "status": "no_recent_ffi_products"
+      }
+    ]
+  },
+  {
+    "tic_id": "4207779",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-comparison-neutral-local/TIC4207779",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "insufficient_multiyear_baseline",
+        "sectors": [
+          6,
+          32
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 6,
+            "exptime": 1800.0,
+            "author": "QLP",
+            "mission": "TESS Sector 06",
+            "dataURI": "mast:HLSP/qlp/s0006/0000/0000/0420/7779/hlsp_qlp_tess_ffi_s0006-0000000004207779_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0006-0000000004207779_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0006-0000000004207779_tess_v01_llc",
+            "rows": 824,
+            "file": "sector_006.csv",
+            "time_start": 1468.412043052942,
+            "time_end": 1489.72403489726,
+            "sha256": "467755a3b52937b1c6c9d039c1740e7f08c310e67bc13972eb9cd973ea8599fa"
+          },
+          {
+            "index": 1,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0000/0420/7779/hlsp_qlp_tess_ffi_s0032-0000000004207779_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000004207779_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000004207779_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.3210935636753,
+            "time_end": 2199.5019587775478,
+            "sha256": "ecc1a4333a5f72f2289ee590cb2a4718181d65d454b520561b135e35c1c5e57f"
+          }
+        ],
+        "baseline_days": 731.0899157246101,
+        "recent_multiyear": false,
+        "priority_score": 43.326,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-comparison-neutral-local/TIC4207779/QLP/combined.csv"
+      },
+      {
+        "author": "SPOC",
+        "status": "no_sector_metadata"
+      }
+    ]
+  },
+  {
+    "tic_id": "4256936",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4355984",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4115581",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4109952",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4159824",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4254809",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4249705",
+    "status": "skipped",
+    "reason": "distance 330.396 pc exceeds limit"
+  },
+  {
+    "tic_id": "4255638",
+    "status": "skipped",
+    "reason": "radius 8.20701 R_sun exceeds limit"
+  },
+  {
+    "tic_id": "4200831",
+    "status": "skipped",
+    "reason": "Tmag 16.4219 exceeds limit"
+  },
+  {
+    "tic_id": "4249663",
+    "status": "skipped",
+    "reason": "distance 107.55 pc exceeds limit"
+  }
+]

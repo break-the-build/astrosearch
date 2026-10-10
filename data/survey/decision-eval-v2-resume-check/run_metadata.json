@@ -1,0 +1,11 @@
+{
+  "run_id": "20261010T014903Z-4d90112a",
+  "ledger": "/Users/danny/dev/astronomy/data/survey/decision-eval-v2-local/survey-ledger.sqlite",
+  "decision_engine": "local",
+  "revisit_after_days": 30,
+  "forced_revisit": false,
+  "catalog_eligible": 4,
+  "ledger_deferred": 4,
+  "selected": 0,
+  "finished_utc": "2026-10-10T01:49:03.049992+00:00"
+}

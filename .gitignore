@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+data/benchmarks/generated/
+/target/
+/.venv/
+__pycache__/
+*.pyc
+.DS_Store
+data/benchmarks/generated-*/

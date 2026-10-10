@@ -1,0 +1,4 @@
+tic_id,author,recent_multiyear,priority_score,sectors,baseline_days,candidates_csv
+4206066,QLP,True,69.378,6;32;98,2577.44596452159,/Users/danny/dev/astronomy/data/survey/decision-comparison-neutral-jev/TIC4206066/QLP/candidates.csv
+4205785,QLP,True,67.914,6;32;98,2577.44596285411,/Users/danny/dev/astronomy/data/survey/decision-comparison-neutral-jev/TIC4205785/QLP/candidates.csv
+4207779,QLP,False,43.326,6;32,731.0899157246101,

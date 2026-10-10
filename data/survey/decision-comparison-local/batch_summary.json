@@ -1,0 +1,185 @@
+[
+  {
+    "tic_id": "4115581",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-comparison-local/TIC4115581",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "insufficient_multiyear_baseline",
+        "sectors": [
+          32
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0000/0411/5581/hlsp_qlp_tess_ffi_s0032-0000000004115581_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000004115581_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000004115581_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.3210800971774,
+            "time_end": 2199.5019156318576,
+            "sha256": "be2e389a33f130d350d220bfbe1b015fd61287d9f9b091efb274da41c3cf78ca"
+          }
+        ],
+        "baseline_days": 25.180835534679773,
+        "recent_multiyear": false,
+        "priority_score": 18.34,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-comparison-local/TIC4115581/QLP/combined.csv"
+      },
+      {
+        "author": "SPOC",
+        "status": "no_sector_metadata"
+      }
+    ]
+  },
+  {
+    "tic_id": "4355984",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-comparison-local/TIC4355984",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "insufficient_multiyear_baseline",
+        "sectors": [
+          6,
+          32
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 6,
+            "exptime": 1800.0,
+            "author": "QLP",
+            "mission": "TESS Sector 06",
+            "dataURI": "mast:HLSP/qlp/s0006/0000/0000/0435/5984/hlsp_qlp_tess_ffi_s0006-0000000004355984_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0006-0000000004355984_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0006-0000000004355984_tess_v01_llc",
+            "rows": 824,
+            "file": "sector_006.csv",
+            "time_start": 1468.4120354470158,
+            "time_end": 1489.72404885324,
+            "sha256": "843ca88a367919c8e548d5ac59feda86a22a6ed9c7a25147eb2e1d8ff47f94cd"
+          },
+          {
+            "index": 1,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0000/0435/5984/hlsp_qlp_tess_ffi_s0032-0000000004355984_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000004355984_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000004355984_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.3210629367672,
+            "time_end": 2199.501952150557,
+            "sha256": "97dc9442d889f3c52f7cd9e7dd87a0d0665929cf458d3be07fe294e0122b2499"
+          }
+        ],
+        "baseline_days": 731.0899167035402,
+        "recent_multiyear": false,
+        "priority_score": 30.479,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-comparison-local/TIC4355984/QLP/combined.csv"
+      },
+      {
+        "author": "SPOC",
+        "status": "no_sector_metadata"
+      }
+    ]
+  },
+  {
+    "tic_id": "4159824",
+    "status": "processed",
+    "output": "/Users/danny/dev/astronomy/data/survey/decision-comparison-local/TIC4159824",
+    "authors": [
+      {
+        "author": "QLP",
+        "status": "insufficient_multiyear_baseline",
+        "sectors": [
+          32
+        ],
+        "products": [
+          {
+            "index": 0,
+            "sector": 32,
+            "exptime": 600.0,
+            "author": "QLP",
+            "mission": "TESS Sector 32",
+            "dataURI": "mast:HLSP/qlp/s0032/0000/0000/0415/9824/hlsp_qlp_tess_ffi_s0032-0000000004159824_tess_v01_llc.fits",
+            "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000004159824_tess_v01_llc.fits",
+            "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000004159824_tess_v01_llc",
+            "rows": 3076,
+            "file": "sector_032.csv",
+            "time_start": 2174.3211195268473,
+            "time_end": 2199.5019700264916,
+            "sha256": "621e2ee264323bc0b46a0f9bea75308ad7d5ae30a9c19e2d627089f941e39023"
+          }
+        ],
+        "baseline_days": 25.1808504996402,
+        "recent_multiyear": false,
+        "priority_score": 19.204,
+        "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-comparison-local/TIC4159824/QLP/combined.csv"
+      },
+      {
+        "author": "SPOC",
+        "status": "no_sector_metadata"
+      }
+    ]
+  },
+  {
+    "tic_id": "4249705",
+    "status": "skipped",
+    "reason": "distance 330.396 pc exceeds limit"
+  },
+  {
+    "tic_id": "4255638",
+    "status": "skipped",
+    "reason": "radius 8.20701 R_sun exceeds limit"
+  },
+  {
+    "tic_id": "4200831",
+    "status": "skipped",
+    "reason": "Tmag 16.4219 exceeds limit"
+  },
+  {
+    "tic_id": "4249663",
+    "status": "skipped",
+    "reason": "distance 107.55 pc exceeds limit"
+  },
+  {
+    "tic_id": "4206066",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4205785",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4207779",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4256936",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4109952",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  },
+  {
+    "tic_id": "4254809",
+    "status": "budget_deferred",
+    "reason": "eligible target was below --max-targets cutoff"
+  }
+]

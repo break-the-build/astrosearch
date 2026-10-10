@@ -1,0 +1,23 @@
+[project]
+name = "astrosearch-tess"
+version = "0.1.0"
+description = "TESS download and candidate-triage helpers for astrosearch"
+requires-python = ">=3.11"
+dependencies = [
+  "astropy>=6.1",
+  "lightkurve>=2.5",
+  "numpy>=1.26",
+  "requests>=2.32",
+  "scipy>=1.12",
+]
+
+[project.optional-dependencies]
+inference = ["batman-package>=2.5", "emcee>=3.1"]
+tls = ["transitleastsquares>=2.0"]
+# CTOI gate extras: false-positive probability, GP detrending, TESS pointings.
+fpp = ["triceratops>=1.0.15"]
+gp = ["celerite2>=0.3"]
+pointing = ["tess-point>=0.9"]
+
+[tool.uv]
+package = false

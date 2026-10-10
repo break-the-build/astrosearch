@@ -1,0 +1,25 @@
+{
+ "author": "QLP",
+ "crowding_corrected": null,
+ "exptime_s": 200,
+ "file": "s98_QLP_200.csv",
+ "flux_origin": "sap_flux",
+ "header": {
+  "CAMERA": 1.0,
+  "CCD": 2.0,
+  "DEC_OBJ": -1.3272782749,
+  "RADIUS": 0.648133,
+  "RA_OBJ": 80.8598409617,
+  "SECTOR": 98.0,
+  "TEFF": 4010.0,
+  "TESSMAG": 9.6817,
+  "TICID": 4206066.0
+ },
+ "median_flux_err": 0.0008309574332088232,
+ "quality_convention": "QLP: not interpreted",
+ "rows": 16442,
+ "sector": 98,
+ "target": "TIC 4206066",
+ "time_max": 4045.857990522578,
+ "time_min": 3993.3601875050563
+}

@@ -1,0 +1,33 @@
+{
+  "tic_id": "457230759",
+  "created_utc": "2026-10-10T01:27:01.451141+00:00",
+  "input_catalog_row": {
+    "tic_id": "457230759",
+    "ra": "81.8122516305042",
+    "dec": "1.87383574067301",
+    "teff_k": "3062",
+    "distance_pc": "34.3607",
+    "radius_solar": "0.190376",
+    "tmag": "13.6096",
+    "local_snr_proxy": "5.234263777"
+  },
+  "authors": [
+    {
+      "author": "QLP",
+      "status": "no_usable_products"
+    }
+  ],
+  "lightkurve_version": "2.6.0",
+  "search_config": {
+    "min_sector": 90,
+    "min_exptime_s": 200,
+    "min_baseline_days": 1095,
+    "min_period_days": 1.0,
+    "max_period_days": 10.0,
+    "period_trials": 12000,
+    "threads": 24,
+    "decision_engine": "jev",
+    "max_targets": 10
+  },
+  "warning": "Candidates are unvalidated triggers; scores are not false-alarm probabilities."
+}

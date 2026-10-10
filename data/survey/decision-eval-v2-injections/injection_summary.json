@@ -1,0 +1,58 @@
+{
+  "summary": {
+    "jev": {
+      "injections": 8,
+      "recovered": 4,
+      "same_window_null_matches": 0,
+      "recovery_fraction": 0.5
+    },
+    "local": {
+      "injections": 12,
+      "recovered": 7,
+      "same_window_null_matches": 0,
+      "recovery_fraction": 0.5833333333333334
+    }
+  },
+  "excluded": [
+    {
+      "tic_id": "464838617",
+      "ranking": "jev;local",
+      "reason": "no searched QLP curve/candidate output"
+    },
+    {
+      "tic_id": "455032060",
+      "ranking": "jev;local",
+      "reason": "no searched QLP curve/candidate output"
+    },
+    {
+      "tic_id": "457230759",
+      "ranking": "jev;local",
+      "reason": "no searched QLP curve/candidate output"
+    },
+    {
+      "tic_id": "4204875",
+      "ranking": "local",
+      "reason": "no searched QLP curve/candidate output"
+    },
+    {
+      "tic_id": "138899660",
+      "ranking": "jev",
+      "reason": "no searched QLP curve/candidate output"
+    },
+    {
+      "tic_id": "50745105",
+      "ranking": "jev",
+      "reason": "no searched QLP curve/candidate output"
+    },
+    {
+      "tic_id": "249071639",
+      "ranking": "jev",
+      "reason": "no searched QLP curve/candidate output"
+    }
+  ],
+  "injections_per_target": 2,
+  "min_period": 1.0,
+  "max_period": 10.0,
+  "period_trials": 12000,
+  "warning": "Small synthetic injection sample on selected targets; not survey-wide completeness."
+}

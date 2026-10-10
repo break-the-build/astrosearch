@@ -1,0 +1,14 @@
+input_row,tic_id,selected,status,jev_score,jev_confidence,jev_probabilities,jev_model,jev_input_tokens,jev_output_tokens,jev_request_sha256
+1,4206066,True,selected,3.0,0.76,"{""0"": 0, ""1"": 0.02, ""2"": 0.1, ""3"": 0.73, ""4"": 0.15}",jev-1.13.0,2492,139,4c82582aa9c43d78d407442e2458115cec83e143d3e9b1f059ff05fb6bb66c84
+2,4205785,True,selected,2.77,0.78,"{""0"": 0, ""1"": 0.02, ""2"": 0.2, ""3"": 0.76, ""4"": 0.02}",jev-1.13.0,2492,139,4c82582aa9c43d78d407442e2458115cec83e143d3e9b1f059ff05fb6bb66c84
+3,4207779,True,selected,2.24,0.56,"{""0"": 0.01, ""1"": 0.13, ""2"": 0.49, ""3"": 0.36, ""4"": 0.01}",jev-1.13.0,2492,139,4c82582aa9c43d78d407442e2458115cec83e143d3e9b1f059ff05fb6bb66c84
+4,4256936,False,deferred_or_ineligible,2.08,0.69,"{""0"": 0.01, ""1"": 0.13, ""2"": 0.64, ""3"": 0.22, ""4"": 0}",jev-1.13.0,2492,139,4c82582aa9c43d78d407442e2458115cec83e143d3e9b1f059ff05fb6bb66c84
+5,4355984,False,deferred_or_ineligible,1.4,0.6,"{""0"": 0.04, ""1"": 0.55, ""2"": 0.38, ""3"": 0.03, ""4"": 0}",jev-1.13.0,2492,139,4c82582aa9c43d78d407442e2458115cec83e143d3e9b1f059ff05fb6bb66c84
+6,4115581,False,deferred_or_ineligible,1.48,0.56,"{""0"": 0.03, ""1"": 0.51, ""2"": 0.42, ""3"": 0.04, ""4"": 0}",jev-1.13.0,2492,139,4c82582aa9c43d78d407442e2458115cec83e143d3e9b1f059ff05fb6bb66c84
+7,4109952,False,deferred_or_ineligible,2.1,0.57,"{""0"": 0.01, ""1"": 0.19, ""2"": 0.51, ""3"": 0.27, ""4"": 0.02}",jev-1.13.0,2492,139,4c82582aa9c43d78d407442e2458115cec83e143d3e9b1f059ff05fb6bb66c84
+8,4159824,False,deferred_or_ineligible,1.61,0.6,"{""0"": 0.02, ""1"": 0.39, ""2"": 0.54, ""3"": 0.05, ""4"": 0}",jev-1.13.0,2492,139,4c82582aa9c43d78d407442e2458115cec83e143d3e9b1f059ff05fb6bb66c84
+9,4254809,False,deferred_or_ineligible,1.95,0.57,"{""0"": 0.02, ""1"": 0.24, ""2"": 0.52, ""3"": 0.21, ""4"": 0.01}",jev-1.13.0,2492,139,4c82582aa9c43d78d407442e2458115cec83e143d3e9b1f059ff05fb6bb66c84
+10,4249705,False,deferred_or_ineligible,,,{},,,,
+11,4255638,False,deferred_or_ineligible,,,{},,,,
+12,4200831,False,deferred_or_ineligible,,,{},,,,
+13,4249663,False,deferred_or_ineligible,,,{},,,,

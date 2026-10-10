@@ -1,0 +1,75 @@
+{
+  "tic_id": "4355984",
+  "created_utc": "2026-10-10T00:58:32.322117+00:00",
+  "input_catalog_row": {
+    "tic_id": "4355984",
+    "teff_k": "3741",
+    "distance_pc": "95.6308",
+    "radius_solar": "0.505510",
+    "tmag": "12.6139",
+    "comparison_role": "eligible"
+  },
+  "authors": [
+    {
+      "author": "QLP",
+      "status": "insufficient_multiyear_baseline",
+      "sectors": [
+        6,
+        32
+      ],
+      "products": [
+        {
+          "index": 0,
+          "sector": 6,
+          "exptime": 1800.0,
+          "author": "QLP",
+          "mission": "TESS Sector 06",
+          "dataURI": "mast:HLSP/qlp/s0006/0000/0000/0435/5984/hlsp_qlp_tess_ffi_s0006-0000000004355984_tess_v01_llc.fits",
+          "productFilename": "hlsp_qlp_tess_ffi_s0006-0000000004355984_tess_v01_llc.fits",
+          "obs_id": "hlsp_qlp_tess_ffi_s0006-0000000004355984_tess_v01_llc",
+          "rows": 824,
+          "file": "sector_006.csv",
+          "time_start": 1468.4120354470158,
+          "time_end": 1489.72404885324,
+          "sha256": "843ca88a367919c8e548d5ac59feda86a22a6ed9c7a25147eb2e1d8ff47f94cd"
+        },
+        {
+          "index": 1,
+          "sector": 32,
+          "exptime": 600.0,
+          "author": "QLP",
+          "mission": "TESS Sector 32",
+          "dataURI": "mast:HLSP/qlp/s0032/0000/0000/0435/5984/hlsp_qlp_tess_ffi_s0032-0000000004355984_tess_v01_llc.fits",
+          "productFilename": "hlsp_qlp_tess_ffi_s0032-0000000004355984_tess_v01_llc.fits",
+          "obs_id": "hlsp_qlp_tess_ffi_s0032-0000000004355984_tess_v01_llc",
+          "rows": 3076,
+          "file": "sector_032.csv",
+          "time_start": 2174.3210629367672,
+          "time_end": 2199.501952150557,
+          "sha256": "97dc9442d889f3c52f7cd9e7dd87a0d0665929cf458d3be07fe294e0122b2499"
+        }
+      ],
+      "baseline_days": 731.0899167035402,
+      "recent_multiyear": false,
+      "priority_score": 30.479,
+      "combined_csv": "/Users/danny/dev/astronomy/data/survey/decision-comparison-local/TIC4355984/QLP/combined.csv"
+    },
+    {
+      "author": "SPOC",
+      "status": "no_sector_metadata"
+    }
+  ],
+  "lightkurve_version": "2.6.0",
+  "search_config": {
+    "min_sector": 90,
+    "min_exptime_s": 200,
+    "min_baseline_days": 1095,
+    "min_period_days": 0.15,
+    "max_period_days": 30,
+    "period_trials": null,
+    "threads": 0,
+    "decision_engine": "local",
+    "max_targets": 3
+  },
+  "warning": "Candidates are unvalidated triggers; scores are not false-alarm probabilities."
+}

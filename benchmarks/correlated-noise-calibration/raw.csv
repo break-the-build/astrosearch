@@ -1,0 +1,1599 @@
+family,noise,id,detail,top_white,top_correlated,matched_white;matched_correlated...
+null_1-10d,white,0,,5.1874,5.1874,
+null_1-10d,white,1,,5.1904,5.1904,
+null_1-10d,white,2,,5.3419,5.3419,
+null_1-10d,white,3,,5.4843,5.4814,
+null_1-10d,white,4,,5.0708,5.0624,
+null_1-10d,white,5,,5.2444,5.1789,
+null_1-10d,white,6,,5.7523,5.7311,
+null_1-10d,white,7,,5.1256,5.1167,
+null_1-10d,white,8,,5.6581,5.6504,
+null_1-10d,white,9,,5.0997,5.0997,
+null_1-10d,white,10,,5.1680,5.1266,
+null_1-10d,white,11,,5.1904,5.1241,
+null_1-10d,white,12,,5.3265,5.3259,
+null_1-10d,white,13,,5.3497,5.3466,
+null_1-10d,white,14,,5.4398,5.4398,
+null_1-10d,white,15,,5.1233,5.1233,
+null_1-10d,white,16,,5.3089,5.3089,
+null_1-10d,white,17,,5.2391,5.2324,
+null_1-10d,white,18,,5.5980,5.5665,
+null_1-10d,white,19,,5.7577,5.7577,
+null_1-10d,white,20,,5.5046,5.4682,
+null_1-10d,white,21,,5.2678,5.2596,
+null_1-10d,white,22,,5.0786,5.0786,
+null_1-10d,white,23,,5.1683,5.1683,
+null_1-10d,white,24,,5.8549,5.8368,
+null_1-10d,white,25,,5.3306,5.3282,
+null_1-10d,white,26,,5.1387,5.1165,
+null_1-10d,white,27,,5.5824,5.5824,
+null_1-10d,white,28,,5.4032,5.3935,
+null_1-10d,white,29,,5.3375,5.3329,
+null_1-10d,white,30,,5.6739,5.5706,
+null_1-10d,white,31,,4.9077,4.8678,
+null_1-10d,white,32,,5.5052,5.4697,
+null_1-10d,white,33,,5.2507,5.2392,
+null_1-10d,white,34,,5.3125,5.2221,
+null_1-10d,white,35,,5.6246,5.6062,
+null_1-10d,white,36,,5.6209,5.6090,
+null_1-10d,white,37,,5.3508,5.3360,
+null_1-10d,white,38,,5.8114,5.7856,
+null_1-10d,white,39,,5.4834,5.4834,
+null_1-10d,white,40,,5.5567,5.4877,
+null_1-10d,white,41,,5.9321,5.8652,
+null_1-10d,white,42,,5.1482,5.1130,
+null_1-10d,white,43,,5.2436,5.2412,
+null_1-10d,white,44,,5.4894,5.4574,
+null_1-10d,white,45,,5.5978,5.5750,
+null_1-10d,white,46,,5.2708,5.2708,
+null_1-10d,white,47,,6.1782,6.1420,
+null_1-10d,white,48,,5.2579,5.2546,
+null_1-10d,white,49,,5.5014,5.4719,
+null_1-10d,white,50,,5.6889,5.6882,
+null_1-10d,white,51,,5.5279,5.4892,
+null_1-10d,white,52,,5.1755,5.1709,
+null_1-10d,white,53,,5.4174,5.4159,
+null_1-10d,white,54,,5.2710,5.2447,
+null_1-10d,white,55,,5.3617,5.3460,
+null_1-10d,white,56,,5.3308,5.3213,
+null_1-10d,white,57,,5.4724,5.3963,
+null_1-10d,white,58,,5.1040,5.0812,
+null_1-10d,white,59,,5.4696,5.4642,
+null_1-10d,white,60,,5.5301,5.5254,
+null_1-10d,white,61,,5.4403,5.4403,
+null_1-10d,white,62,,5.6672,5.6524,
+null_1-10d,white,63,,5.5622,5.5622,
+null_1-10d,white,64,,5.1058,5.1058,
+null_1-10d,white,65,,5.5305,5.5305,
+null_1-10d,white,66,,5.4173,5.4173,
+null_1-10d,white,67,,5.4180,5.4180,
+null_1-10d,white,68,,5.2632,5.2398,
+null_1-10d,white,69,,5.6655,5.6651,
+null_1-10d,white,70,,5.2145,5.1918,
+null_1-10d,white,71,,5.8988,5.7986,
+null_1-10d,white,72,,5.2704,5.2704,
+null_1-10d,white,73,,5.9020,5.8673,
+null_1-10d,white,74,,5.7898,5.7300,
+null_1-10d,white,75,,5.3244,5.3244,
+null_1-10d,white,76,,5.6296,5.5938,
+null_1-10d,white,77,,5.4033,5.4033,
+null_1-10d,white,78,,5.3227,5.2689,
+null_1-10d,white,79,,5.5341,5.4363,
+null_1-10d,white,80,,4.7572,4.7572,
+null_1-10d,white,81,,5.9726,5.9408,
+null_1-10d,white,82,,5.6677,5.6677,
+null_1-10d,white,83,,5.3505,5.2993,
+null_1-10d,white,84,,5.9644,5.9536,
+null_1-10d,white,85,,5.9261,5.8946,
+null_1-10d,white,86,,5.3338,5.3001,
+null_1-10d,white,87,,5.2470,5.2351,
+null_1-10d,white,88,,4.9581,4.9297,
+null_1-10d,white,89,,5.4613,5.4613,
+null_1-10d,white,90,,5.2900,5.2900,
+null_1-10d,white,91,,5.2433,5.2433,
+null_1-10d,white,92,,5.9984,5.9585,
+null_1-10d,white,93,,5.4134,5.4134,
+null_1-10d,white,94,,5.6467,5.5825,
+null_1-10d,white,95,,5.6165,5.6066,
+null_1-10d,white,96,,5.5620,5.5144,
+null_1-10d,white,97,,5.2989,5.2989,
+null_1-10d,white,98,,5.2568,5.2568,
+null_1-10d,white,99,,5.2919,5.2817,
+null_1-10d,white,100,,5.0518,5.0413,
+null_1-10d,white,101,,5.4863,5.4756,
+null_1-10d,white,102,,5.6025,5.5301,
+null_1-10d,white,103,,5.2856,5.2637,
+null_1-10d,white,104,,5.5846,5.5846,
+null_1-10d,white,105,,5.7326,5.7326,
+null_1-10d,white,106,,5.1039,5.0920,
+null_1-10d,white,107,,5.2079,5.2079,
+null_1-10d,white,108,,6.2106,6.2106,
+null_1-10d,white,109,,5.2037,5.2037,
+null_1-10d,white,110,,5.3390,5.3069,
+null_1-10d,white,111,,5.5491,5.4899,
+null_1-10d,white,112,,6.5000,6.4999,
+null_1-10d,white,113,,5.3819,5.2620,
+null_1-10d,white,114,,5.2597,5.2348,
+null_1-10d,white,115,,5.7929,5.7868,
+null_1-10d,white,116,,5.1725,5.1159,
+null_1-10d,white,117,,5.3761,5.3627,
+null_1-10d,white,118,,5.4629,5.4629,
+null_1-10d,white,119,,5.5204,5.4896,
+null_1-10d,white,120,,5.8294,5.6870,
+null_1-10d,white,121,,4.9098,4.9098,
+null_1-10d,white,122,,5.3843,5.3568,
+null_1-10d,white,123,,5.5537,5.5537,
+null_1-10d,white,124,,5.5214,5.4664,
+null_1-10d,white,125,,5.3797,5.3395,
+null_1-10d,white,126,,5.2895,5.2895,
+null_1-10d,white,127,,5.1712,5.1519,
+null_1-10d,white,128,,5.1964,5.1964,
+null_1-10d,white,129,,5.3895,5.3548,
+null_1-10d,white,130,,5.4399,5.4313,
+null_1-10d,white,131,,5.4636,5.4578,
+null_1-10d,white,132,,5.5595,5.5239,
+null_1-10d,white,133,,5.2831,5.2572,
+null_1-10d,white,134,,5.2250,5.2117,
+null_1-10d,white,135,,5.6157,5.3714,
+null_1-10d,white,136,,5.4091,5.4062,
+null_1-10d,white,137,,5.0583,5.0583,
+null_1-10d,white,138,,5.1098,5.0724,
+null_1-10d,white,139,,5.3835,5.3835,
+null_1-10d,white,140,,5.2847,5.2835,
+null_1-10d,white,141,,4.9710,4.9710,
+null_1-10d,white,142,,5.2551,5.2248,
+null_1-10d,white,143,,5.3288,5.2891,
+null_1-10d,white,144,,5.2789,5.2789,
+null_1-10d,white,145,,5.6254,5.6228,
+null_1-10d,white,146,,5.1808,5.1213,
+null_1-10d,white,147,,5.3667,5.3667,
+null_1-10d,white,148,,5.4842,5.4842,
+null_1-10d,white,149,,6.1664,6.1618,
+null_1-10d,white,150,,5.3556,5.3442,
+null_1-10d,white,151,,5.5081,5.4663,
+null_1-10d,white,152,,5.6150,5.4952,
+null_1-10d,white,153,,5.4838,5.4838,
+null_1-10d,white,154,,5.4992,5.4435,
+null_1-10d,white,155,,5.4549,5.3303,
+null_1-10d,white,156,,5.2357,5.0656,
+null_1-10d,white,157,,5.4559,5.4398,
+null_1-10d,white,158,,5.9032,5.9032,
+null_1-10d,white,159,,5.1833,5.1833,
+null_1-10d,white,160,,5.2150,5.1790,
+null_1-10d,white,161,,5.4285,5.3805,
+null_1-10d,white,162,,5.6202,5.5722,
+null_1-10d,white,163,,5.9275,5.9146,
+null_1-10d,white,164,,5.2419,5.2152,
+null_1-10d,white,165,,5.1757,5.0868,
+null_1-10d,white,166,,5.7287,5.6571,
+null_1-10d,white,167,,5.2336,5.1386,
+null_1-10d,white,168,,5.9881,5.8405,
+null_1-10d,white,169,,5.5425,5.5425,
+null_1-10d,white,170,,5.6022,5.5541,
+null_1-10d,white,171,,5.2223,5.2011,
+null_1-10d,white,172,,5.1065,5.0944,
+null_1-10d,white,173,,5.3393,5.3387,
+null_1-10d,white,174,,5.5382,5.4955,
+null_1-10d,white,175,,5.4445,5.4422,
+null_1-10d,white,176,,5.2090,5.1531,
+null_1-10d,white,177,,5.4372,5.4365,
+null_1-10d,white,178,,5.2355,5.2355,
+null_1-10d,white,179,,6.0460,6.0460,
+null_1-10d,white,180,,5.0604,5.0386,
+null_1-10d,white,181,,5.2486,5.2486,
+null_1-10d,white,182,,5.2292,5.1197,
+null_1-10d,white,183,,5.5195,5.4768,
+null_1-10d,white,184,,4.7864,4.7864,
+null_1-10d,white,185,,5.1621,5.1364,
+null_1-10d,white,186,,5.4326,5.4056,
+null_1-10d,white,187,,5.1300,5.1300,
+null_1-10d,white,188,,5.7383,5.6670,
+null_1-10d,white,189,,5.5966,5.5966,
+null_1-10d,white,190,,5.3172,5.3172,
+null_1-10d,white,191,,5.4847,5.4847,
+null_1-10d,white,192,,5.2548,5.2148,
+null_1-10d,white,193,,5.5706,5.5500,
+null_1-10d,white,194,,5.3509,5.3389,
+null_1-10d,white,195,,4.9692,4.9692,
+null_1-10d,white,196,,5.2572,5.1405,
+null_1-10d,white,197,,5.5878,5.5878,
+null_1-10d,white,198,,5.5238,5.5224,
+null_1-10d,white,199,,5.2877,5.1229,
+null_1-10d,white,200,,5.2783,5.2486,
+null_1-10d,white,201,,5.2962,5.2894,
+null_1-10d,white,202,,5.2345,5.2267,
+null_1-10d,white,203,,5.2607,5.2596,
+null_1-10d,white,204,,5.4454,5.4454,
+null_1-10d,white,205,,5.3574,5.3292,
+null_1-10d,white,206,,5.1694,5.1008,
+null_1-10d,white,207,,5.0859,5.0859,
+null_1-10d,white,208,,6.3163,6.1133,
+null_1-10d,white,209,,4.9576,4.9576,
+null_1-10d,white,210,,5.8790,5.8790,
+null_1-10d,white,211,,5.7378,5.7045,
+null_1-10d,white,212,,5.1873,5.1873,
+null_1-10d,white,213,,5.7213,5.6390,
+null_1-10d,white,214,,5.9350,5.9350,
+null_1-10d,white,215,,5.1713,5.1713,
+null_1-10d,white,216,,5.2471,5.2339,
+null_1-10d,white,217,,5.3043,5.2944,
+null_1-10d,white,218,,5.5289,5.4741,
+null_1-10d,white,219,,5.5245,5.4881,
+null_1-10d,white,220,,5.5501,5.4831,
+null_1-10d,white,221,,5.0982,5.0940,
+null_1-10d,white,222,,5.1808,5.1808,
+null_1-10d,white,223,,5.5144,5.5130,
+null_1-10d,white,224,,5.0647,5.0590,
+null_1-10d,white,225,,5.5645,5.5645,
+null_1-10d,white,226,,5.0957,5.0957,
+null_1-10d,white,227,,5.1081,5.1081,
+null_1-10d,white,228,,5.3998,5.3813,
+null_1-10d,white,229,,5.3595,5.3514,
+null_1-10d,white,230,,5.1903,5.1080,
+null_1-10d,white,231,,5.2373,5.2373,
+null_1-10d,white,232,,5.2620,5.2548,
+null_1-10d,white,233,,5.0718,4.9907,
+null_1-10d,white,234,,5.8314,5.7813,
+null_1-10d,white,235,,5.1093,5.1092,
+null_1-10d,white,236,,5.5011,5.4893,
+null_1-10d,white,237,,5.2701,5.1969,
+null_1-10d,white,238,,5.2244,5.2185,
+null_1-10d,white,239,,4.9876,4.9863,
+null_1-10d,white,240,,5.4247,5.4052,
+null_1-10d,white,241,,5.5091,5.5064,
+null_1-10d,white,242,,5.2759,5.2406,
+null_1-10d,white,243,,5.2082,5.2082,
+null_1-10d,white,244,,5.4966,5.4745,
+null_1-10d,white,245,,5.2375,5.2327,
+null_1-10d,white,246,,5.2824,5.2480,
+null_1-10d,white,247,,5.4324,5.3198,
+null_1-10d,white,248,,5.0805,5.0805,
+null_1-10d,white,249,,5.2002,5.1855,
+null_1-10d,white,250,,5.2695,5.2695,
+null_1-10d,white,251,,5.3937,5.3937,
+null_1-10d,white,252,,5.2378,5.2371,
+null_1-10d,white,253,,5.2222,5.1990,
+null_1-10d,white,254,,5.4819,5.4744,
+null_1-10d,white,255,,5.7529,5.7529,
+null_1-10d,white,256,,5.4196,5.4196,
+null_1-10d,white,257,,5.0613,5.0613,
+null_1-10d,white,258,,5.4592,5.4244,
+null_1-10d,white,259,,4.9858,4.9858,
+null_1-10d,white,260,,5.4669,5.4584,
+null_1-10d,white,261,,5.1324,5.1300,
+null_1-10d,white,262,,5.4374,5.4139,
+null_1-10d,white,263,,5.3903,5.1922,
+null_1-10d,white,264,,5.1599,5.1116,
+null_1-10d,white,265,,5.1178,5.1099,
+null_1-10d,white,266,,5.1035,5.0771,
+null_1-10d,white,267,,5.6014,5.5974,
+null_1-10d,white,268,,5.9637,5.9443,
+null_1-10d,white,269,,5.2943,5.0867,
+null_1-10d,white,270,,5.4615,5.3971,
+null_1-10d,white,271,,5.3693,5.3693,
+null_1-10d,white,272,,5.6593,5.6593,
+null_1-10d,white,273,,5.0681,5.0681,
+null_1-10d,white,274,,5.7355,5.7355,
+null_1-10d,white,275,,5.4993,5.3893,
+null_1-10d,white,276,,5.3765,5.3638,
+null_1-10d,white,277,,5.2325,5.2325,
+null_1-10d,white,278,,4.9985,4.9985,
+null_1-10d,white,279,,5.5746,5.4761,
+null_1-10d,white,280,,5.6918,5.5230,
+null_1-10d,white,281,,5.7759,5.7759,
+null_1-10d,white,282,,5.6290,5.5789,
+null_1-10d,white,283,,5.4579,5.3973,
+null_1-10d,white,284,,5.2026,5.2026,
+null_1-10d,white,285,,5.1881,5.1545,
+null_1-10d,white,286,,5.0370,5.0370,
+null_1-10d,white,287,,5.5233,5.4456,
+null_1-10d,white,288,,5.6019,5.5865,
+null_1-10d,white,289,,5.5891,5.5545,
+null_1-10d,white,290,,5.1916,5.1916,
+null_1-10d,white,291,,5.0708,5.0374,
+null_1-10d,white,292,,5.1273,5.1273,
+null_1-10d,white,293,,5.4317,5.4301,
+null_1-10d,white,294,,5.0402,5.0301,
+null_1-10d,white,295,,5.4045,5.4045,
+null_1-10d,white,296,,5.2598,5.2598,
+null_1-10d,white,297,,5.1258,5.1258,
+null_1-10d,white,298,,5.1916,5.1916,
+null_1-10d,white,299,,5.8990,5.8990,
+null_20-50d,white,0,,5.0201,4.9703,
+null_20-50d,white,1,,5.0760,5.0760,
+null_20-50d,white,2,,4.9804,4.9804,
+null_20-50d,white,3,,5.2145,5.1284,
+null_20-50d,white,4,,4.9212,4.9167,
+null_20-50d,white,5,,5.3397,5.2106,
+null_20-50d,white,6,,5.7460,5.7096,
+null_20-50d,white,7,,5.0514,5.0514,
+null_20-50d,white,8,,5.1991,5.1894,
+null_20-50d,white,9,,5.4694,5.4680,
+null_20-50d,white,10,,5.0903,5.0903,
+null_20-50d,white,11,,5.1284,5.1072,
+null_20-50d,white,12,,5.4024,5.4024,
+null_20-50d,white,13,,5.6996,5.6996,
+null_20-50d,white,14,,5.3007,5.2856,
+null_20-50d,white,15,,6.0157,6.0157,
+null_20-50d,white,16,,4.7766,4.7766,
+null_20-50d,white,17,,5.3221,5.3221,
+null_20-50d,white,18,,5.2072,5.2024,
+null_20-50d,white,19,,5.0416,5.0122,
+null_20-50d,white,20,,5.0751,5.0131,
+null_20-50d,white,21,,4.5888,4.5888,
+null_20-50d,white,22,,5.2632,5.2632,
+null_20-50d,white,23,,4.6402,4.6402,
+null_20-50d,white,24,,5.2442,5.2412,
+null_20-50d,white,25,,5.1715,5.1715,
+null_20-50d,white,26,,5.5780,5.5780,
+null_20-50d,white,27,,5.1899,5.1899,
+null_20-50d,white,28,,5.1590,5.1476,
+null_20-50d,white,29,,5.2370,5.1940,
+null_20-50d,white,30,,4.9566,4.9232,
+null_20-50d,white,31,,5.0131,5.0105,
+null_20-50d,white,32,,5.2413,5.1856,
+null_20-50d,white,33,,4.6603,4.6603,
+null_20-50d,white,34,,5.1747,5.1747,
+null_20-50d,white,35,,5.1566,5.1254,
+null_20-50d,white,36,,6.0459,6.0321,
+null_20-50d,white,37,,4.8498,4.8068,
+null_20-50d,white,38,,4.9135,4.8128,
+null_20-50d,white,39,,5.4022,5.4022,
+null_20-50d,white,40,,5.0164,5.0031,
+null_20-50d,white,41,,5.0377,4.9166,
+null_20-50d,white,42,,5.5598,5.5598,
+null_20-50d,white,43,,5.0249,5.0242,
+null_20-50d,white,44,,5.0429,4.9737,
+null_20-50d,white,45,,4.9716,4.9379,
+null_20-50d,white,46,,5.8011,5.8011,
+null_20-50d,white,47,,5.3305,5.3305,
+null_20-50d,white,48,,4.9797,4.9797,
+null_20-50d,white,49,,5.5308,5.4369,
+null_20-50d,white,50,,4.8230,4.8054,
+null_20-50d,white,51,,5.2961,5.2961,
+null_20-50d,white,52,,5.4509,5.4509,
+null_20-50d,white,53,,5.1243,5.1243,
+null_20-50d,white,54,,5.0050,5.0050,
+null_20-50d,white,55,,5.0538,5.0538,
+null_20-50d,white,56,,4.9846,4.9603,
+null_20-50d,white,57,,4.8222,4.7924,
+null_20-50d,white,58,,4.9091,4.9091,
+null_20-50d,white,59,,4.9118,4.9118,
+null_20-50d,white,60,,5.1201,5.0903,
+null_20-50d,white,61,,5.6214,5.6065,
+null_20-50d,white,62,,5.6408,5.5985,
+null_20-50d,white,63,,4.9818,4.9818,
+null_20-50d,white,64,,5.5258,5.5258,
+null_20-50d,white,65,,5.0083,4.9843,
+null_20-50d,white,66,,6.1255,6.1255,
+null_20-50d,white,67,,5.6493,5.6493,
+null_20-50d,white,68,,5.4706,5.4369,
+null_20-50d,white,69,,5.0550,4.9652,
+null_20-50d,white,70,,5.4125,5.3689,
+null_20-50d,white,71,,5.0458,4.9491,
+null_20-50d,white,72,,5.2576,5.2576,
+null_20-50d,white,73,,5.1640,5.1640,
+null_20-50d,white,74,,5.3505,5.3505,
+null_20-50d,white,75,,5.6402,5.6265,
+null_20-50d,white,76,,5.1649,5.1649,
+null_20-50d,white,77,,5.5605,5.5549,
+null_20-50d,white,78,,5.1685,5.1685,
+null_20-50d,white,79,,5.8301,5.7819,
+null_20-50d,white,80,,4.8401,4.8359,
+null_20-50d,white,81,,4.4827,4.4827,
+null_20-50d,white,82,,5.3504,5.3504,
+null_20-50d,white,83,,4.9628,4.9628,
+null_20-50d,white,84,,5.2432,5.2404,
+null_20-50d,white,85,,4.7906,4.7665,
+null_20-50d,white,86,,4.9970,4.9310,
+null_20-50d,white,87,,5.0477,4.9968,
+null_20-50d,white,88,,5.2335,5.2335,
+null_20-50d,white,89,,5.3983,5.3972,
+null_20-50d,white,90,,4.7965,4.7965,
+null_20-50d,white,91,,5.4104,5.4104,
+null_20-50d,white,92,,4.9177,4.7926,
+null_20-50d,white,93,,4.8594,4.8217,
+null_20-50d,white,94,,5.5665,5.5665,
+null_20-50d,white,95,,5.2607,5.2607,
+null_20-50d,white,96,,5.1565,5.0913,
+null_20-50d,white,97,,4.6864,4.6864,
+null_20-50d,white,98,,4.7850,4.7350,
+null_20-50d,white,99,,4.6219,4.6219,
+null_20-50d,white,100,,5.5420,5.5420,
+null_20-50d,white,101,,5.1943,5.1731,
+null_20-50d,white,102,,5.2423,5.2273,
+null_20-50d,white,103,,5.0779,5.0779,
+null_20-50d,white,104,,5.0837,5.0837,
+null_20-50d,white,105,,4.7901,4.7478,
+null_20-50d,white,106,,5.0495,5.0495,
+null_20-50d,white,107,,5.3539,5.3499,
+null_20-50d,white,108,,5.5853,5.5853,
+null_20-50d,white,109,,5.4381,5.2629,
+null_20-50d,white,110,,5.6427,5.3835,
+null_20-50d,white,111,,4.9690,4.9360,
+null_20-50d,white,112,,4.8510,4.8263,
+null_20-50d,white,113,,4.9871,4.9463,
+null_20-50d,white,114,,4.5634,4.5634,
+null_20-50d,white,115,,5.1590,5.1590,
+null_20-50d,white,116,,5.2462,5.1785,
+null_20-50d,white,117,,5.7833,5.6526,
+null_20-50d,white,118,,5.0164,4.9908,
+null_20-50d,white,119,,4.6851,4.6551,
+null_20-50d,white,120,,5.3364,5.2606,
+null_20-50d,white,121,,4.8882,4.8882,
+null_20-50d,white,122,,4.9791,4.9791,
+null_20-50d,white,123,,4.8033,4.8033,
+null_20-50d,white,124,,4.8644,4.8397,
+null_20-50d,white,125,,5.7999,5.7999,
+null_20-50d,white,126,,5.1338,5.1338,
+null_20-50d,white,127,,4.6975,4.6975,
+null_20-50d,white,128,,6.2749,6.2622,
+null_20-50d,white,129,,6.0101,6.0101,
+null_20-50d,white,130,,5.2669,5.2669,
+null_20-50d,white,131,,5.2542,5.1675,
+null_20-50d,white,132,,5.0664,5.0362,
+null_20-50d,white,133,,5.4656,5.3115,
+null_20-50d,white,134,,4.9564,4.9564,
+null_20-50d,white,135,,4.9912,4.9783,
+null_20-50d,white,136,,4.8447,4.8447,
+null_20-50d,white,137,,5.3944,5.3568,
+null_20-50d,white,138,,4.9223,4.8341,
+null_20-50d,white,139,,5.2440,5.2044,
+null_20-50d,white,140,,4.8728,4.8469,
+null_20-50d,white,141,,5.5658,5.5658,
+null_20-50d,white,142,,5.0928,5.0928,
+null_20-50d,white,143,,5.1868,5.1868,
+null_20-50d,white,144,,5.3315,5.3315,
+null_20-50d,white,145,,5.2471,5.2075,
+null_20-50d,white,146,,4.8145,4.8079,
+null_20-50d,white,147,,4.4841,4.4841,
+null_20-50d,white,148,,5.2573,5.2016,
+null_20-50d,white,149,,4.7008,4.6919,
+null_1-10d,correlated,0,,6.2044,5.5762,
+null_1-10d,correlated,1,,5.9677,5.3606,
+null_1-10d,correlated,2,,6.0892,5.4690,
+null_1-10d,correlated,3,,6.3036,5.7900,
+null_1-10d,correlated,4,,6.0490,5.1818,
+null_1-10d,correlated,5,,6.2876,5.9692,
+null_1-10d,correlated,6,,6.1721,5.6324,
+null_1-10d,correlated,7,,6.6228,5.6311,
+null_1-10d,correlated,8,,5.9341,5.2527,
+null_1-10d,correlated,9,,6.2113,5.2888,
+null_1-10d,correlated,10,,5.7274,5.2246,
+null_1-10d,correlated,11,,5.8806,5.2905,
+null_1-10d,correlated,12,,6.6680,5.6026,
+null_1-10d,correlated,13,,6.3596,5.5422,
+null_1-10d,correlated,14,,6.3357,5.8856,
+null_1-10d,correlated,15,,6.9571,6.1220,
+null_1-10d,correlated,16,,5.6636,5.3587,
+null_1-10d,correlated,17,,5.9453,5.2488,
+null_1-10d,correlated,18,,6.2513,5.5743,
+null_1-10d,correlated,19,,6.5274,5.6513,
+null_1-10d,correlated,20,,5.3539,5.0591,
+null_1-10d,correlated,21,,5.7700,5.3388,
+null_1-10d,correlated,22,,5.9039,5.3717,
+null_1-10d,correlated,23,,6.7159,5.7288,
+null_1-10d,correlated,24,,6.0541,5.5454,
+null_1-10d,correlated,25,,6.0260,5.5374,
+null_1-10d,correlated,26,,6.6824,5.5723,
+null_1-10d,correlated,27,,6.5516,5.3465,
+null_1-10d,correlated,28,,6.4820,5.3931,
+null_1-10d,correlated,29,,6.3796,5.4100,
+null_1-10d,correlated,30,,5.7620,5.3724,
+null_1-10d,correlated,31,,5.8900,5.6019,
+null_1-10d,correlated,32,,6.1600,5.4288,
+null_1-10d,correlated,33,,5.8337,5.3229,
+null_1-10d,correlated,34,,5.7429,5.5765,
+null_1-10d,correlated,35,,6.6616,5.5511,
+null_1-10d,correlated,36,,6.1444,5.4401,
+null_1-10d,correlated,37,,6.3862,5.4034,
+null_1-10d,correlated,38,,6.6973,5.9071,
+null_1-10d,correlated,39,,5.3709,5.2177,
+null_1-10d,correlated,40,,6.1609,5.7256,
+null_1-10d,correlated,41,,6.4036,5.6521,
+null_1-10d,correlated,42,,5.6429,5.0864,
+null_1-10d,correlated,43,,5.5085,5.3946,
+null_1-10d,correlated,44,,6.1686,5.4732,
+null_1-10d,correlated,45,,6.1693,5.4596,
+null_1-10d,correlated,46,,6.7708,6.1951,
+null_1-10d,correlated,47,,5.6236,5.2720,
+null_1-10d,correlated,48,,6.2678,5.2465,
+null_1-10d,correlated,49,,6.0304,5.6759,
+null_1-10d,correlated,50,,6.9606,5.8586,
+null_1-10d,correlated,51,,5.9254,5.0617,
+null_1-10d,correlated,52,,6.2374,5.6236,
+null_1-10d,correlated,53,,6.4163,5.3381,
+null_1-10d,correlated,54,,6.5493,5.9625,
+null_1-10d,correlated,55,,6.8620,6.3604,
+null_1-10d,correlated,56,,6.4279,5.4370,
+null_1-10d,correlated,57,,5.7608,5.2663,
+null_1-10d,correlated,58,,6.1815,5.3715,
+null_1-10d,correlated,59,,5.9842,5.6485,
+null_1-10d,correlated,60,,6.4431,5.6465,
+null_1-10d,correlated,61,,5.9138,5.5383,
+null_1-10d,correlated,62,,5.6871,5.3650,
+null_1-10d,correlated,63,,7.0009,6.2886,
+null_1-10d,correlated,64,,6.3690,5.5233,
+null_1-10d,correlated,65,,6.1028,5.8658,
+null_1-10d,correlated,66,,6.1473,5.3762,
+null_1-10d,correlated,67,,5.9671,5.2724,
+null_1-10d,correlated,68,,5.9581,5.1802,
+null_1-10d,correlated,69,,5.7209,5.3600,
+null_1-10d,correlated,70,,6.0956,5.6643,
+null_1-10d,correlated,71,,5.6465,5.0637,
+null_1-10d,correlated,72,,6.3800,5.8202,
+null_1-10d,correlated,73,,5.7460,5.5832,
+null_1-10d,correlated,74,,6.5022,5.5491,
+null_1-10d,correlated,75,,5.7411,5.1333,
+null_1-10d,correlated,76,,5.6972,5.2536,
+null_1-10d,correlated,77,,5.5964,5.0779,
+null_1-10d,correlated,78,,6.1456,5.2523,
+null_1-10d,correlated,79,,5.4936,5.2092,
+null_1-10d,correlated,80,,5.7925,5.3747,
+null_1-10d,correlated,81,,6.3659,5.6207,
+null_1-10d,correlated,82,,5.9628,5.6106,
+null_1-10d,correlated,83,,5.8564,5.5520,
+null_1-10d,correlated,84,,6.1702,5.4263,
+null_1-10d,correlated,85,,6.1502,5.2876,
+null_1-10d,correlated,86,,6.3395,5.5840,
+null_1-10d,correlated,87,,6.2945,5.7496,
+null_1-10d,correlated,88,,5.7733,5.3985,
+null_1-10d,correlated,89,,6.2757,5.5715,
+null_1-10d,correlated,90,,5.8681,5.2583,
+null_1-10d,correlated,91,,6.0971,5.1608,
+null_1-10d,correlated,92,,5.9856,5.2311,
+null_1-10d,correlated,93,,7.3016,6.9982,
+null_1-10d,correlated,94,,6.4990,5.4067,
+null_1-10d,correlated,95,,7.0875,6.1189,
+null_1-10d,correlated,96,,6.6175,5.4500,
+null_1-10d,correlated,97,,6.0445,5.5282,
+null_1-10d,correlated,98,,5.7022,5.3228,
+null_1-10d,correlated,99,,6.1898,5.4729,
+null_1-10d,correlated,100,,5.5653,5.2924,
+null_1-10d,correlated,101,,5.6604,5.2543,
+null_1-10d,correlated,102,,5.9839,5.4048,
+null_1-10d,correlated,103,,6.5019,5.6734,
+null_1-10d,correlated,104,,6.7978,5.8046,
+null_1-10d,correlated,105,,6.3613,5.6329,
+null_1-10d,correlated,106,,6.3819,5.5617,
+null_1-10d,correlated,107,,5.9844,5.5984,
+null_1-10d,correlated,108,,6.0101,5.6292,
+null_1-10d,correlated,109,,6.0035,5.2731,
+null_1-10d,correlated,110,,6.3986,5.6696,
+null_1-10d,correlated,111,,5.8446,5.3551,
+null_1-10d,correlated,112,,6.1812,5.4533,
+null_1-10d,correlated,113,,6.3974,5.2321,
+null_1-10d,correlated,114,,6.5755,5.8037,
+null_1-10d,correlated,115,,6.5857,5.8844,
+null_1-10d,correlated,116,,6.3182,5.7977,
+null_1-10d,correlated,117,,5.9518,5.5338,
+null_1-10d,correlated,118,,5.6012,4.9746,
+null_1-10d,correlated,119,,6.1503,5.3271,
+null_1-10d,correlated,120,,6.3378,5.7535,
+null_1-10d,correlated,121,,6.4576,5.6702,
+null_1-10d,correlated,122,,6.2295,5.5426,
+null_1-10d,correlated,123,,5.7994,5.3259,
+null_1-10d,correlated,124,,5.9858,5.4381,
+null_1-10d,correlated,125,,6.2979,5.5186,
+null_1-10d,correlated,126,,6.7340,5.3475,
+null_1-10d,correlated,127,,6.3108,5.8940,
+null_1-10d,correlated,128,,7.1033,5.8375,
+null_1-10d,correlated,129,,5.6353,5.2069,
+null_1-10d,correlated,130,,6.1110,5.5863,
+null_1-10d,correlated,131,,5.9498,5.4030,
+null_1-10d,correlated,132,,5.8343,5.4313,
+null_1-10d,correlated,133,,5.8173,5.5328,
+null_1-10d,correlated,134,,6.2801,5.5329,
+null_1-10d,correlated,135,,5.7686,5.0921,
+null_1-10d,correlated,136,,6.4505,5.8031,
+null_1-10d,correlated,137,,5.9907,5.7329,
+null_1-10d,correlated,138,,6.4458,5.4192,
+null_1-10d,correlated,139,,6.1557,5.4063,
+null_1-10d,correlated,140,,6.0790,5.6733,
+null_1-10d,correlated,141,,6.3092,5.4527,
+null_1-10d,correlated,142,,5.8590,5.3400,
+null_1-10d,correlated,143,,5.9302,5.4593,
+null_1-10d,correlated,144,,6.3898,5.5738,
+null_1-10d,correlated,145,,6.0030,5.4405,
+null_1-10d,correlated,146,,5.9460,5.5963,
+null_1-10d,correlated,147,,5.9149,5.0538,
+null_1-10d,correlated,148,,5.9374,5.2295,
+null_1-10d,correlated,149,,6.1026,5.5145,
+null_1-10d,correlated,150,,6.5272,5.6493,
+null_1-10d,correlated,151,,6.6587,5.4887,
+null_1-10d,correlated,152,,6.0897,5.5172,
+null_1-10d,correlated,153,,6.4307,5.6004,
+null_1-10d,correlated,154,,6.2661,5.7789,
+null_1-10d,correlated,155,,6.2978,5.5974,
+null_1-10d,correlated,156,,6.1961,5.5311,
+null_1-10d,correlated,157,,6.6805,6.0777,
+null_1-10d,correlated,158,,6.4084,5.5376,
+null_1-10d,correlated,159,,6.3766,5.4138,
+null_1-10d,correlated,160,,6.5925,5.8588,
+null_1-10d,correlated,161,,6.4779,5.7133,
+null_1-10d,correlated,162,,6.0466,5.2544,
+null_1-10d,correlated,163,,5.9129,5.4800,
+null_1-10d,correlated,164,,5.6996,5.4404,
+null_1-10d,correlated,165,,6.0271,5.3694,
+null_1-10d,correlated,166,,6.2073,5.6037,
+null_1-10d,correlated,167,,6.3661,5.6022,
+null_1-10d,correlated,168,,6.1144,5.7725,
+null_1-10d,correlated,169,,6.9899,6.0100,
+null_1-10d,correlated,170,,6.1087,5.7503,
+null_1-10d,correlated,171,,7.6044,6.4556,
+null_1-10d,correlated,172,,6.3098,5.7898,
+null_1-10d,correlated,173,,6.2146,5.4565,
+null_1-10d,correlated,174,,6.1027,5.4185,
+null_1-10d,correlated,175,,6.2309,5.8113,
+null_1-10d,correlated,176,,6.1374,5.4887,
+null_1-10d,correlated,177,,5.7570,4.9217,
+null_1-10d,correlated,178,,5.8347,5.2610,
+null_1-10d,correlated,179,,5.8213,5.2614,
+null_1-10d,correlated,180,,6.6607,5.6355,
+null_1-10d,correlated,181,,7.1513,5.4789,
+null_1-10d,correlated,182,,5.3673,5.0529,
+null_1-10d,correlated,183,,6.0887,5.3914,
+null_1-10d,correlated,184,,6.7173,5.8195,
+null_1-10d,correlated,185,,6.7371,5.5019,
+null_1-10d,correlated,186,,6.8480,6.0421,
+null_1-10d,correlated,187,,6.2019,5.8943,
+null_1-10d,correlated,188,,6.1823,5.2732,
+null_1-10d,correlated,189,,6.2806,5.8965,
+null_1-10d,correlated,190,,6.5344,5.3617,
+null_1-10d,correlated,191,,5.8463,5.3947,
+null_1-10d,correlated,192,,5.9322,5.1200,
+null_1-10d,correlated,193,,5.8135,5.2999,
+null_1-10d,correlated,194,,5.9490,5.3842,
+null_1-10d,correlated,195,,5.9967,5.2424,
+null_1-10d,correlated,196,,6.0275,5.5586,
+null_1-10d,correlated,197,,6.2864,5.3481,
+null_1-10d,correlated,198,,7.2591,6.3770,
+null_1-10d,correlated,199,,5.6048,5.3000,
+null_1-10d,correlated,200,,6.3797,5.4242,
+null_1-10d,correlated,201,,6.1771,5.5096,
+null_1-10d,correlated,202,,6.0945,5.2845,
+null_1-10d,correlated,203,,6.6280,5.4493,
+null_1-10d,correlated,204,,6.4739,5.6674,
+null_1-10d,correlated,205,,5.8198,5.2480,
+null_1-10d,correlated,206,,5.6073,5.2558,
+null_1-10d,correlated,207,,6.8710,5.3150,
+null_1-10d,correlated,208,,7.4010,6.7585,
+null_1-10d,correlated,209,,6.4467,5.6839,
+null_1-10d,correlated,210,,6.0870,5.4733,
+null_1-10d,correlated,211,,6.5734,5.6899,
+null_1-10d,correlated,212,,6.3282,5.7301,
+null_1-10d,correlated,213,,5.8901,5.5160,
+null_1-10d,correlated,214,,5.9068,5.3303,
+null_1-10d,correlated,215,,6.1441,5.5977,
+null_1-10d,correlated,216,,6.5216,5.3757,
+null_1-10d,correlated,217,,6.1974,5.3637,
+null_1-10d,correlated,218,,6.0179,5.7212,
+null_1-10d,correlated,219,,6.0228,5.7662,
+null_1-10d,correlated,220,,6.1628,5.5720,
+null_1-10d,correlated,221,,6.7236,5.6746,
+null_1-10d,correlated,222,,7.4299,5.8809,
+null_1-10d,correlated,223,,6.0226,5.3706,
+null_1-10d,correlated,224,,6.1967,5.5383,
+null_1-10d,correlated,225,,5.7999,5.2086,
+null_1-10d,correlated,226,,6.3617,5.6379,
+null_1-10d,correlated,227,,6.3922,5.5680,
+null_1-10d,correlated,228,,6.6205,5.7497,
+null_1-10d,correlated,229,,6.7486,5.8077,
+null_1-10d,correlated,230,,5.7996,5.2480,
+null_1-10d,correlated,231,,6.1436,5.3312,
+null_1-10d,correlated,232,,5.9191,5.6265,
+null_1-10d,correlated,233,,5.6043,5.2178,
+null_1-10d,correlated,234,,5.6325,5.2782,
+null_1-10d,correlated,235,,5.9279,5.3465,
+null_1-10d,correlated,236,,6.6115,5.7760,
+null_1-10d,correlated,237,,5.7684,5.1577,
+null_1-10d,correlated,238,,5.9641,5.4509,
+null_1-10d,correlated,239,,6.8538,6.3128,
+null_1-10d,correlated,240,,6.8564,5.5426,
+null_1-10d,correlated,241,,6.4207,5.8632,
+null_1-10d,correlated,242,,6.1183,5.5851,
+null_1-10d,correlated,243,,6.2501,5.4372,
+null_1-10d,correlated,244,,6.7160,5.8408,
+null_1-10d,correlated,245,,6.6042,6.0818,
+null_1-10d,correlated,246,,5.6416,5.2163,
+null_1-10d,correlated,247,,5.9956,5.4001,
+null_1-10d,correlated,248,,6.0058,5.5333,
+null_1-10d,correlated,249,,5.9985,5.3092,
+null_1-10d,correlated,250,,6.0688,5.5645,
+null_1-10d,correlated,251,,5.6563,5.0402,
+null_1-10d,correlated,252,,6.2580,5.8046,
+null_1-10d,correlated,253,,6.2090,5.2097,
+null_1-10d,correlated,254,,6.4717,5.4745,
+null_1-10d,correlated,255,,6.3464,5.2833,
+null_1-10d,correlated,256,,6.2018,5.6765,
+null_1-10d,correlated,257,,5.8920,5.4665,
+null_1-10d,correlated,258,,6.3833,5.7714,
+null_1-10d,correlated,259,,6.0689,5.6351,
+null_1-10d,correlated,260,,5.7413,5.0795,
+null_1-10d,correlated,261,,5.7688,5.3340,
+null_1-10d,correlated,262,,6.2119,5.8064,
+null_1-10d,correlated,263,,6.2000,5.7142,
+null_1-10d,correlated,264,,5.7851,5.5150,
+null_1-10d,correlated,265,,6.0368,5.3139,
+null_1-10d,correlated,266,,6.4749,5.7126,
+null_1-10d,correlated,267,,5.8141,5.0917,
+null_1-10d,correlated,268,,5.8623,5.4376,
+null_1-10d,correlated,269,,5.9472,5.3187,
+null_1-10d,correlated,270,,6.1061,5.4695,
+null_1-10d,correlated,271,,7.1707,6.3919,
+null_1-10d,correlated,272,,6.2512,5.1863,
+null_1-10d,correlated,273,,5.8125,5.3835,
+null_1-10d,correlated,274,,6.3240,5.6313,
+null_1-10d,correlated,275,,5.5340,5.0885,
+null_1-10d,correlated,276,,6.0293,5.7328,
+null_1-10d,correlated,277,,6.3094,5.6602,
+null_1-10d,correlated,278,,6.4607,5.7080,
+null_1-10d,correlated,279,,7.0905,6.2488,
+null_1-10d,correlated,280,,6.9131,6.0984,
+null_1-10d,correlated,281,,5.8506,5.7009,
+null_1-10d,correlated,282,,5.7152,5.3409,
+null_1-10d,correlated,283,,5.9703,5.4585,
+null_1-10d,correlated,284,,6.2626,5.4498,
+null_1-10d,correlated,285,,6.1108,5.7663,
+null_1-10d,correlated,286,,5.8846,5.6731,
+null_1-10d,correlated,287,,6.2506,5.5635,
+null_1-10d,correlated,288,,5.9314,5.2853,
+null_1-10d,correlated,289,,5.7544,5.1540,
+null_1-10d,correlated,290,,6.0896,5.3732,
+null_1-10d,correlated,291,,5.5187,5.3560,
+null_1-10d,correlated,292,,5.9281,5.5112,
+null_1-10d,correlated,293,,6.4887,5.7877,
+null_1-10d,correlated,294,,6.4813,5.7255,
+null_1-10d,correlated,295,,6.6912,5.6415,
+null_1-10d,correlated,296,,6.1742,5.3499,
+null_1-10d,correlated,297,,6.7567,5.6440,
+null_1-10d,correlated,298,,5.7941,5.2688,
+null_1-10d,correlated,299,,5.9134,5.4531,
+null_20-50d,correlated,0,,6.1750,5.5305,
+null_20-50d,correlated,1,,5.7865,5.3280,
+null_20-50d,correlated,2,,6.1017,5.3275,
+null_20-50d,correlated,3,,5.9427,5.1292,
+null_20-50d,correlated,4,,5.9579,5.3367,
+null_20-50d,correlated,5,,5.6398,5.2196,
+null_20-50d,correlated,6,,7.0667,5.3133,
+null_20-50d,correlated,7,,5.6198,5.0786,
+null_20-50d,correlated,8,,5.5663,5.3743,
+null_20-50d,correlated,9,,5.5652,5.0654,
+null_20-50d,correlated,10,,5.4636,4.9127,
+null_20-50d,correlated,11,,6.6967,5.5109,
+null_20-50d,correlated,12,,5.4282,4.9895,
+null_20-50d,correlated,13,,5.5056,4.9641,
+null_20-50d,correlated,14,,5.2840,4.6422,
+null_20-50d,correlated,15,,5.7879,4.9674,
+null_20-50d,correlated,16,,6.0206,5.3830,
+null_20-50d,correlated,17,,6.1966,5.6959,
+null_20-50d,correlated,18,,5.5233,4.8542,
+null_20-50d,correlated,19,,6.1413,5.8852,
+null_20-50d,correlated,20,,6.3681,5.9433,
+null_20-50d,correlated,21,,5.9688,5.1815,
+null_20-50d,correlated,22,,6.8399,5.4326,
+null_20-50d,correlated,23,,5.2496,4.7138,
+null_20-50d,correlated,24,,5.7180,4.8010,
+null_20-50d,correlated,25,,6.2637,5.6650,
+null_20-50d,correlated,26,,6.5623,5.6425,
+null_20-50d,correlated,27,,5.4486,5.0411,
+null_20-50d,correlated,28,,6.4809,5.8345,
+null_20-50d,correlated,29,,6.2235,5.5856,
+null_20-50d,correlated,30,,5.5575,5.1605,
+null_20-50d,correlated,31,,6.1475,5.3327,
+null_20-50d,correlated,32,,5.5496,5.2151,
+null_20-50d,correlated,33,,5.8468,5.0059,
+null_20-50d,correlated,34,,6.5098,5.5990,
+null_20-50d,correlated,35,,5.3581,4.6672,
+null_20-50d,correlated,36,,5.6818,4.9874,
+null_20-50d,correlated,37,,5.5672,5.0794,
+null_20-50d,correlated,38,,6.2291,5.4511,
+null_20-50d,correlated,39,,5.8676,5.4951,
+null_20-50d,correlated,40,,6.0124,5.2710,
+null_20-50d,correlated,41,,6.2603,5.4047,
+null_20-50d,correlated,42,,6.0384,5.1551,
+null_20-50d,correlated,43,,6.5205,5.6655,
+null_20-50d,correlated,44,,6.1981,5.6646,
+null_20-50d,correlated,45,,6.0420,5.4168,
+null_20-50d,correlated,46,,5.7411,5.0900,
+null_20-50d,correlated,47,,5.9571,5.1223,
+null_20-50d,correlated,48,,5.7865,5.0840,
+null_20-50d,correlated,49,,6.6149,4.7542,
+null_20-50d,correlated,50,,6.9537,6.0453,
+null_20-50d,correlated,51,,5.7746,5.4344,
+null_20-50d,correlated,52,,5.9922,5.2797,
+null_20-50d,correlated,53,,6.0366,5.4002,
+null_20-50d,correlated,54,,6.2350,5.7496,
+null_20-50d,correlated,55,,6.5191,5.2387,
+null_20-50d,correlated,56,,6.3698,5.4842,
+null_20-50d,correlated,57,,5.4157,4.8552,
+null_20-50d,correlated,58,,5.9323,5.4335,
+null_20-50d,correlated,59,,5.9176,5.0705,
+null_20-50d,correlated,60,,6.2439,5.4504,
+null_20-50d,correlated,61,,6.2560,5.2986,
+null_20-50d,correlated,62,,6.7261,5.4533,
+null_20-50d,correlated,63,,6.8076,6.2846,
+null_20-50d,correlated,64,,5.6311,5.0192,
+null_20-50d,correlated,65,,5.8020,5.4126,
+null_20-50d,correlated,66,,5.8245,5.4757,
+null_20-50d,correlated,67,,6.2173,5.7498,
+null_20-50d,correlated,68,,5.6522,5.2856,
+null_20-50d,correlated,69,,5.6671,5.3972,
+null_20-50d,correlated,70,,5.6791,5.6358,
+null_20-50d,correlated,71,,6.1118,5.4878,
+null_20-50d,correlated,72,,5.6822,5.3505,
+null_20-50d,correlated,73,,5.5664,4.9710,
+null_20-50d,correlated,74,,5.4734,4.7346,
+null_20-50d,correlated,75,,6.3396,5.2195,
+null_20-50d,correlated,76,,5.8065,5.4384,
+null_20-50d,correlated,77,,6.2364,5.4046,
+null_20-50d,correlated,78,,6.1430,5.6303,
+null_20-50d,correlated,79,,6.0133,5.6857,
+null_20-50d,correlated,80,,5.8063,5.2415,
+null_20-50d,correlated,81,,6.2307,5.4848,
+null_20-50d,correlated,82,,6.1987,5.2946,
+null_20-50d,correlated,83,,5.4455,5.0979,
+null_20-50d,correlated,84,,5.8508,4.8012,
+null_20-50d,correlated,85,,5.9887,5.2063,
+null_20-50d,correlated,86,,6.8297,5.5937,
+null_20-50d,correlated,87,,5.6723,4.9597,
+null_20-50d,correlated,88,,7.1786,6.0491,
+null_20-50d,correlated,89,,5.7265,5.2209,
+null_20-50d,correlated,90,,6.0829,4.9338,
+null_20-50d,correlated,91,,5.8805,5.3782,
+null_20-50d,correlated,92,,5.8086,5.3480,
+null_20-50d,correlated,93,,5.6062,5.2703,
+null_20-50d,correlated,94,,7.8097,5.9468,
+null_20-50d,correlated,95,,5.4798,4.9103,
+null_20-50d,correlated,96,,6.3148,5.2965,
+null_20-50d,correlated,97,,5.8088,5.1835,
+null_20-50d,correlated,98,,5.9685,5.0587,
+null_20-50d,correlated,99,,6.7628,5.6263,
+null_20-50d,correlated,100,,6.4655,5.9543,
+null_20-50d,correlated,101,,5.4245,4.9961,
+null_20-50d,correlated,102,,5.7508,5.1705,
+null_20-50d,correlated,103,,6.0578,5.2765,
+null_20-50d,correlated,104,,6.1479,5.7838,
+null_20-50d,correlated,105,,7.2795,5.8662,
+null_20-50d,correlated,106,,6.3430,5.6779,
+null_20-50d,correlated,107,,6.1293,5.1438,
+null_20-50d,correlated,108,,5.7702,5.0569,
+null_20-50d,correlated,109,,6.9471,6.1583,
+null_20-50d,correlated,110,,5.6096,5.0106,
+null_20-50d,correlated,111,,6.2587,4.9976,
+null_20-50d,correlated,112,,5.6438,5.2507,
+null_20-50d,correlated,113,,6.1331,5.6936,
+null_20-50d,correlated,114,,5.6856,5.2579,
+null_20-50d,correlated,115,,6.1791,5.6697,
+null_20-50d,correlated,116,,5.8219,5.4672,
+null_20-50d,correlated,117,,5.8966,4.6232,
+null_20-50d,correlated,118,,6.5629,5.4887,
+null_20-50d,correlated,119,,5.4365,5.0296,
+null_20-50d,correlated,120,,5.9259,5.1946,
+null_20-50d,correlated,121,,6.4749,5.7637,
+null_20-50d,correlated,122,,5.8890,5.5647,
+null_20-50d,correlated,123,,7.0661,6.6633,
+null_20-50d,correlated,124,,5.5763,5.0022,
+null_20-50d,correlated,125,,5.3150,4.9449,
+null_20-50d,correlated,126,,6.2076,5.4614,
+null_20-50d,correlated,127,,5.7151,5.0649,
+null_20-50d,correlated,128,,6.2575,5.7499,
+null_20-50d,correlated,129,,5.8560,5.5651,
+null_20-50d,correlated,130,,5.9282,5.2465,
+null_20-50d,correlated,131,,7.2213,6.2286,
+null_20-50d,correlated,132,,5.6833,5.3861,
+null_20-50d,correlated,133,,5.9117,5.1026,
+null_20-50d,correlated,134,,6.3065,5.5256,
+null_20-50d,correlated,135,,5.8398,5.1182,
+null_20-50d,correlated,136,,5.9732,5.1329,
+null_20-50d,correlated,137,,6.2987,5.4503,
+null_20-50d,correlated,138,,5.6378,5.0911,
+null_20-50d,correlated,139,,5.8877,5.3539,
+null_20-50d,correlated,140,,5.7986,5.0797,
+null_20-50d,correlated,141,,5.3962,4.6076,
+null_20-50d,correlated,142,,5.7645,5.1831,
+null_20-50d,correlated,143,,6.1347,5.3755,
+null_20-50d,correlated,144,,5.7111,5.2971,
+null_20-50d,correlated,145,,6.7858,5.4593,
+null_20-50d,correlated,146,,6.7048,5.2267,
+null_20-50d,correlated,147,,5.3525,4.8705,
+null_20-50d,correlated,148,,5.9764,5.3084,
+null_20-50d,correlated,149,,6.1142,5.3031,
+null_real_inverted,real,0,tic4153875_s32_600.csv,8.1873,8.1873,
+null_real_inverted,real,1,tic4159230_s32_600.csv,5.3551,5.3354,
+null_real_inverted,real,2,tic4159275_s32_600.csv,5.5205,5.5205,
+null_real_inverted,real,3,tic4159297_s32_600.csv,5.5003,5.1182,
+null_real_inverted,real,4,tic4159308_s32_600.csv,5.1169,5.0867,
+null_real_inverted,real,5,tic4159318_s32_600.csv,4.8836,4.8836,
+null_real_inverted,real,6,tic4159376_s32_600.csv,11.6618,6.3233,
+null_real_inverted,real,7,tic4159404_s32_600.csv,5.9551,5.8834,
+null_real_inverted,real,8,tic4159443_s32_600.csv,32.8985,6.4909,
+null_real_inverted,real,9,tic4159461_s32_600.csv,37.7389,22.9239,
+null_real_inverted,real,10,tic4200315_s32_600.csv,7.5373,7.5231,
+null_real_inverted,real,11,tic4200337_s32_600.csv,113.4465,12.1251,
+null_real_inverted,real,12,tic4200338_s32_600.csv,19.4866,6.3441,
+null_real_inverted,real,13,tic4200340_s32_600.csv,525.6041,56.1814,
+null_real_inverted,real,14,tic4200348_s32_600.csv,5.2355,5.2355,
+null_real_inverted,real,15,tic4200419_s32_600.csv,5.2998,5.2998,
+null_real_inverted,real,16,tic4200432_s32_600.csv,4.7949,4.7949,
+null_real_inverted,real,17,tic4200448_s32_600.csv,79.4345,8.4328,
+null_real_inverted,real,18,tic4200462_s32_600.csv,5.0431,5.0431,
+null_real_inverted,real,19,tic4200469_s32_600.csv,6.3732,6.2330,
+null_real_inverted,real,20,tic4200586_s32_600.csv,11.2082,7.8068,
+null_real_inverted,real,21,tic4200588_s32_600.csv,13.6285,7.3005,
+null_real_inverted,real,22,tic4200608_s32_600.csv,16.3137,5.3183,
+null_real_inverted,real,23,tic4200634_s32_600.csv,5.7079,5.4942,
+null_real_inverted,real,24,tic4200668_s32_600.csv,14.5566,7.4488,
+null_real_inverted,real,25,tic4205819_s32_600.csv,6.1834,5.5794,
+null_real_inverted,real,26,tic4205838_s32_600.csv,4.7542,4.7542,
+null_real_inverted,real,27,tic4205874_s32_600.csv,11.5864,4.7775,
+null_real_inverted,real,28,tic4205889_s32_600.csv,109.9080,11.6253,
+null_real_inverted,real,29,tic4205949_s32_600.csv,6.8374,6.7449,
+null_real_inverted,real,30,tic4205969_s32_600.csv,38.7066,4.9123,
+null_real_inverted,real,31,tic4206192_s32_600.csv,7.1924,6.7045,
+null_real_inverted,real,32,tic4206203_s32_600.csv,9.0395,6.2243,
+null_real_inverted,real,33,tic4206238_s32_600.csv,22.9256,5.1694,
+null_real_inverted,real,34,tic4207833_s32_600.csv,25.9877,5.8139,
+null_real_inverted,real,35,tic4249531_s32_600.csv,20.4957,14.8239,
+null_real_inverted,real,36,tic4249593_s32_600.csv,5.1317,5.1317,
+null_real_inverted,real,37,tic4249635_s32_600.csv,5.1924,5.1924,
+null_real_inverted,real,38,tic4249737_s32_600.csv,119.4062,12.6970,
+null_real_inverted,real,39,tic4249748_s32_600.csv,12.5792,12.2769,
+null_real_inverted,real,40,tic4249759_s32_600.csv,15.0096,13.5133,
+null_real_inverted,real,41,tic4249776_s32_600.csv,299.1115,30.4052,
+null_real_inverted,real,42,tic4249907_s32_600.csv,7.1219,7.1212,
+null_real_inverted,real,43,tic4249909_s32_600.csv,10.2460,6.1852,
+null_real_inverted,real,44,tic4255316_s32_600.csv,9.0794,9.0739,
+null_real_inverted,real,45,tic4288728_s32_600.csv,4.8917,4.8302,
+null_real_inverted,real,46,tic4288833_s32_600.csv,7.4013,6.6050,
+null_real_inverted,real,47,tic4288908_s32_600.csv,4.8891,4.8891,
+duration_1h,white,0,snr7 P3.6652 depth319.5,6.2611,6.2611,6.2611;6.2611
+duration_1h,white,1,snr7 P6.2852 depth437.5,5.6790,5.6790,;
+duration_1h,white,2,snr7 P4.9052 depth373.1,7.5853,7.4775,7.5853;7.4775
+duration_1h,white,3,snr7 P3.5252 depth330.7,6.6503,6.6066,6.6503;6.6066
+duration_1h,white,4,snr7 P5.1852 depth391.3,6.2340,6.1880,6.2340;6.1880
+duration_1h,white,5,snr7 P3.8052 depth343.2,6.3554,6.2998,6.3554;6.2998
+duration_1h,white,6,snr7 P6.4252 depth437.5,7.1765,7.0639,7.1765;7.0639
+duration_1h,white,7,snr7 P5.0452 depth412.5,5.9544,5.9246,5.9544;5.9246
+duration_1h,white,8,snr7 P6.7052 depth437.5,6.0405,6.0405,;
+duration_1h,white,9,snr7 P5.3252 depth373.1,6.4828,6.4828,6.4828;6.4828
+duration_1h,white,10,snr7 P3.9452 depth343.2,5.8025,5.7842,;
+duration_1h,white,11,snr7 P6.5652 depth437.5,5.5396,5.4602,;
+duration_1h,white,0,snr9 P5.1046 depth479.7,6.5500,6.5500,6.5500;6.5500
+duration_1h,white,1,snr9 P3.7246 depth425.2,7.9925,7.8689,7.9925;7.8689
+duration_1h,white,2,snr9 P6.3446 depth530.3,6.0417,6.0053,6.0417;6.0053
+duration_1h,white,3,snr9 P4.9646 depth530.3,8.9925,8.9732,8.9925;8.9732
+duration_1h,white,4,snr9 P6.6246 depth562.5,7.9844,7.9439,7.9844;7.9439
+duration_1h,white,5,snr9 P5.2446 depth479.7,8.3758,8.3744,8.3758;8.3744
+duration_1h,white,6,snr9 P3.8646 depth441.3,8.4195,8.4027,8.4195;8.4027
+duration_1h,white,7,snr9 P6.4846 depth562.5,7.2909,7.2909,7.2909;7.2909
+duration_1h,white,8,snr9 P4.1446 depth441.3,8.0341,7.9882,8.0341;7.9882
+duration_1h,white,9,snr9 P6.7646 depth562.5,8.7599,8.6091,8.7599;8.6091
+duration_1h,white,10,snr9 P5.3846 depth530.3,8.6525,8.6070,8.6525;8.6070
+duration_1h,white,11,snr9 P4.0046 depth459.3,9.4191,9.3484,9.4191;9.3484
+duration_1h,white,0,snr12 P5.6662 depth707.1,10.2579,10.2424,10.2579;10.2424
+duration_1h,white,1,snr12 P4.2862 depth612.4,10.1617,10.0310,10.1617;10.0310
+duration_1h,white,2,snr12 P6.9062 depth750.0,12.0045,12.0045,12.0045;12.0045
+duration_1h,white,3,snr12 P5.5262 depth707.1,10.5925,10.5361,10.5925;10.5361
+duration_1h,white,4,snr12 P3.1862 depth530.3,9.8659,9.8297,9.8659;9.8297
+duration_1h,white,5,snr12 P5.8062 depth670.8,12.7675,12.7675,12.7675;12.7675
+duration_1h,white,6,snr12 P4.4262 depth612.4,10.0826,10.0826,10.0826;10.0826
+duration_1h,white,7,snr12 P3.0462 depth514.5,11.1905,11.0785,11.1905;11.0785
+duration_1h,white,8,snr12 P4.7063 depth612.4,9.9423,9.8925,9.9423;9.8925
+duration_1h,white,9,snr12 P3.3262 depth530.3,11.0908,11.0903,11.0908;11.0903
+duration_1h,white,10,snr12 P5.9462 depth707.1,10.0874,10.0650,10.0874;10.0650
+duration_1h,white,11,snr12 P4.5662 depth639.6,12.8060,12.8032,12.8060;12.8032
+duration_2h,white,0,snr7 P4.9267 depth263.8,5.4817,5.4472,;
+duration_2h,white,1,snr7 P3.5467 depth233.9,7.4132,7.1565,7.4132;7.1565
+duration_2h,white,2,snr7 P6.1667 depth298.7,5.9048,5.8756,5.9048;5.8756
+duration_2h,white,3,snr7 P4.7867 depth252.6,6.2074,6.1492,6.2074;6.1492
+duration_2h,white,4,snr7 P6.4468 depth291.7,6.3015,6.0533,6.3015;6.0533
+duration_2h,white,5,snr7 P5.0667 depth276.7,5.4514,5.4514,;
+duration_2h,white,6,snr7 P3.6867 depth221.7,7.6087,7.4572,7.6087;7.4572
+duration_2h,white,7,snr7 P6.3067 depth309.4,5.6073,5.5446,5.6073;5.5446
+duration_2h,white,8,snr7 P3.9668 depth233.9,6.4748,6.3876,6.4748;6.3876
+duration_2h,white,9,snr7 P6.5868 depth309.4,6.4058,6.3878,6.4058;6.3878
+duration_2h,white,10,snr7 P5.2068 depth272.2,6.0705,6.0690,6.0705;6.0690
+duration_2h,white,11,snr7 P3.8268 depth233.8,5.9155,5.9155,5.9155;5.9155
+duration_2h,white,0,snr9 P5.2440 depth373.3,7.1844,7.0213,7.1844;7.0213
+duration_2h,white,1,snr9 P3.8640 depth312.0,7.2600,7.2600,7.2600;7.2600
+duration_2h,white,2,snr9 P6.4840 depth380.3,6.7813,6.7540,6.7813;6.7540
+duration_2h,white,3,snr9 P5.1040 depth355.7,7.3367,7.2569,7.3367;7.2569
+duration_2h,white,4,snr9 P6.7640 depth397.7,6.7209,6.6827,6.7209;6.6827
+duration_2h,white,5,snr9 P5.3840 depth347.2,8.6814,8.5888,8.6814;8.5888
+duration_2h,white,6,snr9 P4.0040 depth300.7,9.4968,9.2811,9.4968;9.2811
+duration_2h,white,7,snr9 P6.6240 depth397.7,8.2686,8.2686,8.2686;8.2686
+duration_2h,white,8,snr9 P4.2840 depth324.8,6.1504,6.1270,6.1504;6.1270
+duration_2h,white,9,snr9 P6.9040 depth397.7,6.9756,6.9222,6.9756;6.9222
+duration_2h,white,10,snr9 P5.5240 depth355.8,8.0099,8.0099,8.0099;8.0099
+duration_2h,white,11,snr9 P4.1440 depth324.8,7.6367,7.6004,7.6367;7.6004
+duration_2h,white,0,snr12 P4.6835 depth433.0,8.2599,8.1528,8.2599;8.1528
+duration_2h,white,1,snr12 P3.3035 depth375.0,8.8274,8.7074,8.8274;8.7074
+duration_2h,white,2,snr12 P5.9235 depth474.3,8.9915,8.8892,8.9915;8.8892
+duration_2h,white,3,snr12 P4.5435 depth433.0,11.2526,11.2526,11.2526;11.2526
+duration_2h,white,4,snr12 P6.2036 depth500.0,9.4099,9.1446,9.4099;9.1446
+duration_2h,white,5,snr12 P4.8236 depth439.1,8.2103,8.0011,8.2103;8.0011
+duration_2h,white,6,snr12 P3.4436 depth375.0,7.8296,7.8296,7.8296;7.8296
+duration_2h,white,7,snr12 P6.0635 depth530.3,10.9382,10.8969,10.9382;10.8969
+duration_2h,white,8,snr12 P3.7236 depth433.0,9.0901,9.0711,9.0901;9.0711
+duration_2h,white,9,snr12 P6.3436 depth484.5,9.6435,9.6435,9.6435;9.6435
+duration_2h,white,10,snr12 P4.9636 depth500.0,10.5762,10.5444,10.5762;10.5444
+duration_2h,white,11,snr12 P3.5836 depth375.0,9.0610,9.0610,9.0610;9.0610
+duration_4h,white,0,snr7 P3.4760 depth173.6,5.5747,5.5709,5.5747;5.5709
+duration_4h,white,1,snr7 P6.0960 depth206.2,6.0726,6.0726,;
+duration_4h,white,2,snr7 P4.7160 depth195.7,7.2241,7.0214,7.2241;7.0214
+duration_4h,white,3,snr7 P3.3360 depth154.7,6.5584,6.4839,6.5584;6.4839
+duration_4h,white,4,snr7 P4.9961 depth182.8,5.1691,5.1691,;
+duration_4h,white,5,snr7 P3.6161 depth154.7,8.2607,8.1074,8.2607;8.1074
+duration_4h,white,6,snr7 P6.2360 depth218.7,6.8202,6.8202,6.8202;6.8202
+duration_4h,white,7,snr7 P4.8560 depth194.0,5.4742,5.4742,5.4742;5.4742
+duration_4h,white,8,snr7 P6.5161 depth218.7,6.1202,6.1202,6.1202;6.1202
+duration_4h,white,9,snr7 P5.1361 depth195.7,5.3966,5.3057,5.3966;5.3057
+duration_4h,white,10,snr7 P3.7561 depth165.4,5.5429,5.4821,;5.4821
+duration_4h,white,11,snr7 P6.3761 depth218.7,5.6986,5.6615,5.6986;5.6615
+duration_4h,white,0,snr9 P6.0375 depth265.2,6.4915,6.4287,;
+duration_4h,white,1,snr9 P4.6575 depth229.6,6.1806,6.1806,6.1806;6.1806
+duration_4h,white,2,snr9 P3.2775 depth198.9,7.2839,7.1054,7.2839;7.1054
+duration_4h,white,3,snr9 P5.8975 depth270.2,7.4551,7.4551,7.4551;7.4551
+duration_4h,white,4,snr9 P3.5575 depth212.6,5.1820,5.1820,5.1820;5.1820
+duration_4h,white,5,snr9 P6.1775 depth265.2,6.8151,6.8027,6.8151;6.8027
+duration_4h,white,6,snr9 P4.7975 depth245.5,6.0345,5.7475,6.0345;5.7475
+duration_4h,white,7,snr9 P3.4175 depth198.9,5.6467,5.5549,;
+duration_4h,white,8,snr9 P5.0775 depth261.6,6.4289,6.4289,6.4289;6.4289
+duration_4h,white,9,snr9 P3.6975 depth212.6,6.6484,6.6484,6.6484;6.6484
+duration_4h,white,10,snr9 P6.3175 depth265.2,6.4051,6.3482,6.4051;6.3482
+duration_4h,white,11,snr9 P4.9375 depth239.8,7.3450,7.2112,7.3450;7.2112
+duration_4h,white,0,snr12 P5.4771 depth335.4,8.6499,8.4822,8.6499;8.4822
+duration_4h,white,1,snr12 P4.0971 depth306.2,7.5948,7.4184,7.5948;7.4184
+duration_4h,white,2,snr12 P6.7171 depth375.0,7.6138,7.6138,7.6138;7.6138
+duration_4h,white,3,snr12 P5.3371 depth369.3,10.4745,10.4745,10.4745;10.4745
+duration_4h,white,4,snr12 P6.9971 depth375.0,7.6622,7.6622,7.6622;7.6622
+duration_4h,white,5,snr12 P5.6171 depth375.0,9.7697,9.7697,9.7697;9.7697
+duration_4h,white,6,snr12 P4.2371 depth306.2,8.8141,8.5558,8.8141;8.5558
+duration_4h,white,7,snr12 P6.8571 depth400.9,6.8131,6.8131,6.8131;6.8131
+duration_4h,white,8,snr12 P4.5171 depth322.9,9.0416,9.0410,9.0416;9.0410
+duration_4h,white,9,snr12 P3.1371 depth257.2,9.4570,9.1675,9.4570;9.1675
+duration_4h,white,10,snr12 P5.7571 depth335.4,9.3888,9.3888,9.3888;9.3888
+duration_4h,white,11,snr12 P4.3771 depth306.2,8.2842,8.1972,8.2842;8.1972
+duration_6h,white,0,snr7 P5.8539 depth168.4,5.5357,5.5342,5.5357;5.5342
+duration_6h,white,1,snr7 P4.4739 depth145.8,5.7246,5.6599,;
+duration_6h,white,2,snr7 P3.0939 depth126.3,5.4087,5.3792,;
+duration_6h,white,3,snr7 P5.7139 depth168.4,5.3811,5.3674,;
+duration_6h,white,4,snr7 P3.3739 depth129.1,5.4928,5.4729,;
+duration_6h,white,5,snr7 P5.9939 depth159.8,5.4844,5.4844,;
+duration_6h,white,6,snr7 P4.6139 depth152.3,5.7639,5.6746,5.7639;5.6746
+duration_6h,white,7,snr7 P3.2339 depth126.3,5.1560,5.1538,;
+duration_6h,white,8,snr7 P4.8939 depth145.8,5.3544,5.3307,;
+duration_6h,white,9,snr7 P3.5139 depth126.3,6.1950,6.1950,;
+duration_6h,white,10,snr7 P6.1339 depth178.6,5.6628,5.6399,;
+duration_6h,white,11,snr7 P4.7539 depth145.8,6.1568,5.9991,6.1568;5.9991
+duration_6h,white,0,snr9 P6.1712 depth229.6,5.4470,5.4467,5.4470;5.4467
+duration_6h,white,1,snr9 P4.7912 depth187.5,5.8414,5.8414,5.8414;5.8414
+duration_6h,white,2,snr9 P3.4112 depth162.4,5.9322,5.9289,;
+duration_6h,white,3,snr9 P6.0312 depth223.5,5.6503,5.5840,5.6503;5.5840
+duration_6h,white,4,snr9 P3.6912 depth173.6,5.3529,5.3383,5.3529;5.3383
+duration_6h,white,5,snr9 P6.3112 depth229.6,5.7233,5.7233,5.7233;5.7233
+duration_6h,white,6,snr9 P4.9312 depth187.5,5.4785,5.2731,5.4785;5.2731
+duration_6h,white,7,snr9 P3.5512 depth173.6,5.9201,5.8974,5.9201;5.8974
+duration_6h,white,8,snr9 P5.2112 depth205.4,5.3374,5.3374,;
+duration_6h,white,9,snr9 P3.8312 depth173.6,6.2474,6.2101,6.2474;6.2101
+duration_6h,white,10,snr9 P6.4512 depth226.9,6.8109,6.8109,6.8109;6.8109
+duration_6h,white,11,snr9 P5.0712 depth209.5,5.3393,5.3153,;
+duration_6h,white,0,snr12 P5.6107 depth273.9,6.8840,6.8840,6.8840;6.8840
+duration_6h,white,1,snr12 P4.2307 depth240.2,7.4369,7.4369,7.4369;7.4369
+duration_6h,white,2,snr12 P6.8507 depth306.2,8.3618,8.1323,8.3618;8.1323
+duration_6h,white,3,snr12 P5.4707 depth276.6,7.2989,7.2989,7.2989;7.2989
+duration_6h,white,4,snr12 P3.1307 depth210.2,7.4369,7.0077,7.4369;7.0077
+duration_6h,white,5,snr12 P5.7507 depth281.0,7.3695,7.3163,7.3695;7.3163
+duration_6h,white,6,snr12 P4.3707 depth250.0,7.9422,7.9422,7.9422;7.9422
+duration_6h,white,7,snr12 P6.9907 depth306.2,6.9630,6.9370,6.9630;6.9370
+duration_6h,white,8,snr12 P4.6507 depth267.6,8.9417,8.5925,8.9417;8.5925
+duration_6h,white,9,snr12 P3.2707 depth214.3,7.4745,7.4745,7.4745;7.4745
+duration_6h,white,10,snr12 P5.8907 depth278.9,7.3305,7.3248,7.3305;7.3248
+duration_6h,white,11,snr12 P4.5107 depth258.2,7.3849,7.3526,7.3849;7.3526
+two_event,white,0,snr8 P24.891,5.5503,5.5503,5.5503;5.5503
+two_event,white,1,snr8 P41.516,7.0786,6.7109,7.0786;6.7109
+two_event,white,2,snr8 P35.957,6.2166,6.2166,6.2166;6.2166
+two_event,white,3,snr8 P39.855,5.6481,5.6457,5.6481;5.6457
+two_event,white,4,snr8 P22.813,6.1026,6.1026,;
+two_event,white,5,snr8 P44.796,6.7592,6.7554,6.7592;6.7554
+two_event,white,6,snr8 P43.965,6.2473,6.2473,;
+two_event,white,7,snr8 P43.134,5.2883,5.1973,;
+two_event,white,8,snr8 P24.060,5.9420,5.8817,;
+two_event,white,9,snr8 P23.644,5.3447,5.3447,;
+two_event,white,10,snr8 P20.595,6.5433,6.5176,6.5433;6.5176
+two_event,white,11,snr8 P36.575,7.8351,7.7805,7.8351;7.7805
+two_event,white,12,snr8 P28.261,6.6162,6.6098,6.6162;6.6098
+two_event,white,13,snr8 P27.707,5.2846,5.1872,5.2846;5.1872
+two_event,white,14,snr8 P27.153,6.0140,6.0140,6.0140;6.0140
+two_event,white,0,snr10 P31.806,7.1243,7.1243,7.1243;7.1243
+two_event,white,1,snr10 P31.252,7.8343,7.7119,7.8343;7.7119
+two_event,white,2,snr10 P30.698,7.3541,7.0206,7.3541;7.0206
+two_event,white,3,snr10 P34.575,9.6077,8.9521,9.6077;8.9521
+two_event,white,4,snr10 P37.782,6.1663,5.9601,6.1663;5.9601
+two_event,white,5,snr10 P33.467,8.0758,8.0396,8.0758;8.0396
+two_event,white,6,snr10 P32.913,6.7234,6.7234,6.7234;6.7234
+two_event,white,7,snr10 P36.820,9.8379,9.8379,9.8379;9.8379
+two_event,white,8,snr10 P41.150,7.5492,7.4402,7.5492;7.4402
+two_event,white,9,snr10 P40.319,5.8991,5.8687,5.8991;5.8687
+two_event,white,10,snr10 P35.159,7.8440,7.8440,7.8440;7.8440
+two_event,white,11,snr10 P45.304,8.0129,7.9808,8.0129;7.9808
+two_event,white,12,snr10 P44.473,7.1232,7.1060,7.1232;7.1060
+two_event,white,13,snr10 P43.642,7.9326,7.9326,7.9326;7.9326
+two_event,white,14,snr10 P24.292,6.8361,6.8361,6.8361;6.8361
+two_event,white,0,snr13 P44.062,12.6309,12.0624,12.6309;12.0624
+two_event,white,1,snr13 P43.231,8.5409,8.5409,8.5409;8.5409
+two_event,white,2,snr13 P42.401,11.0806,11.0806,11.0806;11.0806
+two_event,white,3,snr13 P23.693,10.9466,10.9316,10.9466;10.9316
+two_event,white,4,snr13 P23.277,8.7715,8.7715,8.7715;8.7715
+two_event,white,5,snr13 P45.724,9.9604,9.9604,9.9604;9.9604
+two_event,white,6,snr13 P38.246,9.3059,9.3059,9.3059;9.3059
+two_event,white,7,snr13 P33.777,9.9102,9.9102,9.9102;9.9102
+two_event,white,8,snr13 P33.223,11.4945,11.4458,11.4945;11.4458
+two_event,white,9,snr13 P32.669,10.4014,10.4014,10.4014;10.4014
+two_event,white,10,snr13 P36.546,9.0671,9.0671,9.0671;9.0671
+two_event,white,11,snr13 P40.739,11.3775,11.3775,11.3775;11.3775
+two_event,white,12,snr13 P39.908,7.4766,7.4513,7.4766;7.4513
+two_event,white,13,snr13 P34.885,11.4327,11.0400,11.4327;11.0400
+two_event,white,14,snr13 P44.761,8.0376,7.9503,8.0376;7.9503
+two_planet,white,0,P3.320/8.161,9.7609,9.4492,9.7609;9.4492;7.4854;7.2080
+two_planet,white,1,P3.390/9.388,10.0074,9.9523,10.0074;9.9523;8.5023;8.3934
+two_planet,white,2,P2.700/7.146,11.1081,10.8560,11.1081;10.8560;7.7616;7.5845
+two_planet,white,3,P2.080/6.131,9.7020,9.6574,9.7020;9.6574;8.7785;8.6915
+two_planet,white,4,P2.150/7.358,11.6788,11.2349,11.6788;11.2349;8.0970;7.8905
+two_planet,white,5,P3.460/5.115,9.2723,9.2061,9.2723;9.2061;7.5442;7.5189
+two_planet,white,6,P2.490/8.964,11.2341,11.0548,11.2341;11.0548;7.2910;7.1832
+two_planet,white,7,P1.800/6.722,10.3216,10.2417,10.3216;10.2417;7.4960;7.4960
+two_planet,white,8,P1.870/7.949,9.8070,9.8070,9.8070;9.8070;8.2841;8.2841
+two_planet,white,9,P3.180/5.707,9.0748,9.0416,9.0748;9.0416;7.5671;7.5626
+two_planet,white,10,P3.250/6.934,10.1850,9.9791,10.1850;9.9791;8.9439;8.8425
+two_planet,white,11,P2.560/4.691,10.9188,10.3766,10.9188;10.3766;7.7365;7.5129
+two_planet,white,12,P2.630/5.919,8.9914,8.9914,7.0273;6.9964;8.9914;8.9914
+two_planet,white,13,P1.940/9.176,10.6274,10.5646,10.6274;10.5646;8.9406;8.8769
+two_planet,white,14,P2.970/7.525,10.5149,10.3594,10.5149;10.3594;7.4214;7.3049
+two_planet,white,15,P2.280/5.283,10.4376,9.9642,10.4376;9.9642;7.7382;7.4232
+two_planet,white,16,P2.350/6.510,10.0040,9.9631,10.0040;9.9631;7.5393;7.5135
+two_planet,white,17,P1.660/4.267,11.6533,11.3508,11.6533;11.3508;10.3020;10.0073
+two_planet,white,18,P1.730/5.495,8.9411,8.8427,8.9411;8.8427;7.4135;7.2850
+two_planet,white,19,P3.040/8.752,9.7302,9.5863,9.7302;9.5863;7.0463;7.0135
+two_planet,white,20,P3.110/4.479,9.3804,9.3729,9.3804;9.3729;8.2549;8.2435
+two_planet,white,21,P2.420/7.737,9.1921,9.0812,9.1921;9.0812;8.2446;8.1872
+two_planet,white,22,P3.450/6.086,10.0762,10.0036,10.0762;10.0036;8.8621;8.6176
+two_planet,white,23,P2.760/9.343,11.0814,10.8897,11.0814;10.8897;7.4944;7.4012
+two_planet,white,24,P2.830/5.071,10.2668,10.2433,10.2668;10.2433;7.6287;7.5524
+two_planet,white,25,P2.140/8.328,7.7834,7.7337,7.7834;7.7337;6.7570;6.7570
+two_planet,white,26,P2.210/4.055,9.6299,9.4475,9.6299;9.4475;7.2640;7.1386
+two_planet,white,27,P1.520/7.313,9.8585,9.8504,9.8585;9.8504;9.1508;9.1393
+two_planet,white,28,P1.590/8.540,11.3652,11.1279,11.3652;11.1279;9.4952;9.3481
+two_planet,white,29,P2.900/6.298,9.1736,8.9247,9.1736;8.9247;8.4905;8.3319
+two_planet,white,30,P1.930/4.647,10.6843,10.4636,10.6843;10.4636;8.2863;7.9996
+two_planet,white,31,P3.240/7.904,10.0959,9.8211,10.0959;9.8211;6.4043;6.2907
+two_planet,white,32,P3.310/9.132,9.2608,8.9989,9.2608;8.9989;8.1304;7.9520
+two_planet,white,33,P2.620/6.889,10.5859,10.3283,10.5859;10.3283;9.4195;9.1951
+two_planet,white,34,P2.000/5.874,9.3679,9.1097,9.3679;9.1097;7.0504;6.8175
+two_planet,white,35,P2.070/7.101,11.0379,10.8671,11.0379;10.8671;7.5344;7.3057
+two_planet,white,36,P3.380/4.859,9.2410,9.1162,9.0078;8.8226;9.2410;9.1162
+two_planet,white,37,P2.410/8.708,10.3388,9.9328,10.3388;9.9328;7.3395;7.0973
+two_planet,white,38,P1.720/6.465,8.6010,8.5142,8.6010;8.5142;8.0533;7.8024
+two_planet,white,39,P1.790/7.692,10.1756,10.0834,10.1573;10.0834;10.1756;10.0782
+duration_1h,correlated,0,snr7 P3.6205 depth319.5,8.4174,7.7028,8.4174;7.7028
+duration_1h,correlated,1,snr7 P6.2405 depth412.5,7.1811,6.5382,7.1811;6.5382
+duration_1h,correlated,2,snr7 P4.8605 depth373.1,6.4588,5.5381,;
+duration_1h,correlated,3,snr7 P3.4805 depth309.4,6.5236,5.9775,6.5236;5.9775
+duration_1h,correlated,4,snr7 P5.1405 depth391.3,6.0436,5.3971,;
+duration_1h,correlated,5,snr7 P3.7605 depth343.2,6.2888,5.9616,;
+duration_1h,correlated,6,snr7 P6.3805 depth412.5,5.9784,5.2924,;
+duration_1h,correlated,7,snr7 P5.0005 depth391.3,7.2016,6.5191,7.2016;6.5191
+duration_1h,correlated,8,snr7 P6.6605 depth437.5,6.4324,5.6915,;
+duration_1h,correlated,9,snr7 P5.2805 depth391.3,6.8143,5.8820,;
+duration_1h,correlated,10,snr7 P3.9005 depth330.7,5.7969,5.0941,;
+duration_1h,correlated,11,snr7 P6.5205 depth437.5,7.1856,6.3741,;
+duration_1h,correlated,0,snr9 P3.6209 depth397.7,8.7378,7.7296,8.7378;7.7296
+duration_1h,correlated,1,snr9 P6.2409 depth562.5,5.7771,5.2694,;
+duration_1h,correlated,2,snr9 P4.8609 depth479.7,8.5040,7.8353,8.5040;7.8353
+duration_1h,correlated,3,snr9 P3.4809 depth441.3,8.6343,8.1266,8.6343;8.1266
+duration_1h,correlated,4,snr9 P5.1409 depth503.1,8.3293,7.4753,8.3293;7.4753
+duration_1h,correlated,5,snr9 P3.7609 depth410.8,8.0509,6.9146,8.0509;6.9146
+duration_1h,correlated,6,snr9 P6.3809 depth562.5,6.5906,6.1566,6.5906;6.1566
+duration_1h,correlated,7,snr9 P5.0009 depth459.3,7.3973,6.8306,7.3973;6.8306
+duration_1h,correlated,8,snr9 P6.6610 depth562.5,8.4215,7.9672,8.4215;7.9672
+duration_1h,correlated,9,snr9 P5.2809 depth503.1,5.8619,5.4169,;
+duration_1h,correlated,10,snr9 P3.9009 depth459.3,8.8122,7.8873,8.8122;7.8873
+duration_1h,correlated,11,snr9 P6.5209 depth530.3,8.1997,7.5129,8.1997;7.5129
+duration_1h,correlated,0,snr12 P3.3773 depth530.3,11.9787,10.3515,11.9787;10.3515
+duration_1h,correlated,1,snr12 P5.9973 depth750.0,9.1075,8.2813,9.1075;8.2813
+duration_1h,correlated,2,snr12 P4.6173 depth639.6,9.7922,8.7706,9.7922;8.7706
+duration_1h,correlated,3,snr12 P3.2373 depth530.3,9.5183,8.4273,9.5183;8.4273
+duration_1h,correlated,4,snr12 P4.8973 depth639.6,10.9692,9.7306,10.9692;9.7306
+duration_1h,correlated,5,snr12 P3.5173 depth550.8,10.2859,9.1832,10.2859;9.1832
+duration_1h,correlated,6,snr12 P6.1373 depth670.8,10.8580,9.8760,10.8580;9.8760
+duration_1h,correlated,7,snr12 P4.7573 depth670.8,11.4291,10.3978,11.4291;10.3978
+duration_1h,correlated,8,snr12 P6.4173 depth750.0,9.7799,8.9746,9.7799;8.9746
+duration_1h,correlated,9,snr12 P5.0373 depth612.4,9.5507,9.0694,9.5507;9.0694
+duration_1h,correlated,10,snr12 P3.6573 depth566.9,9.5751,8.7039,9.5751;8.7039
+duration_1h,correlated,11,snr12 P6.2773 depth670.8,10.9058,9.9708,10.9058;9.9708
+duration_2h,correlated,0,snr7 P3.7599 depth240.4,6.8030,5.6854,;
+duration_2h,correlated,1,snr7 P6.3799 depth309.4,6.5980,6.2372,;
+duration_2h,correlated,2,snr7 P4.9999 depth276.7,6.1014,5.7452,;
+duration_2h,correlated,3,snr7 P3.6199 depth218.7,6.4595,6.0831,;6.0831
+duration_2h,correlated,4,snr7 P5.2800 depth259.0,7.2760,6.3423,;
+duration_2h,correlated,5,snr7 P3.9000 depth242.7,6.4755,5.7616,;
+duration_2h,correlated,6,snr7 P6.5200 depth309.4,6.5800,5.8182,6.5800;5.8182
+duration_2h,correlated,7,snr7 P5.1400 depth263.8,6.2938,5.5493,6.2938;5.5493
+duration_2h,correlated,8,snr7 P6.8000 depth309.4,6.0861,5.6573,;
+duration_2h,correlated,9,snr7 P5.4200 depth276.7,6.0344,5.3793,;
+duration_2h,correlated,10,snr7 P4.0400 depth242.7,6.7669,6.1699,;
+duration_2h,correlated,11,snr7 P6.6600 depth309.4,6.9160,5.5312,;
+duration_2h,correlated,0,snr9 P3.7604 depth288.1,6.9858,6.3339,6.9858;6.3339
+duration_2h,correlated,1,snr9 P6.3804 depth397.7,8.7816,7.3850,8.7816;7.3850
+duration_2h,correlated,2,snr9 P5.0004 depth324.8,7.5802,6.2321,7.5802;6.2321
+duration_2h,correlated,3,snr9 P3.6204 depth321.4,7.2909,6.3667,7.2909;6.3667
+duration_2h,correlated,4,snr9 P5.2804 depth397.7,6.5272,5.5357,;
+duration_2h,correlated,5,snr9 P3.9004 depth300.7,6.9619,5.9745,6.9619;5.9745
+duration_2h,correlated,6,snr9 P6.5204 depth397.7,6.8721,6.1018,6.8721;6.1018
+duration_2h,correlated,7,snr9 P5.1404 depth355.8,7.5438,6.6634,7.5438;6.6634
+duration_2h,correlated,8,snr9 P6.8004 depth425.2,8.2494,7.7306,8.2494;7.7306
+duration_2h,correlated,9,snr9 P5.4204 depth355.8,5.9207,5.5576,;
+duration_2h,correlated,10,snr9 P4.0404 depth312.0,6.8339,6.1120,6.8339;
+duration_2h,correlated,11,snr9 P6.6604 depth397.7,8.0164,7.2270,8.0164;7.2270
+duration_2h,correlated,0,snr12 P6.5398 depth530.3,9.3710,8.1320,9.3710;8.1320
+duration_2h,correlated,1,snr12 P5.1598 depth474.3,9.8680,8.6679,9.8680;8.6679
+duration_2h,correlated,2,snr12 P3.7798 depth433.0,11.1763,9.4065,11.1763;9.4065
+duration_2h,correlated,3,snr12 P6.3998 depth500.0,7.0529,6.2129,7.0529;6.2129
+duration_2h,correlated,4,snr12 P4.0599 depth433.0,13.3054,11.4317,13.3054;11.4317
+duration_2h,correlated,5,snr12 P6.6799 depth530.3,12.1375,10.5074,12.1375;10.5074
+duration_2h,correlated,6,snr12 P5.2998 depth437.6,9.2565,8.0081,9.2565;8.0081
+duration_2h,correlated,7,snr12 P3.9198 depth400.9,11.3686,10.1153,11.3686;10.1153
+duration_2h,correlated,8,snr12 P5.5799 depth500.0,10.0149,8.7184,10.0149;8.7184
+duration_2h,correlated,9,snr12 P4.1999 depth433.0,9.5878,8.2869,9.5878;8.2869
+duration_2h,correlated,10,snr12 P6.8199 depth530.3,10.6632,8.9607,10.6632;8.9607
+duration_2h,correlated,11,snr12 P5.4399 depth474.3,9.7212,8.0195,9.7212;8.0195
+duration_4h,correlated,0,snr7 P5.9398 depth218.7,6.2274,5.7865,6.2274;
+duration_4h,correlated,1,snr7 P4.5598 depth178.6,6.2421,5.6654,6.2421;5.6654
+duration_4h,correlated,2,snr7 P3.1798 depth151.7,6.3351,5.7183,;
+duration_4h,correlated,3,snr7 P5.7998 depth195.7,6.1719,5.3443,;
+duration_4h,correlated,4,snr7 P3.4598 depth154.7,6.1065,5.6629,6.1065;
+duration_4h,correlated,5,snr7 P6.0798 depth206.2,6.6309,5.6308,6.6309;5.6308
+duration_4h,correlated,6,snr7 P4.6998 depth178.6,6.1221,5.0620,;
+duration_4h,correlated,7,snr7 P3.3198 depth156.3,6.6258,5.5414,;
+duration_4h,correlated,8,snr7 P4.9798 depth178.6,6.0659,5.2899,;
+duration_4h,correlated,9,snr7 P3.5998 depth178.6,6.9467,5.5835,;
+duration_4h,correlated,10,snr7 P6.2198 depth206.2,6.5913,5.6260,6.5913;5.6260
+duration_4h,correlated,11,snr7 P4.8398 depth189.8,5.8210,5.1493,;
+duration_4h,correlated,0,snr9 P3.3791 depth201.8,8.0771,6.5199,8.0771;6.5199
+duration_4h,correlated,1,snr9 P5.9991 depth281.2,8.8967,6.5530,8.8967;6.5530
+duration_4h,correlated,2,snr9 P4.6191 depth239.8,6.2904,5.4270,;
+duration_4h,correlated,3,snr9 P3.2391 depth198.9,5.9786,5.5316,;
+duration_4h,correlated,4,snr9 P4.8991 depth239.8,7.0942,6.2420,7.0942;6.2420
+duration_4h,correlated,5,snr9 P3.5191 depth212.6,6.6844,5.7345,;
+duration_4h,correlated,6,snr9 P6.1391 depth281.2,6.4985,5.7768,;
+duration_4h,correlated,7,snr9 P4.7591 depth229.6,6.0233,5.2476,6.0233;
+duration_4h,correlated,8,snr9 P6.4192 depth281.2,8.7433,8.0328,8.7433;8.0328
+duration_4h,correlated,9,snr9 P5.0392 depth265.2,6.3561,5.6530,6.3561;
+duration_4h,correlated,10,snr9 P3.6591 depth205.4,7.0642,6.2898,7.0642;6.2898
+duration_4h,correlated,11,snr9 P6.2791 depth280.5,7.3520,6.5294,7.3520;6.5294
+duration_4h,correlated,0,snr12 P3.9408 depth285.6,9.7449,8.0460,9.7449;8.0460
+duration_4h,correlated,1,snr12 P6.5608 depth375.0,7.3041,5.9327,7.3041;5.9327
+duration_4h,correlated,2,snr12 P5.1808 depth351.1,7.9323,6.0054,7.9323;6.0054
+duration_4h,correlated,3,snr12 P3.8008 depth294.2,8.5996,7.1374,8.5996;7.1374
+duration_4h,correlated,4,snr12 P5.4608 depth335.4,11.6489,8.8051,11.6489;8.8051
+duration_4h,correlated,5,snr12 P4.0808 depth301.5,8.0889,6.9053,8.0889;6.9053
+duration_4h,correlated,6,snr12 P6.7008 depth398.5,9.4116,8.5972,9.4116;8.5972
+duration_4h,correlated,7,snr12 P5.3208 depth329.3,8.5210,6.9472,8.5210;6.9472
+duration_4h,correlated,8,snr12 P6.9808 depth433.0,9.0728,7.1714,9.0728;7.1714
+duration_4h,correlated,9,snr12 P5.6008 depth351.1,9.6188,8.3100,9.6188;8.3100
+duration_4h,correlated,10,snr12 P4.2208 depth306.2,9.3755,7.9815,9.3755;7.9815
+duration_4h,correlated,11,snr12 P6.8408 depth375.0,8.9649,7.4785,8.9649;7.4785
+duration_6h,correlated,0,snr7 P4.3177 depth144.3,5.7873,5.4096,;
+duration_6h,correlated,1,snr7 P6.9377 depth178.6,7.2001,6.1115,;
+duration_6h,correlated,2,snr7 P5.5576 depth168.4,6.2841,5.7278,;
+duration_6h,correlated,3,snr7 P4.1776 depth135.0,6.1938,5.3792,6.1938;5.3792
+duration_6h,correlated,4,snr7 P5.8377 depth168.4,6.4993,5.1306,;
+duration_6h,correlated,5,snr7 P4.4577 depth145.8,6.3219,5.5015,;
+duration_6h,correlated,6,snr7 P3.0777 depth120.5,5.8472,5.4705,;
+duration_6h,correlated,7,snr7 P5.6977 depth168.4,6.2550,5.7592,;
+duration_6h,correlated,8,snr7 P3.3577 depth126.3,6.6496,5.7634,;
+duration_6h,correlated,9,snr7 P5.9777 depth159.8,5.7938,5.3634,;
+duration_6h,correlated,10,snr7 P4.5977 depth145.8,6.6717,5.9104,;
+duration_6h,correlated,11,snr7 P3.2177 depth125.9,6.0224,5.3597,;
+duration_6h,correlated,0,snr9 P5.7570 depth216.5,7.1323,5.4752,;
+duration_6h,correlated,1,snr9 P4.3770 depth187.5,7.4543,6.1132,;
+duration_6h,correlated,2,snr9 P6.9970 depth229.6,8.0828,6.6110,8.0828;6.6110
+duration_6h,correlated,3,snr9 P5.6170 depth205.4,7.4940,6.1459,7.4940;6.1459
+duration_6h,correlated,4,snr9 P3.2770 depth162.4,7.5341,6.1956,7.5341;6.1956
+duration_6h,correlated,5,snr9 P5.8970 depth223.1,6.7232,5.5401,;
+duration_6h,correlated,6,snr9 P4.5170 depth195.8,6.3443,5.5916,;
+duration_6h,correlated,7,snr9 P3.1370 depth160.3,6.6307,5.7014,;
+duration_6h,correlated,8,snr9 P4.7970 depth187.5,6.5475,5.5211,;
+duration_6h,correlated,9,snr9 P3.4170 depth167.7,6.7936,6.0536,;
+duration_6h,correlated,10,snr9 P6.0370 depth216.5,6.5624,5.7869,;
+duration_6h,correlated,11,snr9 P4.6570 depth187.5,6.7694,5.7120,6.7694;5.7120
+duration_6h,correlated,0,snr12 P4.0745 depth231.5,9.4828,8.3664,9.4828;8.3664
+duration_6h,correlated,1,snr12 P6.6945 depth306.2,7.5815,6.2025,7.5815;6.2025
+duration_6h,correlated,2,snr12 P5.3145 depth273.9,7.2751,5.9578,7.2751;5.9578
+duration_6h,correlated,3,snr12 P3.9345 depth231.5,7.8460,6.0451,7.8460;6.0451
+duration_6h,correlated,4,snr12 P5.5945 depth273.9,8.2131,7.5425,8.2131;7.5425
+duration_6h,correlated,5,snr12 P4.2145 depth238.4,7.2460,5.9436,7.2460;
+duration_6h,correlated,6,snr12 P6.8345 depth307.8,8.9529,7.1174,8.9529;7.1174
+duration_6h,correlated,7,snr12 P5.4545 depth281.4,7.9068,6.3875,7.9068;6.3875
+duration_6h,correlated,8,snr12 P3.1145 depth213.9,6.1592,5.6883,6.1592;5.6883
+duration_6h,correlated,9,snr12 P5.7345 depth288.7,6.2691,5.5501,;
+duration_6h,correlated,10,snr12 P4.3545 depth250.0,7.8378,6.5031,7.8378;6.5031
+duration_6h,correlated,11,snr12 P6.9745 depth306.2,9.0609,7.4809,9.0609;7.4809
+two_event,correlated,0,snr8 P33.269,6.6293,6.0048,;
+two_event,correlated,1,snr8 P34.991,6.4852,5.7645,;
+two_event,correlated,2,snr8 P39.977,9.3000,7.3509,9.3000;7.3509
+two_event,correlated,3,snr8 P39.146,7.4461,6.0193,;
+two_event,correlated,4,snr8 P29.391,5.8375,5.2663,;
+two_event,correlated,5,snr8 P28.837,5.9104,5.1289,;
+two_event,correlated,6,snr8 P28.283,7.0960,5.9196,;
+two_event,correlated,7,snr8 P27.422,6.6623,5.7144,6.6623;5.7144
+two_event,correlated,8,snr8 P31.607,7.0189,5.8640,;
+two_event,correlated,9,snr8 P31.053,6.7111,5.6921,;5.6921
+two_event,correlated,10,snr8 P30.499,6.1590,5.2313,;
+two_event,correlated,11,snr8 P29.945,5.8451,5.1139,;
+two_event,correlated,12,snr8 P33.852,6.9427,6.0540,;
+two_event,correlated,13,snr8 P33.298,6.4070,5.2793,;
+two_event,correlated,14,snr8 P24.143,6.8238,5.5591,;
+two_event,correlated,0,snr10 P46.169,7.1447,6.4496,;
+two_event,correlated,1,snr10 P45.338,9.2756,7.7311,9.2756;7.7311
+two_event,correlated,2,snr10 P44.507,6.2038,5.4187,6.2038;
+two_event,correlated,3,snr10 P37.073,8.0996,7.6991,;
+two_event,correlated,4,snr10 P48.661,9.5412,7.7331,9.5412;7.7331
+two_event,correlated,5,snr10 P34.580,8.1530,7.3391,8.1530;7.3391
+two_event,correlated,6,snr10 P40.441,8.8781,6.8239,8.8781;6.8239
+two_event,correlated,7,snr10 P37.948,6.0814,5.1701,6.0814;
+two_event,correlated,8,snr10 P43.764,11.0832,8.7646,11.0832;8.7646
+two_event,correlated,9,snr10 P42.933,8.4860,7.6987,8.4860;7.6987
+two_event,correlated,10,snr10 P42.102,9.4516,8.2762,9.4516;8.2762
+two_event,correlated,11,snr10 P33.794,8.0369,6.0462,;
+two_event,correlated,12,snr10 P30.809,7.9706,6.8673,;
+two_event,correlated,13,snr10 P30.255,9.1117,8.3457,9.1117;8.3457
+two_event,correlated,14,snr10 P29.701,8.5674,7.0363,8.5674;7.0363
+two_event,correlated,0,snr13 P28.348,7.3091,6.0686,7.3091;
+two_event,correlated,1,snr13 P27.794,11.0370,10.0592,11.0370;10.0592
+two_event,correlated,2,snr13 P31.118,10.1322,8.5378,10.1322;8.5378
+two_event,correlated,3,snr13 P30.564,11.1601,9.2903,11.1601;9.2903
+two_event,correlated,4,snr13 P30.010,9.5012,8.4528,9.5012;8.4528
+two_event,correlated,5,snr13 P29.456,9.3494,7.9091,9.3494;
+two_event,correlated,6,snr13 P49.956,11.0758,9.7511,11.0758;9.7511
+two_event,correlated,7,snr13 P35.875,11.4821,9.9793,11.4821;9.9793
+two_event,correlated,8,snr13 P48.295,8.9362,7.6418,;
+two_event,correlated,9,snr13 P47.464,9.9667,9.4162,9.9667;9.4162
+two_event,correlated,10,snr13 P20.015,10.1211,8.2889,10.1211;8.2889
+two_event,correlated,11,snr13 P37.537,10.4278,8.2485,10.4278;8.2485
+two_event,correlated,12,snr13 P31.030,10.7048,9.5281,10.7048;9.5281
+two_event,correlated,13,snr13 P30.476,8.4041,7.0706,8.4041;7.0706
+two_event,correlated,14,snr13 P29.922,9.7935,8.9946,9.7935;8.9946
+two_planet,correlated,0,P2.993/9.334,10.2669,8.8359,8.8290;7.8349;10.2669;8.8359
+two_planet,correlated,1,P3.063/5.061,10.1079,8.9344,10.1079;8.9344;8.1906;7.0989
+two_planet,correlated,2,P2.373/8.318,10.0720,8.3669,10.0720;8.3669;9.0413;7.4079
+two_planet,correlated,3,P2.443/4.045,9.4900,8.1153,9.1070;7.8512;9.4900;8.1153
+two_planet,correlated,4,P1.753/7.303,9.8718,8.3562,9.8718;8.3562;9.2011;7.7722
+two_planet,correlated,5,P1.823/8.530,10.0587,8.9374,10.0587;8.9374;9.1655;7.9195
+two_planet,correlated,6,P2.163/4.637,8.5263,7.6907,8.5263;7.6907;7.0355;6.2429
+two_planet,correlated,7,P3.473/7.894,10.8395,9.4253,10.8395;9.4253;6.9841;5.6975
+two_planet,correlated,8,P1.543/9.122,9.8073,8.5348,9.8073;8.5348;8.5316;7.2824
+two_planet,correlated,9,P2.853/6.879,10.7870,9.4765,10.7870;9.4765;7.6434;6.6208
+two_planet,correlated,10,P2.923/8.106,10.9300,8.9845,10.9300;8.9845;8.0302;6.8396
+two_planet,correlated,11,P2.233/5.864,9.4518,8.0772,9.4518;8.0772;8.0848;6.5802
+two_planet,correlated,12,P2.303/7.091,11.3237,9.9190,11.3237;9.9190;7.3239;
+two_planet,correlated,13,P2.643/8.698,9.8812,8.7444,8.5596;7.5145;9.8812;8.7444
+two_planet,correlated,14,P1.953/6.455,11.1766,9.7335,11.1766;9.7335;8.8673;7.4245
+two_planet,correlated,15,P2.023/7.682,9.9093,8.6404,9.9093;8.6404;8.5236;7.3628
+two_planet,correlated,16,P3.333/5.440,9.2724,7.9065,9.2724;7.9065;7.5461;6.1878
+two_planet,correlated,17,P2.713/4.425,9.9394,8.0704,9.8394;8.0704;8.9519;7.0696
+two_planet,correlated,18,P2.093/8.910,9.7457,8.5134,9.7457;8.5134;;
+two_planet,correlated,19,P3.123/7.258,11.2729,9.6996,11.2729;9.6996;7.8400;6.7952
+two_planet,correlated,20,P2.433/5.016,9.7759,8.3574,9.7759;8.3574;7.4505;6.1121
+two_planet,correlated,21,P2.503/6.243,11.2100,9.3617,11.2100;9.3617;9.1120;7.2369
+two_planet,correlated,22,P1.813/4.001,9.4876,8.2275,9.4876;8.2275;8.6568;6.9094
+two_planet,correlated,23,P1.883/5.228,9.2517,7.4996,9.2517;7.4996;6.3380;
+two_planet,correlated,24,P3.193/8.486,9.6995,8.2627,9.6995;8.2627;8.6755;6.9623
+two_planet,correlated,25,P3.263/4.213,7.9497,7.0919,7.9497;7.0919;6.8494;6.0856
+two_planet,correlated,26,P2.573/7.470,9.4051,7.8433,9.4051;7.8433;7.1202;5.6569
+two_planet,correlated,27,P1.603/5.819,9.1232,7.7644,7.2722;6.2626;9.1232;7.7644
+two_planet,correlated,28,P2.913/9.077,10.0422,8.7214,10.0422;8.7214;8.8735;7.5259
+two_planet,correlated,29,P2.983/4.804,10.2449,8.5877,10.2449;8.5877;7.4000;5.8310
+two_planet,correlated,30,P2.293/8.062,9.7408,8.4741,9.7408;8.4741;8.9725;7.9802
+two_planet,correlated,31,P2.363/9.289,10.2151,8.7177,10.2151;8.7177;7.5091;6.1731
+two_planet,correlated,32,P1.673/7.046,9.2560,8.3388,9.2560;8.3388;8.7601;7.5660
+two_planet,correlated,33,P1.743/8.274,10.3004,8.7987,10.3004;8.7987;7.2304;6.3754
+two_planet,correlated,34,P2.083/4.380,9.6010,8.5779,9.6010;8.5779;7.8317;6.7744
+two_planet,correlated,35,P3.393/7.638,8.7118,7.5119,8.7118;7.5119;8.4312;6.6139
+two_planet,correlated,36,P3.463/8.865,8.5736,7.1653,8.5736;7.1653;7.4866;6.1094
+two_planet,correlated,37,P2.773/6.622,8.6556,7.9687,8.6556;7.9687;6.7978;6.1983
+two_planet,correlated,38,P2.843/7.850,8.6242,7.5165,8.6242;7.5165;7.8246;6.4323
+two_planet,correlated,39,P2.153/5.607,9.7717,8.5729,9.7717;8.5729;8.7935;7.3066
+real_2h,real,0,tic4153875_s32_600.csv snr8 P2.8029,5.9118,5.9118,5.1306;5.1306
+real_2h,real,0,tic4153875_s32_600.csv snr12 P5.2729,10.1798,10.1798,10.1798;10.1798
+real_2h,real,1,tic4159230_s32_600.csv snr8 P5.7279,7.2913,7.2913,7.2913;7.2913
+real_2h,real,1,tic4159230_s32_600.csv snr12 P1.6979,11.7114,11.3540,11.7114;11.3540
+real_2h,real,2,tic4159275_s32_600.csv snr8 P2.1529,6.3540,6.3019,6.3540;6.3019
+real_2h,real,2,tic4159275_s32_600.csv snr12 P4.6229,9.6084,9.6040,9.6084;9.6040
+real_2h,real,3,tic4159297_s32_600.csv snr8 P5.0780,7.9990,7.1313,7.9990;7.1313
+real_2h,real,3,tic4159297_s32_600.csv snr12 P7.5480,10.8631,10.1386,10.8631;10.1386
+real_2h,real,4,tic4159308_s32_600.csv snr8 P1.5030,6.6711,6.6429,6.6711;6.6429
+real_2h,real,4,tic4159308_s32_600.csv snr12 P3.9730,9.5333,9.5267,9.5333;9.5267
+real_2h,real,5,tic4159318_s32_600.csv snr8 P4.4280,7.3946,7.3946,7.3946;7.3946
+real_2h,real,5,tic4159318_s32_600.csv snr12 P6.8980,8.4218,8.4218,8.4218;8.4218
+real_2h,real,6,tic4159376_s32_600.csv snr8 P7.3531,11.1527,6.7399,;6.7399
+real_2h,real,6,tic4159376_s32_600.csv snr12 P3.3231,11.5759,8.3644,10.2992;8.3644
+real_2h,real,7,tic4159404_s32_600.csv snr8 P3.7781,6.3137,6.2450,6.3137;6.2450
+real_2h,real,7,tic4159404_s32_600.csv snr12 P6.2481,11.1252,10.7658,11.1252;10.7658
+real_2h,real,8,tic4159443_s32_600.csv snr8 P6.7031,30.2256,5.7363,;
+real_2h,real,8,tic4159443_s32_600.csv snr12 P2.6731,30.2023,5.7570,;
+real_2h,real,9,tic4159461_s32_600.csv snr8 P3.1282,24.5789,13.6890,;
+real_2h,real,9,tic4159461_s32_600.csv snr12 P5.5982,27.0780,16.3239,27.0780;16.3239
+real_2h,real,10,tic4200315_s32_600.csv snr8 P6.0532,7.4623,7.2692,7.4623;7.2692
+real_2h,real,10,tic4200315_s32_600.csv snr12 P2.0232,10.2628,9.7729,10.2628;9.7729
+real_2h,real,11,tic4200337_s32_600.csv snr8 P2.4782,184.9151,22.0978,;
+real_2h,real,11,tic4200337_s32_600.csv snr12 P4.9482,185.0535,22.0631,;
+real_2h,real,12,tic4200338_s32_600.csv snr8 P5.4033,25.4907,11.0149,;
+real_2h,real,12,tic4200338_s32_600.csv snr12 P7.8733,24.6196,10.5442,;
+real_2h,real,13,tic4200340_s32_600.csv snr8 P1.8283,895.9736,91.8058,;
+real_2h,real,13,tic4200340_s32_600.csv snr12 P4.2983,902.3216,92.4565,;
+real_2h,real,14,tic4200348_s32_600.csv snr8 P4.7533,5.8169,5.8169,5.4376;5.4376
+real_2h,real,14,tic4200348_s32_600.csv snr12 P7.2233,11.7252,11.7252,11.7252;11.7252
+real_2h,real,15,tic4200419_s32_600.csv snr8 P7.6784,7.7261,7.4513,7.7261;7.4513
+real_2h,real,15,tic4200419_s32_600.csv snr12 P3.6484,10.8458,10.3317,10.8458;10.3317
+real_2h,real,16,tic4200432_s32_600.csv snr8 P4.1034,6.7126,6.6392,6.7126;6.6392
+real_2h,real,16,tic4200432_s32_600.csv snr12 P6.5734,11.7029,11.7029,11.7029;11.7029
+real_2h,real,17,tic4200448_s32_600.csv snr8 P7.0284,132.4114,14.1513,;
+real_2h,real,17,tic4200448_s32_600.csv snr12 P2.9984,132.7912,14.1909,;
+real_2h,real,18,tic4200462_s32_600.csv snr8 P3.4535,7.2731,6.9568,7.2731;6.9568
+real_2h,real,18,tic4200462_s32_600.csv snr12 P5.9235,12.2790,12.1574,12.2790;12.1574
+real_2h,real,19,tic4200469_s32_600.csv snr8 P6.3785,7.2566,7.2566,7.2566;7.2566
+real_2h,real,19,tic4200469_s32_600.csv snr12 P2.3485,10.1639,10.1639,10.1639;10.1639
+real_2h,real,20,tic4200586_s32_600.csv snr8 P2.8035,7.3141,5.7977,;
+real_2h,real,20,tic4200586_s32_600.csv snr12 P5.2735,8.8609,5.9452,8.3022;5.7338
+real_2h,real,21,tic4200588_s32_600.csv snr8 P5.7286,8.7609,5.1227,7.0149;5.1227
+real_2h,real,21,tic4200588_s32_600.csv snr12 P1.6986,11.6473,7.8196,11.6473;7.8196
+real_2h,real,22,tic4200608_s32_600.csv snr8 P2.1536,22.0134,5.5776,;
+real_2h,real,22,tic4200608_s32_600.csv snr12 P4.6236,22.2553,5.3858,;
+real_2h,real,23,tic4200634_s32_600.csv snr8 P5.0786,8.2837,7.9696,8.2837;7.9696
+real_2h,real,23,tic4200634_s32_600.csv snr12 P7.5487,9.9320,9.2448,9.9320;9.2448
+real_2h,real,24,tic4200668_s32_600.csv snr8 P1.5037,15.6125,7.8624,;6.4564
+real_2h,real,24,tic4200668_s32_600.csv snr12 P3.9737,15.2675,8.1635,;8.1635
+real_2h,real,25,tic4205819_s32_600.csv snr8 P4.4287,6.8679,5.7475,6.1909;5.7475
+real_2h,real,25,tic4205819_s32_600.csv snr12 P6.8987,10.7377,9.3051,10.7377;9.3051
+real_2h,real,26,tic4205838_s32_600.csv snr8 P7.3537,7.2765,7.2765,7.2765;7.2765
+real_2h,real,26,tic4205838_s32_600.csv snr12 P3.3238,9.1681,9.1681,9.1681;9.1681
+real_2h,real,27,tic4205874_s32_600.csv snr8 P3.7788,13.5782,5.6515,;
+real_2h,real,27,tic4205874_s32_600.csv snr12 P6.2488,13.1089,5.5335,;
+real_2h,real,28,tic4205889_s32_600.csv snr8 P6.7038,70.4093,7.5194,;
+real_2h,real,28,tic4205889_s32_600.csv snr12 P2.6738,69.4488,7.4168,;
+real_2h,real,29,tic4205949_s32_600.csv snr8 P3.1288,5.2399,5.0138,4.8187;4.7226
+real_2h,real,29,tic4205949_s32_600.csv snr12 P5.5989,12.0189,11.5672,12.0189;11.5672
+real_2h,real,30,tic4205969_s32_600.csv snr8 P6.0539,53.7494,6.7423,;
+real_2h,real,30,tic4205969_s32_600.csv snr12 P2.0239,54.1053,6.8143,;
+real_2h,real,31,tic4206192_s32_600.csv snr8 P2.4789,10.0800,9.3031,;
+real_2h,real,31,tic4206192_s32_600.csv snr12 P4.9489,11.4767,10.2654,11.4767;10.2654
+real_2h,real,32,tic4206203_s32_600.csv snr8 P5.4039,9.6243,8.0777,8.0777;8.0777
+real_2h,real,32,tic4206203_s32_600.csv snr12 P7.8740,10.7258,10.7258,10.7258;10.7258
+real_2h,real,33,tic4206238_s32_600.csv snr8 P1.8290,44.2965,10.4115,;
+real_2h,real,33,tic4206238_s32_600.csv snr12 P4.2990,45.5385,10.9593,;
+real_2h,real,34,tic4207833_s32_600.csv snr8 P4.7540,29.6122,7.6760,;
+real_2h,real,34,tic4207833_s32_600.csv snr12 P7.2240,29.7186,6.9122,;
+real_2h,real,35,tic4249531_s32_600.csv snr8 P7.6790,8.1318,5.9234,;
+real_2h,real,35,tic4249531_s32_600.csv snr12 P3.6491,12.6828,10.0343,12.6828;10.0343
+real_2h,real,36,tic4249593_s32_600.csv snr8 P4.1041,6.0721,5.9976,6.0721;5.9976
+real_2h,real,36,tic4249593_s32_600.csv snr12 P6.5741,10.8555,10.8245,10.8555;10.8245
+real_2h,real,37,tic4249635_s32_600.csv snr8 P7.0291,6.6118,6.6118,6.6118;6.6118
+real_2h,real,37,tic4249635_s32_600.csv snr12 P2.9991,10.0196,10.0196,10.0196;10.0196
+real_2h,real,38,tic4249737_s32_600.csv snr8 P3.4541,145.5074,15.4726,;
+real_2h,real,38,tic4249737_s32_600.csv snr12 P5.9242,146.9141,15.6221,;
+real_2h,real,39,tic4249748_s32_600.csv snr8 P6.3792,8.4851,8.0465,8.4851;8.0465
+real_2h,real,39,tic4249748_s32_600.csv snr12 P2.3492,11.9742,10.9068,11.9742;10.9068
+real_2h,real,40,tic4249759_s32_600.csv snr8 P2.8042,14.7979,13.2593,;
+real_2h,real,40,tic4249759_s32_600.csv snr12 P5.2742,14.4982,12.6188,;
+real_2h,real,41,tic4249776_s32_600.csv snr8 P5.7292,174.7578,18.6716,;
+real_2h,real,41,tic4249776_s32_600.csv snr12 P1.6993,176.5071,18.8586,;
+real_2h,real,42,tic4249907_s32_600.csv snr8 P2.1543,7.4966,7.4857,7.4966;7.4857
+real_2h,real,42,tic4249907_s32_600.csv snr12 P4.6243,11.9874,11.8087,11.9874;11.8087
+real_2h,real,43,tic4249909_s32_600.csv snr8 P5.0793,10.8986,7.1881,9.5965;7.1881
+real_2h,real,43,tic4249909_s32_600.csv snr12 P7.5493,11.1156,8.0871,11.1156;8.0871
+real_2h,real,44,tic4255316_s32_600.csv snr8 P1.5043,6.1128,6.0802,6.1128;6.0802
+real_2h,real,44,tic4255316_s32_600.csv snr12 P3.9744,9.8941,9.7720,9.8941;9.7720
+real_2h,real,45,tic4288728_s32_600.csv snr8 P4.4294,5.7509,5.5624,5.7509;5.5624
+real_2h,real,45,tic4288728_s32_600.csv snr12 P6.8994,10.7131,10.2291,10.7131;10.2291
+real_2h,real,46,tic4288833_s32_600.csv snr8 P7.3544,8.5919,7.6202,8.5919;7.6202
+real_2h,real,46,tic4288833_s32_600.csv snr12 P3.3244,8.9756,8.4326,8.9756;8.4326
+real_2h,real,47,tic4288908_s32_600.csv snr8 P3.7794,7.2822,7.2691,7.2822;7.2691
+real_2h,real,47,tic4288908_s32_600.csv snr12 P6.2495,10.5854,10.5854,10.5854;10.5854
+real_4h,real,0,tic4153875_s32_600.csv snr8 P2.8096,7.3444,7.3444,7.3444;7.3444
+real_4h,real,0,tic4153875_s32_600.csv snr12 P5.2796,7.8265,7.8202,7.8265;7.8202
+real_4h,real,1,tic4159230_s32_600.csv snr8 P5.7346,5.8621,5.8522,5.8621;5.7814
+real_4h,real,1,tic4159230_s32_600.csv snr12 P1.7046,9.4188,8.8265,9.4188;8.8265
+real_4h,real,2,tic4159275_s32_600.csv snr8 P2.1596,7.6318,7.1219,7.6318;7.1219
+real_4h,real,2,tic4159275_s32_600.csv snr12 P4.6297,8.3006,8.1300,8.3006;8.1300
+real_4h,real,3,tic4159297_s32_600.csv snr8 P5.0847,6.0476,5.6141,6.0476;5.6141
+real_4h,real,3,tic4159297_s32_600.csv snr12 P7.5547,9.0518,7.7368,9.0518;7.7368
+real_4h,real,4,tic4159308_s32_600.csv snr8 P1.5097,7.1685,6.9980,7.1685;6.9980
+real_4h,real,4,tic4159308_s32_600.csv snr12 P3.9797,9.5785,9.4229,9.5785;9.4229
+real_4h,real,5,tic4159318_s32_600.csv snr8 P4.4347,6.0589,6.0053,6.0589;6.0053
+real_4h,real,5,tic4159318_s32_600.csv snr12 P6.9048,8.4627,8.4627,8.4627;8.4627
+real_4h,real,6,tic4159376_s32_600.csv snr8 P7.3598,11.5255,6.0972,;5.6896
+real_4h,real,6,tic4159376_s32_600.csv snr12 P3.3298,11.3570,7.9160,10.1378;7.9160
+real_4h,real,7,tic4159404_s32_600.csv snr8 P3.7848,7.2332,7.0840,7.2332;7.0840
+real_4h,real,7,tic4159404_s32_600.csv snr12 P6.2548,8.1558,8.1434,8.1558;8.1434
+real_4h,real,8,tic4159443_s32_600.csv snr8 P6.7098,30.4058,5.7156,;
+real_4h,real,8,tic4159443_s32_600.csv snr12 P2.6799,32.4511,5.9702,;
+real_4h,real,9,tic4159461_s32_600.csv snr8 P3.1349,25.1641,12.1044,;
+real_4h,real,9,tic4159461_s32_600.csv snr12 P5.6049,29.6306,11.7859,;
+real_4h,real,10,tic4200315_s32_600.csv snr8 P6.0599,5.6152,5.6152,5.3990;5.3354
+real_4h,real,10,tic4200315_s32_600.csv snr12 P2.0299,9.2267,8.8200,9.2267;8.8200
+real_4h,real,11,tic4200337_s32_600.csv snr8 P2.4849,185.5792,21.9768,;
+real_4h,real,11,tic4200337_s32_600.csv snr12 P4.9550,184.4334,22.2535,;
+real_4h,real,12,tic4200338_s32_600.csv snr8 P5.4100,24.6773,10.8083,;
+real_4h,real,12,tic4200338_s32_600.csv snr12 P7.8800,24.5863,10.3396,;
+real_4h,real,13,tic4200340_s32_600.csv snr8 P1.8350,901.2637,92.3479,;
+real_4h,real,13,tic4200340_s32_600.csv snr12 P4.3050,903.5918,92.5866,;
+real_4h,real,14,tic4200348_s32_600.csv snr8 P4.7600,5.0770,5.0770,4.9676;4.9676
+real_4h,real,14,tic4200348_s32_600.csv snr12 P7.2301,9.1147,9.0776,9.1147;9.0776
+real_4h,real,15,tic4200419_s32_600.csv snr8 P7.6851,5.3495,5.2230,;
+real_4h,real,15,tic4200419_s32_600.csv snr12 P3.6551,8.6742,8.1291,8.6742;8.1291
+real_4h,real,16,tic4200432_s32_600.csv snr8 P4.1101,5.8118,5.7521,5.8118;5.7521
+real_4h,real,16,tic4200432_s32_600.csv snr12 P6.5801,9.7293,9.7293,9.7293;9.7293
+real_4h,real,17,tic4200448_s32_600.csv snr8 P7.0351,132.3777,14.1487,;
+real_4h,real,17,tic4200448_s32_600.csv snr12 P3.0052,132.4555,14.1574,;
+real_4h,real,18,tic4200462_s32_600.csv snr8 P3.4602,5.7864,5.4295,5.7864;5.3783
+real_4h,real,18,tic4200462_s32_600.csv snr12 P5.9302,7.7392,7.2432,7.7392;7.2432
+real_4h,real,19,tic4200469_s32_600.csv snr8 P6.3852,6.6265,6.4679,6.1230;6.1230
+real_4h,real,19,tic4200469_s32_600.csv snr12 P2.3552,9.4831,9.4831,9.4831;9.4831
+real_4h,real,20,tic4200586_s32_600.csv snr8 P2.8102,7.9938,5.7876,7.7177;
+real_4h,real,20,tic4200586_s32_600.csv snr12 P5.2803,7.5946,5.9096,;
+real_4h,real,21,tic4200588_s32_600.csv snr8 P5.7353,9.0412,5.1116,7.3749;
+real_4h,real,21,tic4200588_s32_600.csv snr12 P1.7053,9.2346,5.2440,8.8498;5.2440
+real_4h,real,22,tic4200608_s32_600.csv snr8 P2.1603,21.4798,5.5801,;
+real_4h,real,22,tic4200608_s32_600.csv snr12 P4.6303,21.2390,5.8657,;
+real_4h,real,23,tic4200634_s32_600.csv snr8 P5.0853,6.4229,5.8651,6.4229;5.6007
+real_4h,real,23,tic4200634_s32_600.csv snr12 P7.5554,8.9957,8.6256,8.9957;8.6256
+real_4h,real,24,tic4200668_s32_600.csv snr8 P1.5104,15.6372,8.1265,;5.9037
+real_4h,real,24,tic4200668_s32_600.csv snr12 P3.9804,15.3028,9.6908,11.9485;9.6908
+real_4h,real,25,tic4205819_s32_600.csv snr8 P4.4354,6.8259,5.3783,6.8259;5.3783
+real_4h,real,25,tic4205819_s32_600.csv snr12 P6.9054,8.7608,6.5901,8.7608;6.5901
+real_4h,real,26,tic4205838_s32_600.csv snr8 P7.3604,6.5280,6.5280,6.5280;6.5280
+real_4h,real,26,tic4205838_s32_600.csv snr12 P3.3305,9.1504,9.1504,9.1504;9.1504
+real_4h,real,27,tic4205874_s32_600.csv snr8 P3.7855,12.5343,5.6881,;
+real_4h,real,27,tic4205874_s32_600.csv snr12 P6.2555,12.6190,5.5221,;5.0661
+real_4h,real,28,tic4205889_s32_600.csv snr8 P6.7105,69.9681,7.4721,;
+real_4h,real,28,tic4205889_s32_600.csv snr12 P2.6805,69.4700,7.4190,;
+real_4h,real,29,tic4205949_s32_600.csv snr8 P3.1355,7.2533,6.5036,7.2533;6.5036
+real_4h,real,29,tic4205949_s32_600.csv snr12 P5.6056,8.5423,7.7165,8.5423;7.7165
+real_4h,real,30,tic4205969_s32_600.csv snr8 P6.0606,53.7691,6.7693,;
+real_4h,real,30,tic4205969_s32_600.csv snr12 P2.0306,53.4654,6.9582,;
+real_4h,real,31,tic4206192_s32_600.csv snr8 P2.4856,10.2634,9.1310,;
+real_4h,real,31,tic4206192_s32_600.csv snr12 P4.9556,11.1211,10.1707,9.5157;
+real_4h,real,32,tic4206203_s32_600.csv snr8 P5.4106,9.7891,7.7934,;7.7934
+real_4h,real,32,tic4206203_s32_600.csv snr12 P7.8807,9.6190,9.2513,9.2513;9.2513
+real_4h,real,33,tic4206238_s32_600.csv snr8 P1.8357,43.9139,10.2697,;
+real_4h,real,33,tic4206238_s32_600.csv snr12 P4.3057,43.9632,10.3785,;
+real_4h,real,34,tic4207833_s32_600.csv snr8 P4.7607,30.3617,7.2166,;
+real_4h,real,34,tic4207833_s32_600.csv snr12 P7.2307,29.7639,6.5820,;
+real_4h,real,35,tic4249531_s32_600.csv snr8 P7.6857,8.3139,5.8381,;
+real_4h,real,35,tic4249531_s32_600.csv snr12 P3.6558,10.3113,6.4750,10.3113;6.4750
+real_4h,real,36,tic4249593_s32_600.csv snr8 P4.1108,6.5135,6.5132,6.5135;6.5132
+real_4h,real,36,tic4249593_s32_600.csv snr12 P6.5808,8.1274,7.8441,8.1274;7.8441
+real_4h,real,37,tic4249635_s32_600.csv snr8 P7.0358,6.7488,6.7488,6.5658;6.5658
+real_4h,real,37,tic4249635_s32_600.csv snr12 P3.0058,8.7703,8.7597,8.7703;8.7597
+real_4h,real,38,tic4249737_s32_600.csv snr8 P3.4608,148.1843,15.7664,;
+real_4h,real,38,tic4249737_s32_600.csv snr12 P5.9309,146.4738,15.5752,;
+real_4h,real,39,tic4249748_s32_600.csv snr8 P6.3859,7.9364,6.8824,;
+real_4h,real,39,tic4249748_s32_600.csv snr12 P2.3559,8.5245,7.3186,8.5245;7.3186
+real_4h,real,40,tic4249759_s32_600.csv snr8 P2.8109,13.9272,12.1422,;
+real_4h,real,40,tic4249759_s32_600.csv snr12 P5.2809,13.8857,11.9111,;
+real_4h,real,41,tic4249776_s32_600.csv snr8 P5.7359,175.4871,18.7516,;
+real_4h,real,41,tic4249776_s32_600.csv snr12 P1.7060,173.4221,18.5281,;
+real_4h,real,42,tic4249907_s32_600.csv snr8 P2.1610,7.8959,7.1549,7.8959;7.1549
+real_4h,real,42,tic4249907_s32_600.csv snr12 P4.6310,9.1806,8.4098,9.1806;8.4098
+real_4h,real,43,tic4249909_s32_600.csv snr8 P5.0860,10.6300,5.7761,;
+real_4h,real,43,tic4249909_s32_600.csv snr12 P7.5560,11.1028,5.8569,9.9443;5.8569
+real_4h,real,44,tic4255316_s32_600.csv snr8 P1.5110,6.7953,6.4829,6.7953;6.4829
+real_4h,real,44,tic4255316_s32_600.csv snr12 P3.9811,9.3306,9.0816,9.3306;9.0816
+real_4h,real,45,tic4288728_s32_600.csv snr8 P4.4361,5.7785,5.5745,5.2297;4.9651
+real_4h,real,45,tic4288728_s32_600.csv snr12 P6.9061,8.7280,8.1468,8.7280;8.1468
+real_4h,real,46,tic4288833_s32_600.csv snr8 P7.3611,5.5160,5.1186,5.4422;
+real_4h,real,46,tic4288833_s32_600.csv snr12 P3.3311,5.9662,5.0979,5.9662;5.0979
+real_4h,real,47,tic4288908_s32_600.csv snr8 P3.7861,5.3559,5.3559,5.2196;5.1898
+real_4h,real,47,tic4288908_s32_600.csv snr12 P6.2562,9.3522,8.9951,9.3522;8.9951

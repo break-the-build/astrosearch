@@ -1,0 +1,12 @@
+[package]
+name = "astrosearch"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.87"
+description = "Candidate search for astronomical light curves"
+license = "MIT"
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"

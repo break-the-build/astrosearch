@@ -94,6 +94,10 @@ pub struct Config {
     pub two_stage_factor: usize,
     /// Coarse cells refined in a two-stage search.
     pub two_stage_keep: usize,
+    /// Skip further masked passes once a pass's best transit score is below
+    /// `detection_threshold`: later passes could only add screening-tier
+    /// candidates.
+    pub stop_passes_below_detection: bool,
     /// Rank coarse cells with the fast folding algorithm (all periods at
     /// duty-cycle-scaled resolution) instead of one grid period per cell.
     pub coarse_ffa: bool,
@@ -145,6 +149,7 @@ impl Default for Config {
             two_stage_factor: 0,
             two_stage_keep: 512,
             coarse_ffa: false,
+            stop_passes_below_detection: false,
             periods: 2400,
             durations: 10,
             trend_days: 1.05,

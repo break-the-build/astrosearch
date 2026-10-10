@@ -70,6 +70,21 @@ fn scaled_axis(period: f64, density_g_cm3: f64) -> f64 {
     (G * density_g_cm3 * 1_000.0 * period_seconds.powi(2) / (3.0 * std::f64::consts::PI)).cbrt()
 }
 
+/// Closest orbit searched with the physical floor, in stellar radii.
+pub(crate) const MIN_ORBIT_STELLAR_RADII: f64 = 2.0;
+
+/// Period of an orbit at MIN_ORBIT_STELLAR_RADII stellar radii (days), from
+/// Kepler's law with the stellar density (solar if absent): 0.33 d for the
+/// Sun, 0.09 d for a 20 g/cm^3 M dwarf. Shorter "orbits" would be inside or
+/// grazing the star, and the shortest periods are the most expensive trials.
+pub(crate) fn minimum_orbital_period(model: DurationModel) -> f64 {
+    const G: f64 = 6.67430e-11;
+    let density = model.density_g_cm3.unwrap_or(SOLAR_DENSITY_G_CM3) * 1_000.0;
+    let a3 = MIN_ORBIT_STELLAR_RADII.powi(3);
+    2.0 * std::f64::consts::PI * (a3 * 3.0 / (4.0 * std::f64::consts::PI * G * density)).sqrt()
+        / 86_400.0
+}
+
 /// Longest physically plausible duration as a multiple of the central one:
 /// 3x allows a star ~25x less dense than assumed, or an eccentric orbit.
 pub(crate) const PHYSICAL_CEILING_FACTOR: f64 = 3.0;
@@ -193,6 +208,20 @@ mod tests {
         requested: 10,
         cap: 250_000,
     };
+
+    #[test]
+    fn minimum_orbital_period_follows_keplers_law() {
+        let sun = minimum_orbital_period(DurationModel {
+            density_g_cm3: None,
+            physical: true,
+        });
+        assert!((sun - 0.328).abs() < 0.005, "{sun}");
+        let dwarf = minimum_orbital_period(DurationModel {
+            density_g_cm3: Some(20.0),
+            physical: true,
+        });
+        assert!((dwarf - sun * (1.41f64 / 20.0).sqrt()).abs() < 1e-9);
+    }
 
     #[test]
     fn physical_ceiling_bounds_long_windows_only_with_the_physical_floor() {

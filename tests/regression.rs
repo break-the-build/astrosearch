@@ -564,3 +564,42 @@ fn fast_folding_ranking_survives_a_single_deep_artifact() {
     assert!(found(&analyze(points.clone(), cfg(false)).unwrap()));
     assert!(found(&analyze(points, cfg(true)).unwrap()));
 }
+
+#[test]
+fn passes_stop_once_nothing_reaches_the_detection_tier() {
+    let run = |points: Vec<Point>, stop: bool| {
+        let cfg = Config {
+            transit_search_passes: 4,
+            min_transit_score: 3.0, // noise yields screening-tier candidates
+            stop_passes_below_detection: stop,
+            ..config(1.0, 8.0)
+        };
+        analyze(points, cfg).unwrap()
+    };
+    // Pure noise: the first pass finds nothing at the detection tier.
+    let noise = curve(2000, 41);
+    let (all, stopped) = (run(noise.clone(), false), run(noise, true));
+    assert!(
+        stopped.transit_trials * 3 < all.transit_trials * 2,
+        "{} vs {}",
+        stopped.transit_trials,
+        all.transit_trials
+    );
+    let first = |r: &Report| {
+        r.candidates
+            .iter()
+            .find(|c| c.kind.is_transit())
+            .map(|c| c.period.to_bits())
+    };
+    assert_eq!(first(&all), first(&stopped));
+    // A strong planet keeps the search going past the first pass.
+    let mut planet = curve(2000, 43);
+    inject(&mut planet, 3.0, 0.4, 0.12, 0.004);
+    let strong = run(planet, true);
+    let per_pass = stopped.transit_trials;
+    assert!(
+        strong.transit_trials > per_pass,
+        "{} vs {per_pass}",
+        strong.transit_trials
+    );
+}

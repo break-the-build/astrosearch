@@ -2,7 +2,10 @@
 
 use crate::{
     epochs::{repeated_evidence, Epoch, EpochIndex},
-    grid::{adaptive_period_grid, maximum_duration, minimum_duration, DurationModel, TrialBudget},
+    grid::{
+        adaptive_period_grid, maximum_duration, minimum_duration, minimum_orbital_period,
+        DurationModel, TrialBudget,
+    },
     grouping::{collapse_periodic, collapse_transit_events, event_support_overlap},
     math::{median, robust_sigma},
     parallel::collect_trials,
@@ -56,6 +59,12 @@ pub(crate) fn iterative_periodic_dips(
             break;
         }
         remaining = ranked.collect();
+        if config.stop_passes_below_detection && candidate.score < config.detection_threshold {
+            // Jackknife <= score, so nothing in later passes could reach the
+            // detection tier; keep this pass's list and stop.
+            candidates.push(candidate);
+            break;
+        }
         // Masked samples are excluded (weight zero) rather than replaced by a
         // baseline value, so they neither dilute later windows nor count as data.
         let mut newly_masked = 0usize;
@@ -128,7 +137,11 @@ pub(crate) fn periodic_dips(
         samples.cadence,
         DurationModel::from_config(&config),
     );
-    let min_period = config.min_period.max(3.0 * min_duration);
+    let model = DurationModel::from_config(&config);
+    let mut min_period = config.min_period.max(3.0 * min_duration);
+    if model.physical {
+        min_period = min_period.max(minimum_orbital_period(model));
+    }
     // Two events can be observed at periods longer than half the baseline.
     // Actual covered cycles are checked below, rather than vetoed by period.
     let max_period = config.max_period.min(samples.span);

@@ -284,7 +284,7 @@ def main() -> int:
         "4_not_already_known": gate.criterion_not_known(known),
         "5_significance": gate.criterion_significance(
             report["fap"], fpp_result,
-            tier=gate.detection_tier(candidate.score, gate.load_calibration(a.detection_calibration))),
+            tier=gate.detection_tier(candidate.row, gate.load_calibration(a.detection_calibration))),
         "6_preregistered_ephemeris": gate.criterion_ephemeris(fit, windows),
     }
     decision = gate.verdict(criteria)

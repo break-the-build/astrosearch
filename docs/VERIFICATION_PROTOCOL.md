@@ -10,7 +10,7 @@ always stay `ACTION_REQUIRED`.
 | Step | Requirement | How it is checked | Pass condition |
 | --- | --- | --- | --- |
 | 1 | Provenance | The search writes `<candidates>.provenance.json` (git commit, input/config SHA-256). The gate records the commit, input digests and package versions. | Committed, clean tree (`git_dirty: false`) |
-| 2 | Calibrated significance | `tier` column in the search CSV; gate criterion 5 | Score ≥ detection tier (`data/calibration/detection_threshold.json`, currently 37.88) |
+| 2 | Calibrated significance | `tier` column in the search CSV; gate criterion 5 | Jackknife score ≥ detection tier (`data/calibration/detection_threshold.json`, currently 23.3) |
 | 3 | Automated vetting | The six gate criteria | All automated criteria `PASS` |
 | 4 | Independent algorithm | astropy BLS cross-check in the gate | Candidate period (or P/2, 2P) among the top 5 BLS peaks |
 | 5 | On-target signal | Difference-image centroid on up to 2 SPOC sectors (`--pixel-sectors`) | No offset that is both larger than 1 pixel and ≥ 3σ |
@@ -36,11 +36,14 @@ shasum -a 256 data/<target>/combined.csv   # must equal provenance.inputs.lightc
 
 ## What the checks do and do not establish
 
-- **Detection tier.** On the known-answer benchmark (QLP light curves, one
-  search pass), 5% of calibration-split inverted null controls reach the
-  tier. On the blind split, 4.0% of controls (8/200) and 30.2% of confirmed
-  planets (60/199) reached it. The tier controls false alarms from
-  systematics. It does not say whether a real dip comes from a planet.
+- **Detection tier.** The statistic is the jackknife score: the score with
+  the strongest single event removed. It was calibrated on the known-answer
+  benchmark (QLP light curves, one search pass). With the threshold fixed on
+  the calibration split, 7.0% of blind-split null controls (14/200) and 43%
+  of blind confirmed planets (86/200) reached it. The deployed threshold
+  (23.3) gives a 5% trigger rate across all 400 controls. The tier controls
+  false alarms from systematics. It does not say whether a real dip comes
+  from a planet.
 - **Secondary-eclipse scan.** It wrongly fails 2.5% of blind benchmark
   planets (5/199) and catches 83% of injected half-depth secondaries
   (`scripts/evaluate_secondary_scan.py`). It cannot see a secondary that is

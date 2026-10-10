@@ -14,7 +14,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from vetting import diagnostics, gate, pixel, siblings, stellar  # noqa: E402
+from vetting import diagnostics, gate, pixel, siblings, stellar, tier  # noqa: E402
 from vetting.io import Candidate, LightCurve, normalize_time, read_lightcurve  # noqa: E402
 
 
@@ -250,6 +250,16 @@ class DetectionTierTests(unittest.TestCase):
         result = gate.criterion_significance(fap, {"status": gate.PASS}, tier=tier)
         self.assertEqual(result["status"], gate.FAIL)
         self.assertEqual(result["checks"]["score_at_or_above_calibrated_detection_tier"], gate.FAIL)
+
+    def test_jackknife_tier_discounts_single_event_candidates(self):
+        calibration = {"statistic": "jackknife_score", "threshold": 23.3}
+        even = {"score": "30", "event_evidence": ";".join("1.0:900:5.0:10" for _ in range(9))}
+        single = {"score": "30", "event_evidence": "1.0:900:20.0:10;4.0:10:1.0:10;7.0:10:1.0:10"}
+        self.assertEqual(gate.detection_tier(even, calibration)["status"], gate.PASS)
+        self.assertEqual(gate.detection_tier(single, calibration)["status"], gate.FAIL)
+        self.assertEqual(gate.detection_tier(30.0, calibration)["status"], gate.NE)
+        self.assertAlmostEqual(tier.jackknife_score(even), 30 * math.sqrt(8 / 9))
+        self.assertEqual(tier.jackknife_score({**even, "jackknife_score": "12.5"}), 12.5)
 
     def test_protocol_never_completes_without_humans(self):
         report = {"provenance": {"git": {"commit": "abc", "dirty": False}},

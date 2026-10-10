@@ -1,140 +1,6 @@
 {
- "blind": {
-  "null_trigger": {
-   "count": 8,
-   "rate": 0.04,
-   "total": 200,
-   "wilson_95": [
-    0.020405632066152306,
-    0.07693206820093293
-   ]
-  },
-  "null_trigger_at_screening": {
-   "count": 194,
-   "rate": 0.97,
-   "total": 200,
-   "wilson_95": [
-    0.9361057075454807,
-    0.9861796856598887
-   ]
-  },
-  "planet_in_candidate_list": {
-   "count": 159,
-   "rate": 0.7989949748743719,
-   "total": 199,
-   "wilson_95": [
-    0.737892648500416,
-    0.8487724282144606
-   ]
-  },
-  "planet_recall": {
-   "count": 60,
-   "rate": 0.3015075376884422,
-   "total": 199,
-   "wilson_95": [
-    0.2420010294198634,
-    0.3685322389795041
-   ]
-  },
-  "planet_recall_by_depth": {
-   "deep": {
-    "count": 41,
-    "rate": 0.6833333333333333,
-    "total": 60,
-    "wilson_95": [
-     0.5576623297382323,
-     0.7869413244763347
-    ]
-   },
-   "medium": {
-    "count": 19,
-    "rate": 0.168141592920354,
-    "total": 113,
-    "wilson_95": [
-     0.11036732074923335,
-     0.24773723599807995
-    ]
-   },
-   "shallow": {
-    "count": 0,
-    "rate": 0.0,
-    "total": 26,
-    "wilson_95": [
-     0.0,
-     0.1287289218592153
-    ]
-   }
-  }
- },
- "calibration": {
-  "null_trigger": {
-   "count": 10,
-   "rate": 0.05,
-   "total": 200,
-   "wilson_95": [
-    0.02738264560076393,
-    0.08957814813877599
-   ]
-  },
-  "null_trigger_at_screening": {
-   "count": 197,
-   "rate": 0.985,
-   "total": 200,
-   "wilson_95": [
-    0.9568342712073097,
-    0.9948857622067417
-   ]
-  },
-  "planet_in_candidate_list": {
-   "count": 148,
-   "rate": 0.8087431693989071,
-   "total": 183,
-   "wilson_95": [
-    0.7456462687361525,
-    0.8591445561334101
-   ]
-  },
-  "planet_recall": {
-   "count": 58,
-   "rate": 0.31693989071038253,
-   "total": 183,
-   "wilson_95": [
-    0.25388162144162085,
-    0.38752558859147046
-   ]
-  },
-  "planet_recall_by_depth": {
-   "deep": {
-    "count": 43,
-    "rate": 0.7678571428571429,
-    "total": 56,
-    "wilson_95": [
-     0.6423184678498916,
-     0.8590062089079139
-    ]
-   },
-   "medium": {
-    "count": 14,
-    "rate": 0.14736842105263157,
-    "total": 95,
-    "wilson_95": [
-     0.08986080653616779,
-     0.2322859849074605
-    ]
-   },
-   "shallow": {
-    "count": 1,
-    "rate": 0.03125,
-    "total": 32,
-    "wilson_95": [
-     0.005537860164003122,
-     0.15744263820012558
-    ]
-   }
-  }
- },
- "cases_missing_results": 18,
- "cases_used": 782,
+ "cases_missing_results": 17,
+ "cases_used": 783,
  "context": {
   "binary_sha256": "638f51dece3099b37bafed67ea88ea60753137d6f10fcb8b6e04666a16760c84",
   "flux_origin": "QLP",
@@ -142,9 +8,159 @@
   "min_period": 0.15,
   "transit_search_passes": 1
  },
- "created_utc": "2026-10-10T12:37:03+00:00",
+ "created_utc": "2026-10-10T13:24:34+00:00",
+ "deployment": {
+  "all_null_trigger": {
+   "count": 20,
+   "rate": 0.05,
+   "total": 400,
+   "wilson_95": [
+    0.03259742983714726,
+    0.07596363506371961
+   ]
+  },
+  "threshold_from_all_controls": 23.302528953788222
+ },
+ "evaluation": {
+  "blind": {
+   "null_trigger": {
+    "count": 14,
+    "rate": 0.07,
+    "total": 200,
+    "wilson_95": [
+     0.042152171828342806,
+     0.11405480885610647
+    ]
+   },
+   "null_trigger_at_screening_score": {
+    "count": 194,
+    "rate": 0.97,
+    "total": 200,
+    "wilson_95": [
+     0.9361057075454807,
+     0.9861796856598887
+    ]
+   },
+   "planet_in_candidate_list": {
+    "count": 160,
+    "rate": 0.8,
+    "total": 200,
+    "wilson_95": [
+     0.7391448134346212,
+     0.8495479907390189
+    ]
+   },
+   "planet_recall": {
+    "count": 86,
+    "rate": 0.43,
+    "total": 200,
+    "wilson_95": [
+     0.36334322333434416,
+     0.4992951223584731
+    ]
+   },
+   "planet_recall_by_depth": {
+    "deep": {
+     "count": 46,
+     "rate": 0.7540983606557377,
+     "total": 61,
+     "wilson_95": [
+      0.6331557589001072,
+      0.8449334229877371
+     ]
+    },
+    "medium": {
+     "count": 36,
+     "rate": 0.3185840707964602,
+     "total": 113,
+     "wilson_95": [
+      0.23985559431776715,
+      0.4092415633707641
+     ]
+    },
+    "shallow": {
+     "count": 4,
+     "rate": 0.15384615384615385,
+     "total": 26,
+     "wilson_95": [
+      0.06150033723578355,
+      0.3353119932821348
+     ]
+    }
+   }
+  },
+  "calibration": {
+   "null_trigger": {
+    "count": 10,
+    "rate": 0.05,
+    "total": 200,
+    "wilson_95": [
+     0.02738264560076393,
+     0.08957814813877599
+    ]
+   },
+   "null_trigger_at_screening_score": {
+    "count": 197,
+    "rate": 0.985,
+    "total": 200,
+    "wilson_95": [
+     0.9568342712073097,
+     0.9948857622067417
+    ]
+   },
+   "planet_in_candidate_list": {
+    "count": 148,
+    "rate": 0.8087431693989071,
+    "total": 183,
+    "wilson_95": [
+     0.7456462687361525,
+     0.8591445561334101
+    ]
+   },
+   "planet_recall": {
+    "count": 76,
+    "rate": 0.41530054644808745,
+    "total": 183,
+    "wilson_95": [
+     0.34636288110210334,
+     0.4877210518982823
+    ]
+   },
+   "planet_recall_by_depth": {
+    "deep": {
+     "count": 49,
+     "rate": 0.875,
+     "total": 56,
+     "wilson_95": [
+      0.7637452344180986,
+      0.9381093130428289
+     ]
+    },
+    "medium": {
+     "count": 23,
+     "rate": 0.24210526315789474,
+     "total": 95,
+     "wilson_95": [
+      0.16708840091876592,
+      0.3371682077489622
+     ]
+    },
+    "shallow": {
+     "count": 4,
+     "rate": 0.125,
+     "total": 32,
+     "wilson_95": [
+      0.04970134387480073,
+      0.2806830548165022
+     ]
+    }
+   }
+  },
+  "threshold_from_calibration_split": 22.48764564027064
+ },
  "manifest": "data/benchmarks/generated-20261009/truth-manifest.csv",
  "screening_threshold": 6.0,
+ "statistic": "jackknife_score",
  "target_false_alarm_rate": 0.05,
- "threshold": 37.88146
+ "threshold": 23.302528953788222
 }

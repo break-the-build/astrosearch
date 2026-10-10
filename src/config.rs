@@ -2,7 +2,7 @@
 
 pub const MAX_PERIOD_TRIALS: usize = 250_000;
 /// Calibrated detection-tier score (see `Config::detection_threshold`).
-pub const DETECTION_THRESHOLD: f64 = 37.88;
+pub const DETECTION_THRESHOLD: f64 = 23.3;
 
 /// Statistic that selects and ranks periodic-dip windows.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -95,10 +95,11 @@ pub struct Config {
     /// This is a screening floor: 97% of inverted null controls in the
     /// known-answer benchmark produce a candidate above it.
     pub min_transit_score: f64,
-    /// Transit candidates at or above this score are labeled `detection`,
-    /// the rest `screening`. The default is the score with a 5% trigger rate
-    /// on the benchmark's calibration-split null controls
-    /// (`data/calibration/detection_threshold.json`; QLP, one search pass).
+    /// Transit candidates whose jackknife score (`Candidate::jackknife_score`)
+    /// reaches this value are labeled `detection`, the rest `screening`. The
+    /// default gives a 5% trigger rate on the known-answer benchmark's 400
+    /// inverted null controls (`data/calibration/detection_threshold.json`;
+    /// QLP light curves, one search pass).
     pub detection_threshold: f64,
     /// Distinct periodic-dip ephemerides kept after deduplication.
     pub transit_candidates: usize,

@@ -7,7 +7,8 @@ pub fn render_csv(candidates: &[Candidate]) -> String {
     render(candidates, None)
 }
 
-/// `render_csv` plus a `tier` column: transit candidates scoring at least
+/// `render_csv` plus `jackknife_score` and `tier` columns: transit candidates
+/// whose jackknife score (`Candidate::jackknife_score`) reaches
 /// `detection_threshold` are `detection`, other transit candidates
 /// `screening`; non-transit classes are left blank.
 pub fn render_csv_with_tier(candidates: &[Candidate], detection_threshold: f64) -> String {
@@ -17,7 +18,7 @@ pub fn render_csv_with_tier(candidates: &[Candidate], detection_threshold: f64) 
 fn tier(candidate: &Candidate, threshold: f64) -> &'static str {
     if !candidate.kind.is_transit() {
         ""
-    } else if candidate.score >= threshold {
+    } else if candidate.jackknife_score() >= threshold {
         "detection"
     } else {
         "screening"
@@ -31,7 +32,7 @@ fn render(candidates: &[Candidate], detection_threshold: Option<f64>) -> String 
         "rank,class,class_rank,score,period_days,epoch,duration_days,depth_ppm,amplitude_ppm,n_events,odd_even_sigma,white_score,noise_factor,event_evidence,alias_ephemerides,note",
     );
     output.push_str(if detection_threshold.is_some() {
-        ",tier\n"
+        ",jackknife_score,tier\n"
     } else {
         "\n"
     });
@@ -86,7 +87,7 @@ fn render(candidates: &[Candidate], detection_threshold: Option<f64>) -> String 
         )
         .unwrap();
         if let Some(threshold) = detection_threshold {
-            write!(output, ",{}", tier(c, threshold)).unwrap();
+            write!(output, ",{:.5},{}", c.jackknife_score(), tier(c, threshold)).unwrap();
         }
         output.push('\n');
     }

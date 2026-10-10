@@ -3,14 +3,19 @@
 
 The search reports every transit candidate with score >= 6, but on the
 known-answer benchmark 97% of inverted-flux null controls produce one, so 6 is
-a screening threshold, not a detection threshold. This script picks the
-smallest score whose trigger rate on the calibration split's null controls is
-at most the target false-alarm rate, then reports blind-split recall and null
-trigger rate at that score (the blind split never influences the threshold).
+a screening floor, not a detection threshold.
 
-Writes a JSON file read by ctoi_gate.py (criterion 5) and by the README's
-detection-tier table. The calibration is specific to its context (data
-product, search passes, binary); the file records that context.
+Two thresholds are written, both at the target null trigger rate:
+
+* `evaluation`: chosen on the calibration split's null controls only; the
+  blind split's planet recall and null trigger rate at that value are the
+  honest out-of-sample performance;
+* `threshold` (deployment): chosen on all null controls, after the
+  evaluation, for use by the search (`--detection-threshold`) and the gate.
+
+The statistic is the jackknife score by default (score with the strongest
+single event removed; null maxima are dominated by one event). The file
+records the statistic and its context (data product, passes, binary).
 """
 from __future__ import annotations
 
@@ -25,30 +30,29 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import evaluate_benchmark as ev  # noqa: E402
+from vetting.tier import STATISTICS, statistic  # noqa: E402
 
 csv.field_size_limit(2**31 - 1)
 
 
-def case_maximum(case: dict, root: Path) -> float:
+def case_values(case: dict, root: Path, name: str) -> tuple[float, float | None]:
+    """(maximum statistic over transit candidates, statistic of the candidate
+    matching the true ephemeris or None)."""
     rows, _ = ev.read_scores(case, root, 0.0)
-    return max((float(r["score"]) for r in rows), default=0.0)
-
-
-def matched_score(case: dict, root: Path) -> float | None:
-    """Score of the first transit candidate matching the true ephemeris."""
-    rows, _ = ev.read_scores(case, root, 0.0)
-    span = float(case.get("baseline_days") or 0) or 1.0
-    for row in rows:
-        if any(ev.close_ephemeris(e, case, span, 1.0) for e in ev.ephemerides(row)):
-            return float(row["score"])
-    return None
+    best = max((statistic(r, name) for r in rows), default=0.0)
+    matched = None
+    if case["truth_class"] == "confirmed_planet":
+        span = float(case.get("baseline_days") or 0) or 1.0
+        matched = next((statistic(r, name) for r in rows
+                        if any(ev.close_ephemeris(e, case, span, 1.0) for e in ev.ephemerides(r))), None)
+    return best, matched
 
 
 def threshold_for(maxima: list[float], target: float) -> float:
-    """Smallest observed score s with #(maxima >= s) / N <= target."""
-    for score in sorted(set(maxima)):
-        if sum(m >= score for m in maxima) / len(maxima) <= target:
-            return score
+    """Smallest observed value s with #(maxima >= s) / N <= target."""
+    for value in sorted(set(maxima)):
+        if sum(m >= value for m in maxima) / len(maxima) <= target:
+            return value
     return math.nextafter(max(maxima), math.inf)
 
 
@@ -61,53 +65,65 @@ def run_context(cases: list[dict], root: Path) -> dict:
         run = (root / case["candidates_csv"]).with_name("candidates.run.json")
         if run.exists():
             state = json.loads(run.read_text()).get("state", {})
+            config = state.get("config", {})
             return {"binary_sha256": state.get("binary_sha256"),
-                    "transit_search_passes": state.get("config", {}).get("transit_search_passes"),
-                    "min_period": state.get("config", {}).get("min_period"),
-                    "max_period": state.get("config", {}).get("max_period")}
+                    "transit_search_passes": config.get("transit_search_passes"),
+                    "min_period": config.get("min_period"), "max_period": config.get("max_period")}
     return {}
+
+
+def split_metrics(records: list[dict], split: str, threshold: float) -> dict:
+    nulls = [r for r in records if r["split"] == split and r["truth"] == "inverted_null"]
+    planets = [r for r in records if r["split"] == split and r["truth"] == "confirmed_planet"]
+    hit = lambda r: r["matched"] is not None and r["matched"] >= threshold  # noqa: E731
+    return {"null_trigger": rate(sum(r["best"] >= threshold for r in nulls), len(nulls)),
+            "null_trigger_at_screening_score": rate(sum(r["best_score"] >= 6.0 for r in nulls), len(nulls)),
+            "planet_recall": rate(sum(hit(r) for r in planets), len(planets)),
+            "planet_in_candidate_list": rate(sum(r["matched"] is not None for r in planets), len(planets)),
+            "planet_recall_by_depth": {d: rate(sum(hit(r) for r in planets if r["depth"] == d),
+                                               sum(r["depth"] == d for r in planets))
+                                       for d in ("shallow", "medium", "deep")}}
 
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("manifest", type=Path, help="truth manifest (rows with missing results are skipped)")
-    p.add_argument("--target", type=float, default=0.05, help="calibration null trigger rate")
+    p.add_argument("--statistic", choices=STATISTICS, default="jackknife_score")
+    p.add_argument("--target", type=float, default=0.05, help="null trigger rate")
     p.add_argument("--flux-origin", default="QLP", help="data product the benchmark used")
     p.add_argument("--output", type=Path, required=True)
     a = p.parse_args()
     root = a.manifest.parent
-    cases = [c for c in ev.read_csv(a.manifest) if (root / c["candidates_csv"]).exists()]
-    skipped = len(ev.read_csv(a.manifest)) - len(cases)
-
-    def select(split, truth):
-        return [c for c in cases if c["split"] == split and c["truth_class"] == truth]
-
-    cal_nulls = [case_maximum(c, root) for c in select("calibration", "inverted_null")]
-    threshold = threshold_for(cal_nulls, a.target)
-    out = {"threshold": threshold, "target_false_alarm_rate": a.target,
+    all_rows = ev.read_csv(a.manifest)
+    cases = [c for c in all_rows if (root / c["candidates_csv"]).exists()]
+    records = []
+    for case in cases:
+        best, matched = case_values(case, root, a.statistic)
+        best_score, _ = case_values(case, root, "score") if a.statistic != "score" else (best, None)
+        records.append({"split": case["split"], "truth": case["truth_class"],
+                        "depth": case["depth_stratum"], "best": best, "matched": matched,
+                        "best_score": best_score})
+    nulls = lambda split=None: [r["best"] for r in records  # noqa: E731
+                                if r["truth"] == "inverted_null" and (split is None or r["split"] == split)]
+    evaluation = threshold_for(nulls("calibration"), a.target)
+    deployment = threshold_for(nulls(), a.target)
+    out = {"statistic": a.statistic, "threshold": deployment, "target_false_alarm_rate": a.target,
            "screening_threshold": 6.0,
            "created_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-           "manifest": str(a.manifest), "cases_used": len(cases), "cases_missing_results": skipped,
+           "manifest": str(a.manifest), "cases_used": len(cases),
+           "cases_missing_results": len(all_rows) - len(cases),
            "context": {**run_context(cases, root), "flux_origin": a.flux_origin},
-           "calibration": {"null_trigger": rate(sum(m >= threshold for m in cal_nulls), len(cal_nulls))}}
-    for split in ("calibration", "blind"):
-        nulls = [case_maximum(c, root) for c in select(split, "inverted_null")]
-        planets = [matched_score(c, root) for c in select(split, "confirmed_planet")]
-        block = out.setdefault(split, {})
-        block["null_trigger"] = rate(sum(m >= threshold for m in nulls), len(nulls))
-        block["null_trigger_at_screening"] = rate(sum(m >= 6.0 for m in nulls), len(nulls))
-        block["planet_recall"] = rate(sum(s is not None and s >= threshold for s in planets), len(planets))
-        block["planet_in_candidate_list"] = rate(sum(s is not None for s in planets), len(planets))
-        by_depth = {}
-        for depth in ("shallow", "medium", "deep"):
-            sub = [matched_score(c, root) for c in select(split, "confirmed_planet")
-                   if c["depth_stratum"] == depth]
-            by_depth[depth] = rate(sum(s is not None and s >= threshold for s in sub), len(sub))
-        block["planet_recall_by_depth"] = by_depth
+           "evaluation": {"threshold_from_calibration_split": evaluation,
+                          "calibration": split_metrics(records, "calibration", evaluation),
+                          "blind": split_metrics(records, "blind", evaluation)},
+           "deployment": {"threshold_from_all_controls": deployment,
+                          "all_null_trigger": rate(sum(v >= deployment for v in nulls()), len(nulls()))}}
     a.output.parent.mkdir(parents=True, exist_ok=True)
     a.output.write_text(json.dumps(out, indent=1, sort_keys=True) + "\n")
-    print(json.dumps({k: out[k] for k in ("threshold", "cases_used", "cases_missing_results")}))
-    print("blind recall", out["blind"]["planet_recall"], "blind null", out["blind"]["null_trigger"])
+    blind = out["evaluation"]["blind"]
+    print(json.dumps({"statistic": a.statistic, "evaluation_threshold": evaluation,
+                      "deployment_threshold": deployment, "cases_used": len(cases)}))
+    print("blind recall", blind["planet_recall"], "blind null", blind["null_trigger"])
     return 0
 
 

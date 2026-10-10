@@ -390,12 +390,12 @@ fn tier_column_separates_detection_from_screening_transits() {
         .candidates
         .iter()
         .filter(|c| c.kind.is_transit())
-        .map(|c| c.score)
+        .map(|c| c.jackknife_score())
         .fold(0.0, f64::max);
     assert!(best > 0.0, "{:?}", report.candidates);
     let csv = render_csv_with_tier(&report.candidates, best);
     let mut lines = csv.lines();
-    assert!(lines.next().unwrap().ends_with(",tier"));
+    assert!(lines.next().unwrap().ends_with(",jackknife_score,tier"));
     let tiers: Vec<&str> = lines.map(|l| l.rsplit(',').next().unwrap()).collect();
     assert_eq!(tiers.iter().filter(|t| **t == "detection").count(), 1);
     // A threshold above every score leaves only screening-tier transits.

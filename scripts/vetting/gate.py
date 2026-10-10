@@ -10,6 +10,8 @@ import json
 import math
 from pathlib import Path
 
+from .tier import statistic as tier_statistic
+
 PASS, FAIL, NE, ACTION = "PASS", "FAIL", "NOT_EVALUATED", "ACTION_REQUIRED"
 TESS_PIXEL_ARCSEC = 21.0
 RUWE_LIMIT = 1.4
@@ -83,17 +85,26 @@ def load_calibration(path: Path | None) -> dict | None:
     return json.loads(Path(path).read_text())
 
 
-def detection_tier(score: float, calibration: dict | None) -> dict:
+def detection_tier(candidate, calibration: dict | None) -> dict:
     """Score >= 6 is a screening tier only: 97% of inverted null controls in
-    the known-answer benchmark exceed it. The detection tier is the score
-    whose calibration-split null trigger rate is the target false-alarm rate."""
+    the known-answer benchmark exceed it. The detection tier is the value of
+    the calibrated statistic (`statistic` in the calibration file, the
+    jackknife score by default) with the target null trigger rate.
+    `candidate` is a candidate CSV row, or a bare score for the `score` statistic."""
     if not calibration or calibration.get("threshold") is None:
         return {"status": NE, "reason": "no detection-tier calibration file"}
+    name = calibration.get("statistic", "score")
+    if isinstance(candidate, dict):
+        value = tier_statistic(candidate, name)
+    elif name == "score":
+        value = float(candidate)
+    else:
+        return {"status": NE, "reason": f"{name} needs the candidate row, not a bare score"}
     threshold = float(calibration["threshold"])
-    return {"status": PASS if score >= threshold else FAIL, "score": score, "threshold": threshold,
-            "target_false_alarm_rate": calibration.get("target_false_alarm_rate"),
+    return {"status": PASS if value >= threshold else FAIL, "statistic": name, "score": value,
+            "threshold": threshold, "target_false_alarm_rate": calibration.get("target_false_alarm_rate"),
             "context": calibration.get("context", {}),
-            "tier": "detection" if score >= threshold else "screening"}
+            "tier": "detection" if value >= threshold else "screening"}
 
 
 def criterion_significance(fap: dict | None, fpp: dict | None, limit: float = 0.01,

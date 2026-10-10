@@ -2,7 +2,7 @@
 
 use crate::{
     epochs::{repeated_evidence, Epoch, EpochIndex},
-    grid::{adaptive_period_grid, minimum_duration, DurationModel, TrialBudget},
+    grid::{adaptive_period_grid, maximum_duration, minimum_duration, DurationModel, TrialBudget},
     grouping::{collapse_periodic, collapse_transit_events, event_support_overlap},
     math::{median, robust_sigma},
     parallel::collect_trials,
@@ -244,29 +244,49 @@ fn two_stage_scan(context: &TrialContext, warnings: &mut Vec<String>) -> (Vec<Ca
     let factor = config.two_stage_factor;
     let cells = fine.div_ceil(factor);
     let centre = |cell: usize| (cell * factor + factor / 2).min(fine - 1);
-    let coarse_context = TrialContext {
-        config: Config {
-            min_transit_score: config.min_transit_score * COARSE_FLOOR_FRACTION,
-            ..config
-        },
-        ..*context
-    };
-    let coarse = collect_trials(
-        cells,
-        config.threads,
-        TrialScratch::default,
-        |scratch, cell| coarse_context.scan(centre(cell), scratch),
-    );
-    let index_of: std::collections::HashMap<u64, usize> = (0..cells)
-        .map(|cell| (context.periods[centre(cell)].to_bits(), cell))
-        .collect();
-    let mut best = vec![f64::NEG_INFINITY; cells];
-    for candidate in &coarse {
-        if let Some(&cell) = index_of.get(&candidate.period.to_bits()) {
-            best[cell] = best[cell].max(candidate.score);
+    let floor = config.min_transit_score * COARSE_FLOOR_FRACTION;
+    let (best, coarse_trials) = if config.coarse_ffa {
+        let inputs = crate::ffa::FoldInputs {
+            times: &context.samples.times,
+            sums: context.sums,
+            background: context.background,
+            weights: &context.samples.transit_weights,
+        };
+        let plan = crate::ffa::CoarsePlan {
+            periods: context.periods,
+            factor,
+            cadence: context.samples.cadence,
+            model: DurationModel::from_config(&config),
+            durations: config.durations,
+            threads: config.threads,
+        };
+        crate::ffa::coarse_cell_scores(&inputs, &plan)
+    } else {
+        let coarse_context = TrialContext {
+            config: Config {
+                min_transit_score: floor,
+                ..config
+            },
+            ..*context
+        };
+        let coarse = collect_trials(
+            cells,
+            config.threads,
+            TrialScratch::default,
+            |scratch, cell| coarse_context.scan(centre(cell), scratch),
+        );
+        let index_of: std::collections::HashMap<u64, usize> = (0..cells)
+            .map(|cell| (context.periods[centre(cell)].to_bits(), cell))
+            .collect();
+        let mut best = vec![f64::NEG_INFINITY; cells];
+        for candidate in &coarse {
+            if let Some(&cell) = index_of.get(&candidate.period.to_bits()) {
+                best[cell] = best[cell].max(candidate.score);
+            }
         }
-    }
-    let mut ranked: Vec<usize> = (0..cells).filter(|&c| best[c].is_finite()).collect();
+        (best, cells)
+    };
+    let mut ranked: Vec<usize> = (0..cells).filter(|&c| best[c] >= floor).collect();
     ranked.sort_by(|&a, &b| best[b].total_cmp(&best[a]).then(a.cmp(&b)));
     ranked.truncate(config.two_stage_keep);
     let mut refine = vec![false; fine];
@@ -283,11 +303,12 @@ fn two_stage_scan(context: &TrialContext, warnings: &mut Vec<String>) -> (Vec<Ca
         |scratch, i| context.scan(indices[i], scratch),
     );
     warnings.push(format!(
-        "two-stage search: {cells} coarse trials, {} cells kept, {} of {fine} fine trials refined",
+        "two-stage search ({}): {coarse_trials} coarse trials, {} cells kept, {} of {fine} fine trials refined",
+        if config.coarse_ffa { "fast folding" } else { "grid" },
         ranked.len(),
         indices.len()
     ));
-    (refined, cells + indices.len())
+    (refined, coarse_trials + indices.len())
 }
 
 /// Read-only inputs shared by every trial period of one search pass.
@@ -392,7 +413,13 @@ impl TrialContext<'_> {
         windows: &mut Vec<Window>,
     ) {
         let config = self.config;
-        let max_duration = ((0.12 * period).min(MAX_TRANSIT_DURATION)).max(period_min_duration);
+        let max_duration = maximum_duration(
+            period,
+            self.samples.cadence,
+            DurationModel::from_config(&config),
+            MAX_TRANSIT_DURATION,
+        )
+        .max(period_min_duration);
         windows.clear();
         for i in 0..config.durations {
             let fraction = i as f64 / config.durations.saturating_sub(1).max(1) as f64;

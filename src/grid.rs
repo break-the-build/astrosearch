@@ -70,6 +70,24 @@ fn scaled_axis(period: f64, density_g_cm3: f64) -> f64 {
     (G * density_g_cm3 * 1_000.0 * period_seconds.powi(2) / (3.0 * std::f64::consts::PI)).cbrt()
 }
 
+/// Longest physically plausible duration as a multiple of the central one:
+/// 3x allows a star ~25x less dense than assumed, or an eccentric orbit.
+pub(crate) const PHYSICAL_CEILING_FACTOR: f64 = 3.0;
+
+/// Longest searched duration at `period`: 12% of the period and the global
+/// limit, and with the physical floor also PHYSICAL_CEILING_FACTOR times the
+/// circular central duration.
+pub(crate) fn maximum_duration(period: f64, cadence: f64, model: DurationModel, limit: f64) -> f64 {
+    let mut longest = (0.12 * period).min(limit);
+    if model.physical {
+        let density = model.density_g_cm3.unwrap_or(SOLAR_DENSITY_G_CM3);
+        let central = period / std::f64::consts::PI
+            * (1.0 / scaled_axis(period, density)).clamp(0.0, 1.0).asin();
+        longest = longest.min(PHYSICAL_CEILING_FACTOR * central);
+    }
+    longest.max(minimum_duration(period, cadence, model))
+}
+
 /// Shortest searched duration at `period`:
 /// * cadence floor (2 x cadence) by default;
 /// * with a stellar density, a conservative floor assuming b <= 0.95 and
@@ -175,6 +193,29 @@ mod tests {
         requested: 10,
         cap: 250_000,
     };
+
+    #[test]
+    fn physical_ceiling_bounds_long_windows_only_with_the_physical_floor() {
+        let physical = DurationModel {
+            density_g_cm3: None,
+            physical: true,
+        };
+        // 20 d around a Sun-like star: central ~5.3 h, ceiling ~16 h, so the
+        // 0.35 d (8.4 h) global limit binds.
+        let long = maximum_duration(20.0, 0.001, physical, 0.35);
+        assert!((long - 0.35).abs() < 1e-12);
+        // 1 d around a dense M dwarf: central ~0.7 h, ceiling ~2 h < 0.12 d x 24.
+        let dense = DurationModel {
+            density_g_cm3: Some(20.0),
+            physical: true,
+        };
+        let short = maximum_duration(1.0, 0.001, dense, 0.35);
+        assert!(short < 0.12 && short > minimum_duration(1.0, 0.001, dense));
+        assert_eq!(
+            maximum_duration(1.0, 0.001, DurationModel::CADENCE, 0.35),
+            0.12
+        );
+    }
 
     #[test]
     fn physical_floor_is_half_the_central_duration_and_shrinks_the_grid() {

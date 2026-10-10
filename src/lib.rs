@@ -9,6 +9,7 @@
 
 mod config;
 mod epochs;
+mod ffa;
 mod grid;
 mod grouping;
 mod input;

@@ -491,3 +491,48 @@ fn two_stage_search_recovers_the_full_search_period_with_fewer_trials() {
     };
     assert!(analyze(points, invalid).is_err());
 }
+
+#[test]
+fn fast_folding_coarse_stage_recovers_the_full_search_result() {
+    let mut points = curve(6000, 31);
+    inject(&mut points, 5.7, 0.8, 0.15, 0.0015);
+    let run = |two_stage: usize, ffa: bool, threads: usize| {
+        let cfg = Config {
+            min_period: 1.0,
+            max_period: 20.0,
+            periods: 10,
+            threads,
+            transit_search_passes: 1,
+            two_stage_factor: two_stage,
+            two_stage_keep: 64,
+            coarse_ffa: ffa,
+            ..config(1.0, 20.0)
+        };
+        analyze(points.clone(), cfg).unwrap()
+    };
+    let best = |r: &Report| {
+        r.candidates
+            .iter()
+            .filter(|c| c.kind.is_transit())
+            .max_by(|a, b| a.score.total_cmp(&b.score))
+            .map(|c| (c.period.to_bits(), c.score.to_bits()))
+            .unwrap()
+    };
+    let full = run(0, false, 1);
+    let folded = run(8, true, 1);
+    assert_eq!(best(&full), best(&folded));
+    assert!(
+        folded.warnings.iter().any(|w| w.contains("fast folding")),
+        "{:?}",
+        folded.warnings
+    );
+    assert_eq!(
+        render_csv(&folded.candidates),
+        render_csv(&run(8, true, 4).candidates)
+    );
+    let invalid = Config {
+        coarse_ffa: true,
+        ..config(1.0, 20.0)
+    };
+    assert!(analyze(points, invalid).is_err());
+}

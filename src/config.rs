@@ -94,6 +94,9 @@ pub struct Config {
     pub two_stage_factor: usize,
     /// Coarse cells refined in a two-stage search.
     pub two_stage_keep: usize,
+    /// Rank coarse cells with the fast folding algorithm (all periods at
+    /// duty-cycle-scaled resolution) instead of one grid period per cell.
+    pub coarse_ffa: bool,
     /// Minimum number of period/frequency trials; resolution can require more.
     pub periods: usize,
     pub durations: usize,
@@ -141,6 +144,7 @@ impl Default for Config {
             bin_days: 0.0,
             two_stage_factor: 0,
             two_stage_keep: 512,
+            coarse_ffa: false,
             periods: 2400,
             durations: 10,
             trend_days: 1.05,
@@ -183,6 +187,9 @@ impl Config {
         }
         if self.two_stage_factor == 1 || self.two_stage_factor > 1024 {
             return Err("two-stage factor must be 0 (off) or between 2 and 1024".into());
+        }
+        if self.coarse_ffa && self.two_stage_factor < 2 {
+            return Err("coarse-ffa needs --two-stage".into());
         }
         if !(1..=1_000_000).contains(&self.two_stage_keep) {
             return Err("two-stage-keep must be between 1 and 1000000".into());

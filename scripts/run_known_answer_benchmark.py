@@ -34,8 +34,10 @@ def run_case(index: int, total: int, row: dict, manifest_dir: Path,
     sidecar = candidate_path.with_suffix(".run.json")
     if not data_path.is_file():
         return index, case_id, f"missing data {data_path}"
+    density = (row.get("stellar_density_g_cm3") or "").strip()
     state = {"input_sha256": sha256(data_path), "binary_sha256": binary_hash,
-             "config": config, "build_identity": build, "metrics_schema": 1}
+             "config": config, "build_identity": build, "metrics_schema": 1,
+             **({"stellar_density_g_cm3": density} if density else {})}
     try:
         if (not args.rerun and candidate_path.is_file() and sidecar.is_file()
                 and json.loads(sidecar.read_text()).get("state") == state):
@@ -48,6 +50,11 @@ def run_case(index: int, total: int, row: dict, manifest_dir: Path,
                    "--transit-search-passes", str(args.transit_search_passes)]
         if args.periods is not None:
             command.extend(("--periods", str(args.periods)))
+        if args.max_period_trials is not None:
+            command.extend(("--max-period-trials", str(args.max_period_trials)))
+        if density:
+            # Per-target density enables the physical duration floor in the grid.
+            command.extend(("--stellar-density", density))
         log_path = candidate_path.with_suffix(".log")
         metrics = run_with_metrics(command, log_path, timeout=args.search_timeout)
         if metrics["timed_out"] or metrics["exit_code"] != 0 or not stage.is_file():
@@ -86,6 +93,8 @@ def main() -> int:
     parser.add_argument("--min-period", type=float, default=0.15)
     parser.add_argument("--max-period", type=float, default=30)
     parser.add_argument("--periods", type=int)
+    parser.add_argument("--max-period-trials", type=int,
+                        help="period-grid cap passed to astrosearch (default: its built-in 250000)")
     parser.add_argument("--grouping", choices=("ephemeris", "events"), default="events")
     parser.add_argument("--transit-search-passes", type=int, default=5)
     parser.add_argument("--search-timeout", type=float, default=3600,
@@ -104,6 +113,7 @@ def main() -> int:
     config = {"threads": args.threads, "workers": args.workers,
               "min_period": args.min_period,
               "max_period": args.max_period, "periods": args.periods,
+              "max_period_trials": args.max_period_trials,
               "grouping": args.grouping,
               "transit_search_passes": args.transit_search_passes,
               "search_timeout_s": args.search_timeout}

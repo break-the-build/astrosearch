@@ -14,7 +14,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from vetting import diagnostics, gate, siblings, stellar  # noqa: E402
+from vetting import diagnostics, gate, pixel, siblings, stellar  # noqa: E402
 from vetting.io import Candidate, LightCurve, normalize_time, read_lightcurve  # noqa: E402
 
 
@@ -172,6 +172,48 @@ class SecondaryCalibrationTests(unittest.TestCase):
         self.assertEqual(diagnostics.secondary_scan(lc, 1.0, 3.0, 0.1)["status"], "FAIL")
 
 
+class PixelCentroidTests(unittest.TestCase):
+    """Issue 8: difference-image centroids use significant pixels and an
+    event-bootstrap uncertainty; a blended eclipsing neighbor is flagged."""
+
+    def cube(self, eclipse_at, depth=0.01, seed=3):
+        rng = np.random.default_rng(seed)
+        time = np.arange(0.0, 27.0, 0.02)
+        yy, xx = np.indices((11, 11))
+
+        def psf(x0, y0, flux):
+            return flux * np.exp(-((xx - x0) ** 2 + (yy - y0) ** 2) / (2 * 0.8 ** 2))
+
+        target, neighbor = psf(5, 5, 1e5), psf(8, 5, 3e4)
+        inside = np.abs((time - 1.0 + 1.5) % 3.0 - 1.5) <= 0.05
+        frames = np.repeat((target + neighbor + 100.0)[None], time.size, axis=0)
+        source = target if eclipse_at == "target" else neighbor
+        frames[inside] -= depth * source
+        frames += rng.normal(0, 20.0, frames.shape)
+        return time, frames
+
+    def test_on_target_transit_centroid_at_target(self):
+        time, cube = self.cube("target")
+        result = pixel.centroid_with_uncertainty(time, cube, 1.0, 3.0, 0.1)
+        self.assertEqual(result["status"], "OK")
+        offset = pixel.offset_significance(result["centroid_xy"], result["centroid_sigma_xy"], (5, 5))
+        self.assertLess(offset["offset_pixels"], 0.3)
+
+    def test_blended_neighbor_is_significant_offset(self):
+        time, cube = self.cube("neighbor", depth=0.05)
+        result = pixel.centroid_with_uncertainty(time, cube, 1.0, 3.0, 0.1)
+        offset = pixel.offset_significance(result["centroid_xy"], result["centroid_sigma_xy"], (5, 5))
+        self.assertGreater(offset["offset_pixels"], 2.0)
+        report = {"centroid_separation_arcsec": offset["offset_arcsec"],
+                  "centroid_offset_sigma": offset["offset_sigma"]}
+        self.assertEqual(pixel.centroid_status(report), "FAIL")
+
+    def test_large_but_insignificant_offset_passes(self):
+        self.assertEqual(pixel.centroid_status({"centroid_separation_arcsec": 30.0,
+                                                "centroid_offset_sigma": 1.2}), "PASS")
+        self.assertEqual(pixel.centroid_status({}), "NOT_EVALUATED")
+
+
 class TimeSystemTests(unittest.TestCase):
     """Cycle 6: full BJD inputs are normalized to BTJD (BJD - 2457000)."""
 
@@ -208,6 +250,17 @@ class DetectionTierTests(unittest.TestCase):
         result = gate.criterion_significance(fap, {"status": gate.PASS}, tier=tier)
         self.assertEqual(result["status"], gate.FAIL)
         self.assertEqual(result["checks"]["score_at_or_above_calibrated_detection_tier"], gate.FAIL)
+
+    def test_protocol_never_completes_without_humans(self):
+        report = {"provenance": {"git": {"commit": "abc", "dirty": False}},
+                  "criteria": {"5_significance": {"detection_tier": {"status": gate.PASS}},
+                               "3_no_false_positive_indicators": {"checks": {"no_centroid_offset": gate.PASS}}},
+                  "verdict": {"ready_for_human_review": True}, "bls": {"status": gate.PASS}}
+        steps = gate.protocol_checklist(report)
+        self.assertTrue(all(s["status"] == gate.PASS for s in steps[:5]))
+        self.assertTrue(all(s["status"] == gate.ACTION for s in steps[5:]))
+        dirty = gate.protocol_checklist({**report, "provenance": {"git": {"commit": "abc", "dirty": True}}})
+        self.assertEqual(dirty[0]["status"], gate.FAIL)
 
     def test_calibration_file_round_trip(self):
         with tempfile.TemporaryDirectory() as tmp:

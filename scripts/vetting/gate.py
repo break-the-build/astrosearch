@@ -51,11 +51,12 @@ def criterion_physical_fit(fit: dict, density: dict, min_delta_bic: float = 10.0
 def criterion_false_positive(secondary: dict, odd_even: dict, grazing: dict, quality: dict,
                              blends: list[dict], ruwe: float | None,
                              pixel_reports: list[dict], duo: bool) -> dict:
-    centroid = NE
-    if pixel_reports:
-        offsets = [r.get("centroid_separation_arcsec") for r in pixel_reports]
-        offsets = [o for o in offsets if o is not None and math.isfinite(o)]
-        centroid = (FAIL if any(o > TESS_PIXEL_ARCSEC for o in offsets) else PASS) if offsets else NE
+    # A centroid offset fails only when it exceeds a pixel and its own
+    # bootstrap uncertainty (vetting.pixel.centroid_status).
+    from .pixel import centroid_status
+
+    statuses = [centroid_status(r) for r in pixel_reports]
+    centroid = FAIL if FAIL in statuses else (PASS if PASS in statuses else NE)
     checks = {
         "no_secondary_eclipse": secondary.get("status", NE),
         # A duo has one transit of each parity at most, so odd/even is undefined.
@@ -146,8 +147,37 @@ def ctoi_row(tic_id: int, fit: dict, depth: dict, planet: dict, notes: str) -> d
     }
 
 
+def protocol_checklist(report: dict) -> list[dict]:
+    """The verification protocol (docs/VERIFICATION_PROTOCOL.md) as statuses.
+
+    Automated steps come from the report; the human steps are always
+    ACTION_REQUIRED, so a candidate can never complete the protocol unattended.
+    """
+    git = (report.get("provenance") or {}).get("git") or {}
+    provenance = NE if not git.get("commit") else (FAIL if git.get("dirty") else PASS)
+    criteria = report.get("criteria", {})
+    tier = (criteria.get("5_significance") or {}).get("detection_tier") or {}
+    centroid = ((criteria.get("3_no_false_positive_indicators") or {}).get("checks") or {}).get(
+        "no_centroid_offset", NE)
+    automated = (report.get("verdict") or {}).get("ready_for_human_review")
+    return [
+        {"step": 1, "name": "Provenance: committed code revision and input SHA-256 recorded",
+         "status": provenance, "detail": git},
+        {"step": 2, "name": "Score at or above the calibrated detection tier", "status": tier.get("status", NE),
+         "detail": {k: tier.get(k) for k in ("score", "threshold")}},
+        {"step": 3, "name": "All automated gate criteria pass",
+         "status": NE if automated is None else (PASS if automated else FAIL)},
+        {"step": 4, "name": "Independent algorithm (BLS) recovers the signal",
+         "status": (report.get("bls") or {}).get("status", NE)},
+        {"step": 5, "name": "Difference-image centroid on target", "status": centroid},
+        {"step": 6, "name": "Independent reproduction from MAST by a second person", "status": ACTION},
+        {"step": 7, "name": "Timestamped public ephemeris (e.g. Zenodo) before follow-up", "status": ACTION},
+        {"step": 8, "name": "Human ExoFOP CTOI submission and TFOP follow-up", "status": ACTION},
+    ]
+
+
 def render_markdown(tic_id: int, candidate: dict, criteria: dict, decision: dict,
-                    planet: dict, ctoi: dict) -> str:
+                    planet: dict, ctoi: dict, protocol: list[dict] | None = None) -> str:
     lines = [f"# CTOI gate: TIC {tic_id}", "",
              f"Candidate: {candidate['kind']} rank {candidate['rank']}, P = {candidate['period']:.6f} d, "
              f"score {candidate['score']:.2f}", "",
@@ -173,6 +203,10 @@ def render_markdown(tic_id: int, candidate: dict, criteria: dict, decision: dict
         value = planet.get(key)
         if value:
             lines.append(f"- {key}: {value['median']:.4g} (-{value['minus']:.2g} / +{value['plus']:.2g})")
+    if protocol:
+        lines += ["", "## Verification protocol (docs/VERIFICATION_PROTOCOL.md)", "",
+                  "| Step | Requirement | Status |", "| --- | --- | --- |"]
+        lines += [f"| {s['step']} | {s['name']} | {s['status']} |" for s in protocol]
     lines += ["", "## CTOI fields (draft, for human review)", ""]
     lines += [f"- {k}: {v}" for k, v in ctoi.items()]
     return "\n".join(lines) + "\n"

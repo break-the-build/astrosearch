@@ -113,6 +113,24 @@ def correct_dilution(lc, events: list[dict], contratio: float | None) -> tuple[l
     return corrected, float(np.mean(factors)) if factors else 1.0
 
 
+def auto_pixel_checks(a, lc, star: dict, period: float, epoch: float, duration: float) -> list[dict]:
+    """Difference-image centroids for up to --pixel-sectors SPOC sectors in the
+    light curve; failures are recorded, never fatal."""
+    from pixel_difference_check import run_pixel_check
+
+    sectors = sorted({int(m["sector"]) for m in lc.parts
+                      if m.get("sector") is not None and str(m.get("author", "")).upper() == "SPOC"})
+    runs = []
+    for sector in sectors[:a.pixel_sectors]:
+        try:
+            runs.append(run_pixel_check(a.tic, sector, period, epoch, duration, star["ra"], star["dec"],
+                                        a.out_dir / f"pixel_s{sector:02d}", "SPOC",
+                                        star.get("pmRA"), star.get("pmDEC")))
+        except Exception as error:  # network, missing TPF, or too few cadences
+            runs.append({"sector": sector, "error": f"{type(error).__name__}: {error}"})
+    return runs
+
+
 def next_tess_sectors(tic_id: int, ra: float, dec: float) -> dict:
     try:
         from tess_stars2px import tess_stars2px_function_entry
@@ -137,6 +155,9 @@ def main() -> int:
                    help="independent product CSVs covering the signal (e.g. QLP and SPOC)")
     p.add_argument("--pixel-reports", type=Path, nargs="*", default=[],
                    help="pixel_vet.json files from pixel_difference_check.py")
+    p.add_argument("--pixel-sectors", type=int, default=2,
+                   help="run the difference-image centroid check on up to N SPOC sectors when "
+                        "no --pixel-reports are given (0 disables; needs network)")
     p.add_argument("--tce-sectors", default="")
     p.add_argument("--null-trials", type=int, default=300)
     p.add_argument("--workers", type=int, default=4)
@@ -250,6 +271,10 @@ def main() -> int:
     if star.get("ra") is not None:
         report["tess_sectors"] = next_tess_sectors(a.tic, star["ra"], star["dec"])
     pixel_reports = [json.loads(Path(r).read_text()) for r in a.pixel_reports]
+    if not pixel_reports and a.pixel_sectors > 0 and star.get("ra") is not None:
+        report["pixel_runs"] = auto_pixel_checks(a, lc, star, period, epoch, duration)
+        pixel_reports = [r for r in report["pixel_runs"] if "error" not in r]
+    report["pixel_reports"] = pixel_reports
 
     criteria = {
         "1_multisector_multiproduct": gate.criterion_multisector(coverage, parts, report["products"]),
@@ -274,10 +299,12 @@ def main() -> int:
         "detection_calibration": a.detection_calibration, "binary": a.binary})
     if binary_provenance.exists():
         report["provenance"]["search"] = json.loads(binary_provenance.read_text())
+    report["verification_protocol"] = gate.protocol_checklist(report)
 
     write_json(a.out_dir / "gate.json", report)
     (a.out_dir / "gate.md").write_text(gate.render_markdown(
-        a.tic, report["candidate"], criteria, decision, planet, ctoi))
+        a.tic, report["candidate"], criteria, decision, planet, ctoi,
+        report["verification_protocol"]))
     with (a.out_dir / "ctoi_row.csv").open("w", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=list(ctoi))
         writer.writeheader()

@@ -1,0 +1,96 @@
+{
+ "tier_threshold": 23.302528953788222,
+ "split": "blind",
+ "planet": {
+  "cases": 100,
+  "vetted": 79,
+  "lc_vetting_pass": [
+   62,
+   79,
+   [
+    0.682128319163289,
+    0.8610779526794132
+   ]
+  ],
+  "rejected_by": {
+   "secondary": 1,
+   "odd_even": 14,
+   "grazing": 2
+  },
+  "tier_and_lc_vetting_pass": [
+   29,
+   79,
+   [
+    0.26927292520497503,
+    0.477230814601764
+   ]
+  ]
+ },
+ "eb": {
+  "cases": 128,
+  "vetted": 128,
+  "lc_vetting_pass": [
+   14,
+   128,
+   [
+    0.06627879570700111,
+    0.17523445138167731
+   ]
+  ],
+  "rejected_by": {
+   "secondary": 58,
+   "odd_even": 73,
+   "grazing": 69
+  },
+  "tier_and_lc_vetting_pass": [
+   12,
+   128,
+   [
+    0.054443804399147026,
+    0.15672997257307855
+   ]
+  ]
+ },
+ "systematic": {
+  "cases": 100,
+  "vetted": 99,
+  "lc_vetting_pass": [
+   61,
+   99,
+   [
+    0.5177316737140929,
+    0.7059135396438865
+   ]
+  ],
+  "rejected_by": {
+   "secondary": 7,
+   "odd_even": 31,
+   "grazing": 6
+  },
+  "tier_and_lc_vetting_pass": [
+   3,
+   99,
+   [
+    0.010358639578454044,
+    0.08533680206102018
+   ]
+  ]
+ },
+ "blend": {
+  "cases": 60,
+  "vetted": 60,
+  "lc_vetting_pass": [
+   27,
+   60,
+   [
+    0.3309365440675524,
+    0.5750806411466566
+   ]
+  ],
+  "rejected_by": {
+   "secondary": 21,
+   "odd_even": 12,
+   "grazing": 4
+  }
+ }
+}

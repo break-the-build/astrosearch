@@ -11,8 +11,9 @@ injection is recovered when a transit candidate matches its ephemeris
 (evaluate_benchmark.close_ephemeris). Recovery is reported at the screening
 floor (6) and at the calibrated detection tier, by SNR bin.
 
-The detection tier comes from data/calibration/detection_threshold.json and
-is not adjusted here; hosts are drawn with a fixed seed.
+The detection tier comes from a calibration JSON and is not adjusted here.
+``--threshold-source evaluation`` selects the calibration-split tier for an
+unbiased paired profile comparison. Hosts are drawn with a fixed seed.
 """
 from __future__ import annotations
 
@@ -22,8 +23,14 @@ import json
 import shlex
 import math
 import subprocess
-from concurrent.futures import ProcessPoolExecutor
+import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
+
+try:
+    import resource
+except ImportError:  # pragma: no cover - unavailable on Windows
+    resource = None
 
 import numpy as np
 
@@ -43,6 +50,9 @@ def solar_duration(period: float) -> float:
 
 def transit_model(time: np.ndarray, period: float, epoch: float, duration: float,
                   depth: float) -> np.ndarray:
+    # batman 2.5.x imports distutils directly; setuptools provides its
+    # compatibility shim on Python 3.12 where distutils was removed.
+    import setuptools  # noqa: F401
     import batman
 
     params = batman.TransitParams()
@@ -79,19 +89,42 @@ def build_injection(case: dict, root: Path, rng: np.random.Generator, snr: float
 
 
 def run_one(job: tuple) -> dict:
-    case, root, work, binary, snr, seed, threshold, extra = job
+    case, root, work, binary, snr, seed, threshold, extra, timeout = job
     rng = np.random.default_rng(seed)
     built = build_injection(case, Path(root), rng, snr)
     if built is None:
-        return {"case_id": case["case_id"], "snr_target": snr, "skipped": "too few in-transit points"}
+        return {"case_id": case["case_id"], "seed": seed, "snr_target": snr,
+                "skipped": "too few in-transit points"}
     rows, truth = built
     curve = Path(work) / f"{case['case_id']}_snr{int(snr)}_{seed}.csv"
     out = curve.with_suffix(".candidates.csv")
     np.savetxt(curve, rows, delimiter=",", header="time,flux,flux_err", comments="", fmt="%.8f")
-    subprocess.run([binary, "--input", str(curve), "--output", str(out), "--threads", "1",
-                    "--transit-search-passes", "1", "--min-period", "0.5", "--max-period", "15",
-                    *shlex.split(extra)],
-                   check=True, capture_output=True, text=True)
+    child_before = (resource.getrusage(resource.RUSAGE_CHILDREN)
+                    if resource is not None else None)
+    search_started = time.monotonic()
+    error = None
+    timed_out = False
+    try:
+        subprocess.run([binary, "--input", str(curve), "--output", str(out), "--threads", "1",
+                        "--transit-search-passes", "1", "--min-period", "0.5", "--max-period", "15",
+                        *shlex.split(extra)], check=True, capture_output=True, text=True,
+                       timeout=timeout)
+    except subprocess.TimeoutExpired:
+        timed_out = True
+        error = f"search timed out after {timeout:g}s"
+    except subprocess.CalledProcessError as failure:
+        detail = (failure.stderr or failure.stdout or "").strip().replace("\n", " ")
+        error = f"search failed exit={failure.returncode}" + (f": {detail[:500]}" if detail else "")
+    search_wall = time.monotonic() - search_started
+    search_cpu = None
+    if resource is not None and child_before is not None:
+        child_after = resource.getrusage(resource.RUSAGE_CHILDREN)
+        search_cpu = ((child_after.ru_utime + child_after.ru_stime)
+                      - (child_before.ru_utime + child_before.ru_stime))
+    if error:
+        return {"case_id": case["case_id"], "seed": seed, "split": case["split"], "snr_target": snr,
+                "search_wall_seconds": search_wall, "search_cpu_seconds": search_cpu,
+                "timed_out": timed_out, "error": error}
     with out.open(newline="") as stream:
         transit = [r for r in csv.DictReader(stream) if r["class"] in ("periodic_dip", "duo_transit")]
     span = float(rows[-1, 0] - rows[0, 0])
@@ -100,15 +133,30 @@ def run_one(job: tuple) -> dict:
     matched = float(matched_row["score"]) if matched_row else None
     jackknife = jackknife_score(matched_row) if matched_row else None
     curve.unlink()
-    return {"case_id": case["case_id"], "split": case["split"], **truth, "matched_score": matched,
+    return {"case_id": case["case_id"], "seed": seed, "split": case["split"], **truth,
+            "search_wall_seconds": search_wall, "search_cpu_seconds": search_cpu,
+            "matched_score": matched,
             "recovered_screening": matched is not None and matched >= 6.0,
             "matched_jackknife": jackknife,
-            "recovered_detection": jackknife is not None and jackknife >= threshold}
+            "recovered_detection": jackknife is not None and jackknife >= threshold,
+            "timed_out": False}
 
 
 def summarize(rows: list[dict], threshold: float) -> dict:
-    done = [r for r in rows if "skipped" not in r]
-    out = {"threshold": threshold, "injections": len(done), "skipped": len(rows) - len(done), "by_snr": {}}
+    done = [r for r in rows if "skipped" not in r and "error" not in r]
+    out = {"threshold": threshold, "injections": len(done),
+           "skipped": sum("skipped" in r for r in rows),
+           "failed": sum("error" in r for r in rows),
+           "timed_out": sum(bool(r.get("timed_out")) for r in rows), "by_snr": {}}
+    searched = [r for r in rows if "skipped" not in r]
+    measured_cpu = [r["search_cpu_seconds"] for r in searched
+                    if r.get("search_cpu_seconds") is not None]
+    out["search_metrics"] = {
+        "searches_attempted": len(searched),
+        "cpu_seconds_sum": sum(measured_cpu) if measured_cpu else None,
+        "cpu_measured": len(measured_cpu),
+        "wall_seconds_sum": sum(r.get("search_wall_seconds", 0.0) for r in searched),
+    }
     for snr in SNR_LEVELS:
         sub = [r for r in done if r["snr_target"] == snr]
         k1 = sum(r["recovered_screening"] for r in sub)
@@ -127,30 +175,49 @@ def main() -> int:
     p.add_argument("--max-observations", type=int, default=20000)
     p.add_argument("--workers", type=int, default=8)
     p.add_argument("--seed", type=int, default=20261010)
+    p.add_argument("--search-timeout", type=float, default=3600,
+                   help="maximum seconds for one injected-curve search")
     p.add_argument("--extra-search-args", default="", help="additional astrosearch options")
     p.add_argument("--calibration", type=Path,
                    default=Path(__file__).resolve().parents[1] / "data/calibration/detection_threshold.json")
+    p.add_argument("--threshold-source", choices=("deployment", "evaluation"),
+                   default="deployment",
+                   help="use the all-controls deployment threshold or the calibration-split threshold")
     p.add_argument("--work-dir", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
     a = p.parse_args()
     root = a.manifest.parent
-    threshold = float(json.loads(a.calibration.read_text())["threshold"])
+    calibration = json.loads(a.calibration.read_text())
+    threshold = float(calibration["threshold"] if a.threshold_source == "deployment"
+                      else calibration["evaluation"]["threshold_from_calibration_split"])
     hosts = [c for c in ev.read_csv(a.manifest) if c["truth_class"] == "confirmed_planet"
              and float(c["observations"]) <= a.max_observations]
     rng = np.random.default_rng(a.seed)
     chosen = [hosts[i] for i in rng.choice(len(hosts), size=min(a.hosts, len(hosts)), replace=False)]
     a.work_dir.mkdir(parents=True, exist_ok=True)
+    batch_started = time.monotonic()
     jobs = [(case, str(root), str(a.work_dir), a.binary, snr, a.seed + 1000 * i + j, threshold,
-             a.extra_search_args)
+             a.extra_search_args, a.search_timeout)
             for i, case in enumerate(chosen) for j, snr in enumerate(SNR_LEVELS)]
+    rows = []
     with ProcessPoolExecutor(max_workers=a.workers) as pool:
-        rows = list(pool.map(run_one, jobs))
+        futures = [pool.submit(run_one, job) for job in jobs]
+        for index, future in enumerate(as_completed(futures), 1):
+            row = future.result()
+            rows.append(row)
+            status = "failed" if "error" in row else "skipped" if "skipped" in row else "searched"
+            print(f"[{index}/{len(jobs)}] {row['case_id']} S/N {row['snr_target']:g}: {status}",
+                  flush=True)
     with a.output.with_suffix(".csv").open("w", newline="") as stream:
         fields = sorted({k for r in rows for k in r})
         writer = csv.DictWriter(stream, fieldnames=fields)
         writer.writeheader()
         writer.writerows(rows)
     summary = summarize(rows, threshold)
+    summary["threshold_source"] = a.threshold_source
+    summary["calibration_file"] = str(a.calibration.resolve())
+    summary["batch_wall_seconds"] = time.monotonic() - batch_started
+    a.output.parent.mkdir(parents=True, exist_ok=True)
     a.output.write_text(json.dumps(summary, indent=1) + "\n")
     print(json.dumps(summary["by_snr"], indent=1))
     return 0

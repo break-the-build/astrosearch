@@ -168,11 +168,27 @@ def read_lightcurve(path: Path) -> LightCurve:
     if combined.exists():
         meta = json.loads(combined.read_text())
         parts = list(meta.get("parts", [meta]))
-    part = np.zeros(len(data), dtype=int)
-    for index, meta in enumerate(parts):
-        lo, hi = meta.get("time_min"), meta.get("time_max")
-        if lo is not None and hi is not None:
-            part[(data[:, 0] >= lo - 1e-9) & (data[:, 0] <= hi + 1e-9)] = index
+    elif data.shape[1] >= 5:
+        # Survey combined curves carry their sector in column five. Infer the
+        # part map for older runs created before combined.meta.json existed.
+        sectors = np.asarray(data[:, 4], dtype=int)
+        for sector in np.unique(sectors):
+            mask = sectors == sector
+            parts.append({"sector": int(sector), "author": path.parent.name,
+                          "time_min": float(data[mask, 0].min()),
+                          "time_max": float(data[mask, 0].max()),
+                          "crowding_corrected": True})
+        part = np.zeros(len(data), dtype=int)
+        for index, sector in enumerate(np.unique(sectors)):
+            part[sectors == sector] = index
+    else:
+        part = np.zeros(len(data), dtype=int)
+    if combined.exists():
+        part = np.zeros(len(data), dtype=int)
+        for index, meta in enumerate(parts):
+            lo, hi = meta.get("time_min"), meta.get("time_max")
+            if lo is not None and hi is not None:
+                part[(data[:, 0] >= lo - 1e-9) & (data[:, 0] <= hi + 1e-9)] = index
     error = data[:, 2]
     if not np.all(np.isfinite(error) & (error > 0)):
         fallback = np.nanmedian(np.abs(np.diff(data[:, 1]))) / np.sqrt(2) * 1.4826

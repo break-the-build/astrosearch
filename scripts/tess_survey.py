@@ -394,6 +394,10 @@ def one_target(row,a,binary):
              "--candidate-grouping",a.candidate_grouping]
         if density is not None: cmd.extend(("--stellar-density",str(density)))
         if a.periods: cmd.extend(("--periods",str(a.periods)))
+        if a.detection_threshold is not None:
+            cmd.extend(("--detection-threshold",str(a.detection_threshold)))
+        if a.stop_passes_below_detection:
+            cmd.append("--stop-passes-below-detection")
         cmd.extend(SEARCH_PROFILES[a.search_profile])
         log=out/"search.log"
         with tempfile.NamedTemporaryFile("w",dir=out,prefix=".search.",suffix=".tmp",
@@ -460,6 +464,9 @@ def one_target(row,a,binary):
             "trend_method":a.trend_method,
             "trend_days":a.trend_days,"segment_gap_days":a.segment_gap_days,
             "transit_search_passes":a.transit_search_passes,
+            "detection_threshold":a.detection_threshold,
+            "stop_passes_below_detection":a.stop_passes_below_detection,
+            "search_profile":a.search_profile,
             "candidate_grouping":a.candidate_grouping,
             "tls_enabled":a.tls,"tls_max_planets":a.tls_max_planets,
             "tls_min_sde":a.tls_min_sde,
@@ -527,6 +534,10 @@ def main():
     p.add_argument("--trend-days",type=float,default=1.05)
     p.add_argument("--segment-gap-days",type=float,default=.5)
     p.add_argument("--transit-search-passes",type=int,default=5)
+    p.add_argument("--detection-threshold",type=float,
+                   help="profile-calibrated jackknife threshold passed to astrosearch")
+    p.add_argument("--stop-passes-below-detection",action="store_true",
+                   help="stop iterative searches when the current best score is below the detection tier")
     p.add_argument("--candidate-grouping",choices=("ephemeris","events"),default="events",
                    help="group candidates by shared observed events while retaining harmonic alternatives")
     p.add_argument("--tls",action="store_true",help="also run iterative limb-darkened TLS on each searched light curve")

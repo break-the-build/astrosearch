@@ -1,0 +1,197 @@
+{
+ "case_coverage": {
+  "calibration_positive_cases_not_searched_by_design": 200,
+  "missing_required_results": 0,
+  "required_cases": 600,
+  "unreferenced_result_sidecars": 0
+ },
+ "cases_used": 600,
+ "context": {
+  "binary_sha256": "9aed4204058f004339e718a2c485f4ba3e059608613aea053053d7feb2875af9",
+  "build_identity": {
+   "binary_path": "/Users/danny/dev/astronomy/target/release/astrosearch",
+   "binary_sha256": "9aed4204058f004339e718a2c485f4ba3e059608613aea053053d7feb2875af9",
+   "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+   "logical_cpus": 24,
+   "platform": "macOS-26.6.2-arm64-arm-64bit",
+   "python": "3.12.13",
+   "python_packages": {
+    "astropy": "8.0.1",
+    "lightkurve": "2.6.0",
+    "numpy": "2.5.3"
+   },
+   "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+   "source_revision": "29bd8a9588d8949c9d8a6ebc8e29a0e4a7a376d1",
+   "source_tree_sha256": "627fd70ba180b8d0216557640b9e0114a765344fb441f44e58fb786d467cbeca",
+   "working_tree_dirty": true
+  },
+  "event_structure_min_events": 0,
+  "flux_origin": "QLP",
+  "metrics": {
+   "cpu_seconds_sampled": 13.96,
+   "exit_code": 0,
+   "observations": 11559,
+   "peak_rss_bytes_sampled": 46514176,
+   "resource_sampling": "ps 50ms; peak RSS is a sampled lower bound",
+   "span_days": 1843.8751006675218,
+   "timed_out": false,
+   "transit_trials": 659076,
+   "wall_seconds": 22.31479400000535
+  },
+  "profile": "fast",
+  "resource_metrics_schema": 1,
+  "search_configuration": {
+   "extra_search_args": "--bin-minutes 10 --physical-duration-floor --two-stage 7 --coarse-ffa --max-period-trials 2000000",
+   "grouping": "events",
+   "max_period": 30,
+   "max_period_trials": null,
+   "min_period": 0.15,
+   "periods": null,
+   "search_timeout_s": 3600.0,
+   "threads": 1,
+   "transit_search_passes": 1,
+   "workers": 8
+  }
+ },
+ "created_utc": "2026-10-10T23:57:07+00:00",
+ "deployment": {
+  "all_null_trigger": {
+   "count": 40,
+   "rate": 0.1,
+   "total": 400,
+   "wilson_95": [
+    0.07429925914003437,
+    0.13331057632740284
+   ]
+  },
+  "threshold_from_all_controls": 15.92447
+ },
+ "evaluation": {
+  "blind": {
+   "null_trigger": {
+    "count": 19,
+    "rate": 0.095,
+    "total": 200,
+    "wilson_95": [
+     0.06166310271738653,
+     0.1436016116481994
+    ]
+   },
+   "null_trigger_at_screening_score": {
+    "count": 182,
+    "rate": 0.91,
+    "total": 200,
+    "wilson_95": [
+     0.8622342812328346,
+     0.9423125511378069
+    ]
+   },
+   "planet_in_candidate_list": {
+    "count": 163,
+    "rate": 0.815,
+    "total": 200,
+    "wilson_95": [
+     0.7554293723884824,
+     0.8626980719938395
+    ]
+   },
+   "planet_recall": {
+    "count": 110,
+    "rate": 0.55,
+    "total": 200,
+    "wilson_95": [
+     0.48075615138475697,
+     0.6173593159775166
+    ]
+   },
+   "planet_recall_by_depth": {
+    "deep": {
+     "count": 52,
+     "rate": 0.8524590163934426,
+     "total": 61,
+     "wilson_95": [
+      0.742767647052789,
+      0.9203883149206723
+     ]
+    },
+    "medium": {
+     "count": 52,
+     "rate": 0.46017699115044247,
+     "total": 113,
+     "wilson_95": [
+      0.3711039869616077,
+      0.5518685598480699
+     ]
+    },
+    "shallow": {
+     "count": 6,
+     "rate": 0.23076923076923078,
+     "total": 26,
+     "wilson_95": [
+      0.11033849405783291,
+      0.42051554078943687
+     ]
+    }
+   }
+  },
+  "calibration": {
+   "null_trigger": {
+    "count": 20,
+    "rate": 0.1,
+    "total": 200,
+    "wilson_95": [
+     0.06567044866909588,
+     0.1494058124327174
+    ]
+   },
+   "null_trigger_at_screening_score": {
+    "count": 178,
+    "rate": 0.89,
+    "total": 200,
+    "wilson_95": [
+     0.839073090026985,
+     0.926227555398747
+    ]
+   },
+   "planet_in_candidate_list": {
+    "count": 0,
+    "rate": null,
+    "total": 0,
+    "wilson_95": null
+   },
+   "planet_recall": {
+    "count": 0,
+    "rate": null,
+    "total": 0,
+    "wilson_95": null
+   },
+   "planet_recall_by_depth": {
+    "deep": {
+     "count": 0,
+     "rate": null,
+     "total": 0,
+     "wilson_95": null
+    },
+    "medium": {
+     "count": 0,
+     "rate": null,
+     "total": 0,
+     "wilson_95": null
+    },
+    "shallow": {
+     "count": 0,
+     "rate": null,
+     "total": 0,
+     "wilson_95": null
+    }
+   }
+  },
+  "threshold_from_calibration_split": 15.9997
+ },
+ "event_structure_min_events": 0,
+ "manifest": "data/benchmarks/generated-20261009/profile-j-eval/truth-manifest.csv",
+ "screening_threshold": 6.0,
+ "statistic": "jackknife_score",
+ "target_false_alarm_rate": 0.1,
+ "threshold": 15.92447
+}

@@ -1,0 +1,25 @@
+{
+  "authors": {
+    "QLP": {
+      "baseline_days": 2557.222950184041,
+      "sectors": [
+        9,
+        36,
+        63,
+        90,
+        100
+      ]
+    }
+  },
+  "errors": [],
+  "observed_days": 130.7012,
+  "sectors": [
+    9,
+    36,
+    63,
+    90,
+    100
+  ],
+  "spoc_2min": true,
+  "status": "ok"
+}

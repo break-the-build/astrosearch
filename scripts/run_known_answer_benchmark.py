@@ -14,8 +14,14 @@ import hashlib
 import json
 import shlex
 import sys
+import time
 from pathlib import Path
 from run_metrics import build_identity, run_with_metrics
+
+try:
+    import resource
+except ImportError:  # pragma: no cover - unavailable on Windows
+    resource = None
 
 
 def sha256(path: Path) -> str:
@@ -103,6 +109,8 @@ def main() -> int:
     parser.add_argument("--transit-search-passes", type=int, default=5)
     parser.add_argument("--search-timeout", type=float, default=3600,
                         help="maximum seconds for one target search")
+    parser.add_argument("--metrics-output", type=Path,
+                        help="write aggregate wall/child CPU totals (use a dedicated file per run)")
     parser.add_argument("--rerun", action="store_true", help="ignore matching resume metadata")
     args = parser.parse_args()
     manifest = args.manifest.expanduser().resolve()
@@ -126,6 +134,10 @@ def main() -> int:
     with manifest.open(newline="", encoding="utf-8-sig") as stream:
         rows = list(csv.DictReader(stream))
     failed = 0
+    statuses = {}
+    wall_started = time.monotonic()
+    children_before = (resource.getrusage(resource.RUSAGE_CHILDREN)
+                       if resource is not None else None)
     with ThreadPoolExecutor(max_workers=args.workers) as executor:
         futures = [executor.submit(run_case, i, len(rows), row, manifest.parent,
                                    binary, binary_hash, config, build, args)
@@ -135,7 +147,24 @@ def main() -> int:
             stream = sys.stderr if status not in {"searched", "cached"} else sys.stdout
             print(f"[{index}/{len(rows)}] {case_id}: {status}", file=stream, flush=True)
             failed += status not in {"searched", "cached"}
-    print(f"completed {len(rows) - failed}/{len(rows)} cases; {failed} failed")
+            statuses[status] = statuses.get(status, 0) + 1
+    wall_seconds = time.monotonic() - wall_started
+    child_cpu_seconds = None
+    if resource is not None and children_before is not None:
+        children_after = resource.getrusage(resource.RUSAGE_CHILDREN)
+        child_cpu_seconds = ((children_after.ru_utime + children_after.ru_stime)
+                             - (children_before.ru_utime + children_before.ru_stime))
+    metrics = {"manifest": str(manifest), "cases_requested": len(rows),
+               "cases_by_status": statuses, "failed": failed,
+               "wall_seconds": wall_seconds,
+               "child_cpu_seconds_including_process-sampler_overhead": child_cpu_seconds,
+               "cpu_accounting": "resource.getrusage(RUSAGE_CHILDREN)" if resource is not None else "unavailable"}
+    if args.metrics_output:
+        output = args.metrics_output.expanduser().resolve()
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(metrics, indent=2) + "\n")
+    print(f"completed {len(rows) - failed}/{len(rows)} cases; {failed} failed; "
+          f"wall={wall_seconds:.1f}s; child_cpu={child_cpu_seconds}")
     return 0 if not failed else 1
 
 

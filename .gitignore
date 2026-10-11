@@ -14,3 +14,11 @@ data/benchmarks/hard-negatives/survey-final/
 .coverage
 .coverage.*
 *.egg-info/
+
+# Survey bulk data: downloaded light curves, caches and per-target work.
+data/survey/*/mast-cache/
+data/survey/*/run/
+data/survey/*/spoc-verification/
+data/survey/*/gates/*/*
+!data/survey/*/gates/*/gate.md
+!data/survey/*/gates/*/gate.json

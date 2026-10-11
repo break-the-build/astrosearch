@@ -32,10 +32,13 @@ from vetting.tier import STATISTICS, statistic
 csv.field_size_limit(2**31 - 1)
 
 
-def case_values(case: dict, root: Path, name: str) -> tuple[float, float | None]:
+def case_values(case: dict, root: Path, name: str,
+                min_events: int = 0) -> tuple[float, float | None]:
     """(maximum statistic over transit candidates, statistic of the candidate
     matching the true ephemeris or None)."""
     rows, _ = ev.read_scores(case, root, 0.0)
+    if min_events:
+        rows = [r for r in rows if int(float(r.get("n_events") or 0)) >= min_events]
     best = max((statistic(r, name) for r in rows), default=0.0)
     matched = None
     if case["truth_class"] == "confirmed_planet":
@@ -83,11 +86,25 @@ def run_context(cases: list[dict], root: Path) -> dict:
     for case in cases:
         run = (root / case["candidates_csv"]).with_name("candidates.run.json")
         if run.exists():
-            state = json.loads(run.read_text()).get("state", {})
+            run_record = json.loads(run.read_text())
+            state = run_record.get("state", {})
             config = state.get("config", {})
+            fast_args = ("--bin-minutes 10 --physical-duration-floor --two-stage 7 "
+                         "--coarse-ffa --max-period-trials 2000000")
+            extra = config.get("extra_search_args", "")
+            profile = "fast" if extra.strip() == fast_args else (
+                "standard" if not extra.strip() and not config.get("max_period_trials") else "custom")
             return {"binary_sha256": state.get("binary_sha256"),
-                    "transit_search_passes": config.get("transit_search_passes"),
-                    "min_period": config.get("min_period"), "max_period": config.get("max_period")}
+                    "profile": profile,
+                    "search_configuration": {
+                        key: config.get(key) for key in (
+                            "threads", "workers", "min_period", "max_period", "periods",
+                            "max_period_trials", "extra_search_args", "grouping",
+                            "transit_search_passes", "search_timeout_s")
+                    },
+                    "build_identity": state.get("build_identity"),
+                    "resource_metrics_schema": state.get("metrics_schema"),
+                    "metrics": run_record.get("metrics")}
     return {}
 
 
@@ -109,6 +126,8 @@ def main() -> int:
     p.add_argument("manifest", type=Path, help="truth manifest (rows with missing results are skipped)")
     p.add_argument("--statistic", choices=STATISTICS, default="jackknife_score")
     p.add_argument("--target", type=float, default=0.05, help="null trigger rate")
+    p.add_argument("--min-events", type=int, default=0,
+                   help="require at least this many observed events for threshold and recovery statistics")
     p.add_argument("--flux-origin", default="QLP", help="data product the benchmark used")
     p.add_argument("--output", type=Path, required=True)
     a = p.parse_args()
@@ -120,8 +139,8 @@ def main() -> int:
         p.error(str(error))
     records = []
     for case in cases:
-        best, matched = case_values(case, root, a.statistic)
-        best_score, _ = case_values(case, root, "score") if a.statistic != "score" else (best, None)
+        best, matched = case_values(case, root, a.statistic, a.min_events)
+        best_score, _ = case_values(case, root, "score", a.min_events) if a.statistic != "score" else (best, None)
         records.append({"split": case["split"], "truth": case["truth_class"],
                         "depth": case["depth_stratum"], "best": best, "matched": matched,
                         "best_score": best_score})
@@ -131,6 +150,7 @@ def main() -> int:
     deployment = threshold_for(nulls(), a.target)
     out = {"statistic": a.statistic, "threshold": deployment, "target_false_alarm_rate": a.target,
            "screening_threshold": 6.0,
+           "event_structure_min_events": a.min_events,
            "created_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
            "manifest": str(a.manifest), "cases_used": len(cases),
            "case_coverage": {
@@ -138,7 +158,8 @@ def main() -> int:
                "calibration_positive_cases_not_searched_by_design": len(skipped_calibration_positives),
                "unreferenced_result_sidecars": max(0, len(list(root.glob("results/*/*.run.json"))) - len(cases)),
            },
-           "context": {**run_context(cases, root), "flux_origin": a.flux_origin},
+           "context": {**run_context(cases, root), "flux_origin": a.flux_origin,
+                       "event_structure_min_events": a.min_events},
            "evaluation": {"threshold_from_calibration_split": evaluation,
                           "calibration": split_metrics(records, "calibration", evaluation),
                           "blind": split_metrics(records, "blind", evaluation)},

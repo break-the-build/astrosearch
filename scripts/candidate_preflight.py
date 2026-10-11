@@ -97,12 +97,16 @@ def check_spoc_tces(tic_id, candidate_rows, requested_sectors):
     checked=[]; matches=[]
     for url,(start,stop) in sorted(files.items()):
         r=SESSION.get(url,timeout=90); r.raise_for_status()
-        rows=list(csv.DictReader(r.text.splitlines()))
+        # MAST DVR-TCE CSVs begin with several comment lines before the real
+        # header. Keep those out of DictReader or `ticid` is never discovered.
+        rows=list(csv.DictReader(line for line in r.text.splitlines()
+                                 if not line.lstrip().startswith("#")))
         if not rows: checked.append({"url":url,"status":"empty"}); continue
         keys={re.sub(r"[^a-z0-9]","",k.lower()):k for k in rows[0]}
         id_key=next((keys[k] for k in ("ticid","tic_id","targetid","tessinputcatalogid") if k in keys),None)
         period_key=next((keys[k] for k in ("tceperiod","period","plorbper") if k in keys),None)
-        epoch_key=next((keys[k] for k in ("tceepoch","tceepochbtjd","tceepochbjd","tceepochbkjd") if k in keys),None)
+        epoch_key=next((keys[k] for k in ("tcetime0bt","tceepochbtjd","tceepoch","tceepochbjd",
+                                          "tceepochbkjd","tcetime0") if k in keys),None)
         duration_key=next((keys[k] for k in ("tceduration","duration","pltrandurh") if k in keys),None)
         if not id_key:
             checked.append({"url":url,"status":"unrecognized_schema","columns":list(rows[0])}); continue

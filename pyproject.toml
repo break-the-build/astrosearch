@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-inference = ["batman-package>=2.5", "emcee>=3.1"]
+inference = ["batman-package>=2.5", "emcee>=3.1", "setuptools>=69"]
 tls = ["transitleastsquares>=2.0"]
 # CTOI gate extras: false-positive probability, GP detrending, TESS pointings.
 fpp = ["triceratops>=1.0.15"]
@@ -35,6 +35,8 @@ astrosearch-benchmark-run = "run_known_answer_benchmark:main"
 astrosearch-benchmark-evaluate = "evaluate_benchmark:main"
 astrosearch-known-systems = "benchmark_known_systems:main"
 astrosearch-target-yield = "target_yield:main"
+astrosearch-enrich-targets = "enrich_tess_targets:main"
+astrosearch-tce-preflight = "batch_tce_preflight:main"
 
 [build-system]
 requires = ["setuptools>=69"]
@@ -52,6 +54,8 @@ py-modules = [
   "candidate_preflight", "candidate_registry", "ctoi_gate", "evaluate_benchmark",
   "export_tess", "gp_detrend", "pixel_difference_check", "predict_transits",
   "refine_candidates", "run_known_answer_benchmark", "run_metrics", "survey_ledger",
+  "enrich_tess_targets",
+  "batch_tce_preflight",
   "target_yield", "tess_survey", "tls_search",
 ]
 

@@ -407,6 +407,7 @@ gp = [
 inference = [
     { name = "batman-package" },
     { name = "emcee" },
+    { name = "setuptools" },
 ]
 pointing = [
     { name = "tess-point" },
@@ -430,6 +431,7 @@ requires-dist = [
     { name = "numpy", specifier = ">=1.26" },
     { name = "requests", specifier = ">=2.32" },
     { name = "scipy", specifier = ">=1.12" },
+    { name = "setuptools", marker = "extra == 'inference'", specifier = ">=69" },
     { name = "tess-point", marker = "extra == 'pointing'", specifier = ">=0.9" },
     { name = "transitleastsquares", marker = "extra == 'tls'", specifier = ">=2.0" },
     { name = "triceratops", marker = "extra == 'fpp'", specifier = ">=1.0.15" },

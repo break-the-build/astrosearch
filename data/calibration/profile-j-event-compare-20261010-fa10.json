@@ -1,0 +1,129 @@
+{
+  "profiles": {
+    "j-no-event-min": {
+      "threshold": 15.9997,
+      "statistic": "jackknife_score",
+      "min_events": 0
+    },
+    "j-min3events": {
+      "threshold": 15.9997,
+      "statistic": "jackknife_score",
+      "min_events": 3
+    }
+  },
+  "paired_common_case_ids": 600,
+  "statistic": "jackknife_score",
+  "resource_totals_by_profile": {
+    "j-no-event-min": {
+      "cpu_measured_cases": 600,
+      "cpu_seconds_sum": 5833.3,
+      "per_case_wall_measured_cases": 600,
+      "summed_per_case_wall_seconds": 17181.82064470742
+    },
+    "j-min3events": {
+      "cpu_measured_cases": 600,
+      "cpu_seconds_sum": 5833.3,
+      "per_case_wall_measured_cases": 600,
+      "summed_per_case_wall_seconds": 17181.82064470742
+    }
+  },
+  "paired_resources": {
+    "cpu_measured_cases": 600,
+    "cpu_seconds_sum": {
+      "j-no-event-min": 5833.3,
+      "j-min3events": 5833.3
+    },
+    "cpu_speedup_a_over_b": 1.0,
+    "summed_per_case_wall_seconds": {
+      "j-no-event-min": 17181.82064470742,
+      "j-min3events": 17181.82064470742
+    },
+    "wall_measured_cases": 600
+  },
+  "blind": {
+    "positive_recall": {
+      "j-no-event-min": {
+        "successes": 110,
+        "trials": 200,
+        "rate": 0.55,
+        "wilson_95": [
+          0.48075615138475697,
+          0.6173593159775166
+        ]
+      },
+      "j-min3events": {
+        "successes": 110,
+        "trials": 200,
+        "rate": 0.55,
+        "wilson_95": [
+          0.48075615138475697,
+          0.6173593159775166
+        ]
+      },
+      "paired": {
+        "n": 200,
+        "profile_a_only": 0,
+        "profile_b_only": 0,
+        "both": 110,
+        "neither": 90,
+        "paired_difference_b_minus_a": 0.0,
+        "mcnemar_exact_two_sided_p": null,
+        "discordant_case_ids_a_only": [],
+        "discordant_case_ids_b_only": []
+      }
+    },
+    "null_trigger": {
+      "j-no-event-min": {
+        "successes": 19,
+        "trials": 200,
+        "rate": 0.095,
+        "wilson_95": [
+          0.06166310271738653,
+          0.1436016116481994
+        ]
+      },
+      "j-min3events": {
+        "successes": 18,
+        "trials": 200,
+        "rate": 0.09,
+        "wilson_95": [
+          0.05768744886219316,
+          0.13776571876716542
+        ]
+      },
+      "paired": {
+        "n": 200,
+        "profile_a_only": 1,
+        "profile_b_only": 0,
+        "both": 18,
+        "neither": 181,
+        "paired_difference_b_minus_a": -0.005,
+        "mcnemar_exact_two_sided_p": 1.0,
+        "discordant_case_ids_a_only": [
+          "case-2e594f338e059439"
+        ],
+        "discordant_case_ids_b_only": []
+      }
+    }
+  },
+  "calibration_null_trigger": {
+    "j-no-event-min": {
+      "successes": 20,
+      "trials": 200,
+      "rate": 0.1,
+      "wilson_95": [
+        0.06567044866909588,
+        0.1494058124327174
+      ]
+    },
+    "j-min3events": {
+      "successes": 20,
+      "trials": 200,
+      "rate": 0.1,
+      "wilson_95": [
+        0.06567044866909588,
+        0.1494058124327174
+      ]
+    }
+  }
+}

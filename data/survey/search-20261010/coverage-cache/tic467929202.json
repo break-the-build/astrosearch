@@ -1,0 +1,11 @@
+{
+  "authors": {},
+  "errors": [
+    "QLP: no sector/exptime metadata",
+    "SPOC: no sector/exptime metadata"
+  ],
+  "observed_days": 0,
+  "sectors": [],
+  "spoc_2min": false,
+  "status": "no_products"
+}

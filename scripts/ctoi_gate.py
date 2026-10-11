@@ -43,7 +43,7 @@ def number(row: dict, key: str):
 
 
 def physical_fit(lightcurve: Path, candidates: Path, candidate, out_dir: Path,
-                 mcmc_steps: int) -> dict:
+                 mcmc_steps: int, timeout: float = 900.0) -> dict:
     """Fit the selected candidate with refine_candidates.py."""
     with candidates.open(newline="", encoding="utf-8-sig") as stream:
         reader = csv.DictReader(stream)
@@ -55,10 +55,17 @@ def physical_fit(lightcurve: Path, candidates: Path, candidate, out_dir: Path,
         writer.writeheader()
         writer.writerows(rows)
     output = out_dir / "fit.csv"
-    subprocess.run([sys.executable, str(ROOT / "scripts/refine_candidates.py"),
-                    "--lightcurve", str(lightcurve), "--candidates", str(single),
-                    "--output", str(output), "--max-candidates", "1",
-                    "--mcmc-steps", str(mcmc_steps)], check=True, capture_output=True, text=True)
+    try:
+        subprocess.run([sys.executable, str(ROOT / "scripts/refine_candidates.py"),
+                        "--lightcurve", str(lightcurve), "--candidates", str(single),
+                        "--output", str(output), "--max-candidates", "1",
+                        "--mcmc-steps", str(mcmc_steps)], check=True, capture_output=True,
+                       text=True, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return {"error": f"physical fit exceeded {timeout:g}s timeout", "timed_out": True}
+    except subprocess.CalledProcessError as error:
+        detail = (error.stderr or error.stdout or "").strip()
+        return {"error": f"physical fit exited {error.returncode}: {detail[-2000:]}"}
     with output.open(newline="") as stream:
         row = next(csv.DictReader(stream))
     if row.get("fit_error"):
@@ -162,6 +169,8 @@ def main() -> int:
     p.add_argument("--threads", type=int, default=6)
     p.add_argument("--mcmc-steps", type=int, default=2000,
                    help="emcee steps per walker for posterior uncertainties (0: local covariance)")
+    p.add_argument("--fit-timeout", type=float, default=900.0,
+                   help="seconds before a slow transit-model fit is recorded as not evaluated")
     p.add_argument("--predict-days", type=float, default=730.0)
     p.add_argument("--offline", action="store_true", help="skip catalog, Gaia, and FPP queries")
     p.add_argument("--skip-fpp", action="store_true")
@@ -181,6 +190,8 @@ def main() -> int:
                    help="seconds before a stalled MAST/Gaia/archive request fails")
     p.add_argument("--out-dir", type=Path, required=True)
     a = p.parse_args()
+    if a.fit_timeout <= 0:
+        p.error("fit-timeout must be positive")
     network.install_default_timeouts(a.network_timeout)
     a.out_dir.mkdir(parents=True, exist_ok=True)
     search_args = shlex.split(a.search_args)
@@ -197,7 +208,8 @@ def main() -> int:
                                            "duration", "depth_ppm", "n_events")},
               "input_rows": vars(lc.stats) if lc.stats else None}
 
-    fit = physical_fit(a.lightcurve, a.candidates, candidate, a.out_dir, a.mcmc_steps)
+    fit = physical_fit(a.lightcurve, a.candidates, candidate, a.out_dir, a.mcmc_steps,
+                       timeout=a.fit_timeout)
     report["fit"] = fit
     period = fit.get("period") or candidate.period
     epoch = fit.get("epoch") or candidate.epoch
@@ -257,8 +269,10 @@ def main() -> int:
         work_dir=a.out_dir / "nulls", null_timeout=a.null_timeout,
         budget_seconds=a.fap_budget) if a.null_trials > 0 else None
     report["bls"] = crosscheck.bls_recovery(lc, period, epoch, duration)
-    report["products"] = (crosscheck.product_depths(lc, a.products, epoch, period, duration)
-                          if a.products else None)
+    independent_products = [path for path in a.products
+                            if path.resolve() != a.lightcurve.resolve()]
+    report["products"] = (crosscheck.product_depths(lc, independent_products, epoch, period, duration)
+                          if independent_products else None)
 
     sectors = sorted({int(m["sector"]) for m in lc.parts if m.get("sector") is not None})
     if a.offline:

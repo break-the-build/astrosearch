@@ -1,0 +1,171 @@
+{
+ "case_coverage": {
+  "calibration_positive_cases_not_searched_by_design": 200,
+  "missing_required_results": 0,
+  "required_cases": 600,
+  "unreferenced_result_sidecars": 183
+ },
+ "cases_used": 600,
+ "context": {
+  "binary_sha256": "638f51dece3099b37bafed67ea88ea60753137d6f10fcb8b6e04666a16760c84",
+  "build_identity": null,
+  "event_structure_min_events": 3,
+  "flux_origin": "QLP",
+  "metrics": null,
+  "profile": "standard",
+  "resource_metrics_schema": null,
+  "search_configuration": {
+   "extra_search_args": null,
+   "grouping": "events",
+   "max_period": 30,
+   "max_period_trials": null,
+   "min_period": 0.15,
+   "periods": null,
+   "search_timeout_s": null,
+   "threads": 1,
+   "transit_search_passes": 1,
+   "workers": null
+  }
+ },
+ "created_utc": "2026-10-10T23:52:19+00:00",
+ "deployment": {
+  "all_null_trigger": {
+   "count": 20,
+   "rate": 0.05,
+   "total": 400,
+   "wilson_95": [
+    0.03259742983714726,
+    0.07596363506371961
+   ]
+  },
+  "threshold_from_all_controls": 23.302528953788222
+ },
+ "evaluation": {
+  "blind": {
+   "null_trigger": {
+    "count": 14,
+    "rate": 0.07,
+    "total": 200,
+    "wilson_95": [
+     0.042152171828342806,
+     0.11405480885610647
+    ]
+   },
+   "null_trigger_at_screening_score": {
+    "count": 192,
+    "rate": 0.96,
+    "total": 200,
+    "wilson_95": [
+     0.923067931799067,
+     0.9795943679338476
+    ]
+   },
+   "planet_in_candidate_list": {
+    "count": 157,
+    "rate": 0.785,
+    "total": 200,
+    "wilson_95": [
+     0.7229769265100339,
+     0.8362812374549242
+    ]
+   },
+   "planet_recall": {
+    "count": 87,
+    "rate": 0.435,
+    "total": 200,
+    "wilson_95": [
+     0.36815725502699076,
+     0.504292637402054
+    ]
+   },
+   "planet_recall_by_depth": {
+    "deep": {
+     "count": 46,
+     "rate": 0.7540983606557377,
+     "total": 61,
+     "wilson_95": [
+      0.6331557589001072,
+      0.8449334229877371
+     ]
+    },
+    "medium": {
+     "count": 37,
+     "rate": 0.3274336283185841,
+     "total": 113,
+     "wilson_95": [
+      0.24782818830455555,
+      0.41838618120404736
+     ]
+    },
+    "shallow": {
+     "count": 4,
+     "rate": 0.15384615384615385,
+     "total": 26,
+     "wilson_95": [
+      0.06150033723578355,
+      0.3353119932821348
+     ]
+    }
+   }
+  },
+  "calibration": {
+   "null_trigger": {
+    "count": 10,
+    "rate": 0.05,
+    "total": 200,
+    "wilson_95": [
+     0.02738264560076393,
+     0.08957814813877599
+    ]
+   },
+   "null_trigger_at_screening_score": {
+    "count": 191,
+    "rate": 0.955,
+    "total": 200,
+    "wilson_95": [
+     0.9167032959981803,
+     0.976147456998507
+    ]
+   },
+   "planet_in_candidate_list": {
+    "count": 0,
+    "rate": null,
+    "total": 0,
+    "wilson_95": null
+   },
+   "planet_recall": {
+    "count": 0,
+    "rate": null,
+    "total": 0,
+    "wilson_95": null
+   },
+   "planet_recall_by_depth": {
+    "deep": {
+     "count": 0,
+     "rate": null,
+     "total": 0,
+     "wilson_95": null
+    },
+    "medium": {
+     "count": 0,
+     "rate": null,
+     "total": 0,
+     "wilson_95": null
+    },
+    "shallow": {
+     "count": 0,
+     "rate": null,
+     "total": 0,
+     "wilson_95": null
+    }
+   }
+  },
+  "threshold_from_calibration_split": 22.48764564027064
+ },
+ "event_structure_min_events": 3,
+ "manifest": "data/benchmarks/generated-20261009/truth-manifest.csv",
+ "screening_threshold": 6.0,
+ "statistic": "jackknife_score",
+ "target_false_alarm_rate": 0.05,
+ "threshold": 23.302528953788222
+}

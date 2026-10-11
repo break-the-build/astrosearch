@@ -20,17 +20,42 @@ fn main() {
 }
 
 fn run() -> Result<(), String> {
-    let mut args = env::args().skip(1);
+    let raw_args: Vec<String> = env::args().skip(1).collect();
+    let has_fixed_period_grid = raw_args.iter().any(|arg| arg == "--periods");
+    let mut selected_profile = String::from("fast");
+    let mut index = 0;
+    while index < raw_args.len() {
+        if raw_args[index] == "--search-profile" {
+            let Some(profile) = raw_args.get(index + 1) else {
+                return Err("missing value after --search-profile".into());
+            };
+            if !matches!(profile.as_str(), "fast" | "standard") {
+                return Err(format!("unknown search profile {profile}; use fast or standard"));
+            }
+            selected_profile = profile.clone();
+            index += 2;
+        } else {
+            index += 1;
+        }
+    }
+    let mut args = raw_args.into_iter();
     let mut input = None;
     let mut output = None;
     let mut periodogram = None;
-    let mut config = Config::default();
+    let mut config = if selected_profile == "standard" {
+        Config::standard()
+    } else {
+        Config::profile_j()
+    };
     while let Some(arg) = args.next() {
-        let value = |args: &mut std::iter::Skip<std::env::Args>| {
+        let value = |args: &mut std::vec::IntoIter<String>| {
             args.next()
                 .ok_or_else(|| format!("missing value after {arg}"))
         };
         match arg.as_str() {
+            "--search-profile" => {
+                let _ = value(&mut args)?;
+            }
             "--input" | "-i" => input = Some(value(&mut args)?),
             "--output" | "-o" => output = Some(value(&mut args)?),
             "--min-period" => config.min_period = parse_num(&value(&mut args)?, "min-period")?,
@@ -91,6 +116,9 @@ fn run() -> Result<(), String> {
             }
             other => return Err(format!("unknown option {other}; use --help")),
         }
+    }
+    if selected_profile == "fast" && has_fixed_period_grid {
+        return Err("--periods fixes the grid; use --search-profile standard with --periods".into());
     }
     let input = input.ok_or("--input is required")?;
     for path in output.iter().chain(&periodogram) {
@@ -243,5 +271,5 @@ fn parse_num<T: std::str::FromStr>(value: &str, name: &str) -> Result<T, String>
 }
 
 fn help() {
-    println!("astrosearch — TESS-style light-curve candidate search\n\nUSAGE:\n  astrosearch --input lightcurve.csv [--output candidates.csv]\n              [--min-period DAYS] [--max-period DAYS] [--periods N]\n              [--stellar-density G_PER_CM3]\n              [--durations N] [--trend-days DAYS] [--segment-gap-days DAYS]\n              [--trend-method median|biweight|none] [--transit-search-passes N]\n              [--min-event-points N] [--threads N] [--scoring correlated|white]\n              [--candidate-grouping ephemeris|events] [--min-transit-score X]\n              [--detection-threshold X] [--max-period-trials N]\n              [--bin-minutes M] [--physical-duration-floor]\n              [--two-stage F] [--two-stage-keep K] [--coarse-ffa]\n              [--stop-passes-below-detection]\n              [--transit-candidates N] [--periodogram trials.csv] [--invert]\n\nInput needs a time/BTJD/BJD and positive-flux column; errors and quality are optional.\nCSV or TSV, including quoted fields, supported. Period bounds apply to both periodic detectors.\nThreads default to 0 (automatic); use 1 for serial execution.\nScoring defaults to correlated (per-segment, duration-dependent noise); white is the\noriginal independent-error statistic. Both appear in the output (score, white_score).\n--stellar-density uses g/cm^3 and assumes b <= 0.95 and e <= 0.9 for a target-specific\nduration floor; omit it for the cadence-only completeness search.\nTrend defaults to a sliding-window Tukey biweight with a 1.05-day window (three times the 0.35-day maximum searched duration).\n--candidate-grouping defaults to events: aliases sharing observed transit events are grouped and kept in the CSV;\nephemeris is the earlier period-drift deduplication.\n--transit-search-passes (default 5) masks each pass's strongest event windows and reruns the transit search;\nruntime grows with passes, and 1 disables masking.\n--bin-minutes M bins fast cadences to M minutes before detrending (0, the default, disables).\n--physical-duration-floor sets the shortest searched duration to half the central-transit\nduration (stellar density, else solar) instead of 2 x cadence: far fewer trials on long baselines,\nbut strongly grazing or eccentric short transits are not searched.\n--two-stage F screens every F-th period with a lowered score floor, then refines the\n--two-stage-keep K (default 512) best cells at full resolution (0, the default, disables).\n--coarse-ffa ranks the cells with the fast folding algorithm over all periods instead.\n--stop-passes-below-detection skips further passes once a pass finds nothing at the detection tier.\n--max-period-trials (default 250000) caps the period grid; long baselines need more trials\nfor full resolution (a warning reports the shortfall) and runtime grows with the cap.\n--min-transit-score (default 6) is a screening floor: 97% of inverted null controls in the\nknown-answer benchmark exceed it. jackknife_score is the score\nwithout the strongest single event; the tier column marks transit candidates whose\njackknife score reaches --detection-threshold (default 23.3, a 5% trigger rate on the\nbenchmark null controls; QLP, one pass) as detection, others as screening.\n--invert reflects flux about its median for an inverted-flux systematic control.\nEpochs are window centers; scores rank unvalidated light-curve triggers.");
+    println!("astrosearch — TESS-style light-curve candidate search\n\nUSAGE:\n  astrosearch --input lightcurve.csv [--output candidates.csv]\n              [--search-profile fast|standard] [--min-period DAYS] [--max-period DAYS]\n              [--periods N] [--stellar-density G_PER_CM3]\n              [--durations N] [--trend-days DAYS] [--segment-gap-days DAYS]\n              [--trend-method median|biweight|none] [--transit-search-passes N]\n              [--min-event-points N] [--threads N] [--scoring correlated|white]\n              [--candidate-grouping ephemeris|events] [--min-transit-score X]\n              [--detection-threshold X] [--max-period-trials N]\n              [--bin-minutes M] [--physical-duration-floor]\n              [--two-stage F] [--two-stage-keep K] [--coarse-ffa]\n              [--stop-passes-below-detection]\n              [--transit-candidates N] [--periodogram trials.csv] [--invert]\n\nInput needs a time/BTJD/BJD and positive-flux column; errors and quality are optional.\nCSV or TSV, including quoted fields, supported. Period bounds apply to both periodic detectors.\nProfile J is the default: 10-minute binning, physical duration floor, 7x coarse FFA\nsearch, 2-million period-trial cap, five passes, and QLP-calibrated jackknife tier\n25.36783. Apply that tier only to the matching QLP search contract; use a matching\nproduct-specific calibration for other data. `--search-profile standard` selects the\nfull-grid baseline and legacy tier; `--periods` requires this profile.\nThreads default to 0 (automatic); use 1 for serial execution.\nScoring defaults to correlated (per-segment, duration-dependent noise); white is the\noriginal independent-error statistic. Both appear in the output (score, white_score).\n--stellar-density uses g/cm^3 and assumes b <= 0.95 and e <= 0.9 for a target-specific\nduration floor; omit it for the cadence-only completeness search.\nTrend defaults to a sliding-window Tukey biweight with a 1.05-day window (three times the 0.35-day maximum searched duration).\n--candidate-grouping defaults to events: aliases sharing observed transit events are grouped and kept in the CSV;\nephemeris is the earlier period-drift deduplication.\n--transit-search-passes (default 5) masks each pass's strongest event windows and reruns the transit search;\nruntime grows with passes, and 1 disables masking.\n--bin-minutes M overrides Profile J's 10-minute binning; 0 disables binning.\n--physical-duration-floor uses a geometry-informed minimum duration; this saves trials,\nbut strongly grazing or eccentric short transits may not be searched.\n--two-stage F overrides Profile J's factor of 7; --two-stage-keep defaults to 512.\n--coarse-ffa ranks the cells with the fast folding algorithm over all periods.\n--stop-passes-below-detection skips further passes once a pass finds nothing at the detection tier.\n--max-period-trials defaults to 2000000 for Profile J and 250000 for standard.\nLong baselines may still reach the cap; warnings report a shortfall.\n--min-transit-score (default 6) is only a screening floor; many inverted null controls exceed it.\njackknife_score is the score without the strongest single event; the tier column labels\ntransit candidates above the configured threshold as detection, others as screening.\n--invert reflects flux about its median for an inverted-flux systematic control.\nEpochs are window centers; scores rank unvalidated light-curve triggers.");
 }

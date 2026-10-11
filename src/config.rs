@@ -1,11 +1,15 @@
 //! Search options, their defaults, and validation.
 
-/// Default cap on trial periods per search (`Config::max_period_trials`).
-pub const MAX_PERIOD_TRIALS: usize = 250_000;
+/// Default cap on trial periods per search for Profile J.
+pub const MAX_PERIOD_TRIALS: usize = 2_000_000;
+/// Grid cap used by the explicit standard profile.
+pub const STANDARD_MAX_PERIOD_TRIALS: usize = 250_000;
 /// Hard ceiling on `Config::max_period_trials` (memory and runtime guard).
 pub const PERIOD_TRIALS_CEILING: usize = 20_000_000;
-/// Calibrated detection-tier score (see `Config::detection_threshold`).
-pub const DETECTION_THRESHOLD: f64 = 23.3;
+/// Calibrated five-pass Profile J detection tier.
+pub const DETECTION_THRESHOLD: f64 = 25.36783;
+/// Detection tier for the explicit standard profile's legacy calibration.
+pub const STANDARD_DETECTION_THRESHOLD: f64 = 23.302528953788222;
 
 /// Statistic that selects and ranks periodic-dip windows.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -120,9 +124,9 @@ pub struct Config {
     pub min_transit_score: f64,
     /// Transit candidates whose jackknife score (`Candidate::jackknife_score`)
     /// reaches this value are labeled `detection`, the rest `screening`. The
-    /// default gives a 5% trigger rate on the known-answer benchmark's 400
-    /// inverted null controls (`data/calibration/detection_threshold.json`;
-    /// QLP light curves, one search pass).
+    /// Profile J default is the deployment tier from the verified five-pass
+    /// QLP calibration; product and search contract must match before treating
+    /// this label as calibrated.
     pub detection_threshold: f64,
     /// Cap on trial periods. When the resolution rule needs more, the grid is
     /// coarsened and a warning is emitted; raising it costs runtime roughly
@@ -140,15 +144,24 @@ pub struct Config {
 
 impl Default for Config {
     fn default() -> Self {
+        Self::profile_j()
+    }
+}
+
+impl Config {
+    /// Recommended general-purpose configuration: five-pass Profile J.
+    /// The threshold is the deployment tier from the verified QLP calibration
+    /// `profile-j-fivepass-20261010-fa05-verified.json`.
+    pub fn profile_j() -> Self {
         Self {
             min_period: 0.15,
             max_period: 30.0,
             stellar_density_g_cm3: None,
-            physical_duration_floor: false,
-            bin_days: 0.0,
-            two_stage_factor: 0,
+            physical_duration_floor: true,
+            bin_days: 10.0 / 1440.0,
+            two_stage_factor: 7,
             two_stage_keep: 512,
-            coarse_ffa: false,
+            coarse_ffa: true,
             stop_passes_below_detection: false,
             periods: 2400,
             durations: 10,
@@ -168,9 +181,22 @@ impl Default for Config {
             keep_periodogram: false,
         }
     }
-}
 
-impl Config {
+    /// Original full-grid configuration for explicit baseline comparisons.
+    pub fn standard() -> Self {
+        Self {
+            physical_duration_floor: false,
+            bin_days: 0.0,
+            two_stage_factor: 0,
+            coarse_ffa: false,
+            stop_passes_below_detection: false,
+            detection_threshold: STANDARD_DETECTION_THRESHOLD,
+            max_period_trials: STANDARD_MAX_PERIOD_TRIALS,
+            transit_search_passes: 1,
+            ..Self::profile_j()
+        }
+    }
+
     pub fn validate(&self) -> Result<(), String> {
         if ![
             self.min_period,

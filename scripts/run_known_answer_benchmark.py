@@ -17,6 +17,7 @@ import sys
 import time
 from pathlib import Path
 from run_metrics import build_identity, run_with_metrics
+from search_contract import record_search
 
 try:
     import resource
@@ -51,7 +52,8 @@ def run_case(index: int, total: int, row: dict, manifest_dir: Path,
             return index, case_id, "cached"
         candidate_path.parent.mkdir(parents=True, exist_ok=True)
         stage = candidate_path.with_name(f".{candidate_path.name}.tmp")
-        command = [str(binary), "--input", str(data_path), "--output", str(stage),
+        command = [str(binary), "--search-profile", args.search_profile,
+                   "--input", str(data_path), "--output", str(stage),
                    "--threads", str(args.threads), "--min-period", str(args.min_period),
                    "--max-period", str(args.max_period), "--candidate-grouping", args.grouping,
                    "--transit-search-passes", str(args.transit_search_passes)]
@@ -79,6 +81,7 @@ def run_case(index: int, total: int, row: dict, manifest_dir: Path,
                            transit_trials=record.get("transit_trials"))
             provenance.replace(Path(str(candidate_path) + ".provenance.json"))
         stage.replace(candidate_path)
+        record_search(candidate_path, binary, row.get("extraction_family") or args.flux_origin)
         temporary = sidecar.with_name(f".{sidecar.name}.tmp")
         temporary.write_text(json.dumps({"state": state, "command": command,
                                          "candidate_sha256": sha256(candidate_path),
@@ -90,12 +93,26 @@ def run_case(index: int, total: int, row: dict, manifest_dir: Path,
         return index, case_id, f"{type(error).__name__}: {error}"
 
 
+def guard_holdout(manifest: Path, released: bool) -> None:
+    marker = manifest.parent / "HOLDOUT.json"
+    if not marker.exists():
+        return
+    record = json.loads(marker.read_text())
+    if record.get("run_manifest_sha256") != sha256(manifest):
+        raise ValueError("reserved holdout manifest changed")
+    if not released:
+        raise ValueError("reserved holdout: freeze the evaluation protocol, then use --release-holdout")
+
+
 def main() -> int:
     root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, default=root / "data/benchmarks/generated/run-manifest.csv")
     parser.add_argument("--binary", type=Path, default=root / "target/release/astrosearch")
     parser.add_argument("--threads", type=int, default=0)
+    parser.add_argument("--search-profile", choices=("fast", "standard"), default="fast",
+                        help="search settings to evaluate (default: Profile J / fast)")
+    parser.add_argument("--flux-origin", default="QLP", help="data product used by the scientific calibration")
     parser.add_argument("--workers", type=int, default=1,
                         help="parallel target searches; set --threads 1 to avoid oversubscribing CPUs")
     parser.add_argument("--min-period", type=float, default=0.15)
@@ -104,25 +121,37 @@ def main() -> int:
     parser.add_argument("--extra-search-args", default="",
                         help="additional astrosearch options, e.g. '--bin-minutes 10'")
     parser.add_argument("--max-period-trials", type=int,
-                        help="period-grid cap passed to astrosearch (default: its built-in 250000)")
+                        help="period-grid cap passed to astrosearch (defaults: 2000000 for fast, 250000 for standard)")
     parser.add_argument("--grouping", choices=("ephemeris", "events"), default="events")
-    parser.add_argument("--transit-search-passes", type=int, default=5)
+    parser.add_argument("--transit-search-passes", type=int,
+                        help="search passes (defaults: 5 for fast, 1 for standard)")
     parser.add_argument("--search-timeout", type=float, default=3600,
                         help="maximum seconds for one target search")
     parser.add_argument("--metrics-output", type=Path,
                         help="write aggregate wall/child CPU totals (use a dedicated file per run)")
     parser.add_argument("--rerun", action="store_true", help="ignore matching resume metadata")
+    parser.add_argument("--release-holdout", action="store_true",
+                        help="explicitly consume a reserved holdout after freezing the evaluation protocol")
     args = parser.parse_args()
+    if args.transit_search_passes is None:
+        args.transit_search_passes = 5 if args.search_profile == "fast" else 1
     manifest = args.manifest.expanduser().resolve()
     binary = args.binary.expanduser().resolve()
     if not manifest.is_file() or not binary.is_file():
         parser.error("run manifest or astrosearch executable not found")
+    try:
+        guard_holdout(manifest, args.release_holdout)
+    except ValueError as error:
+        parser.error(str(error))
     if (not 0 < args.min_period < args.max_period or args.workers < 1
             or not 1 <= args.transit_search_passes <= 12
-            or args.search_timeout <= 0):
-        parser.error("invalid period bounds, worker count, or transit search pass count")
+            or args.search_timeout <= 0
+            or (args.search_profile == "fast" and args.periods is not None)):
+        parser.error("invalid period bounds, worker count, or pass count; --periods requires --search-profile standard")
     build = build_identity(root, binary)
-    config = {"threads": args.threads, "workers": args.workers,
+    config = {"threads": args.threads, "workers": args.workers, "flux_origin": args.flux_origin,
+              "search_profile": args.search_profile,
+              "holdout_released": args.release_holdout,
               "min_period": args.min_period,
               "max_period": args.max_period, "periods": args.periods,
               "max_period_trials": args.max_period_trials,

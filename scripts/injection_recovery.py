@@ -6,7 +6,8 @@ the known planet's transits removed (so real systematics and stellar noise
 remain). Into each, a limb-darkened transit (batman, quadratic u = 0.40,
 0.25, b = 0) is injected at a period drawn log-uniformly from 0.7-12 d, a
 duration from a solar-density scaling, and a depth set by a target
-white-noise SNR. astrosearch searches the result (one pass, 0.5-15 d); an
+white-noise SNR. astrosearch searches the result with five-pass Profile J by
+default (0.5-15 d); an
 injection is recovered when a transit candidate matches its ephemeris
 (evaluate_benchmark.close_ephemeris). Recovery is reported at the screening
 floor (6) and at the calibrated detection tier, by SNR bin.
@@ -89,7 +90,7 @@ def build_injection(case: dict, root: Path, rng: np.random.Generator, snr: float
 
 
 def run_one(job: tuple) -> dict:
-    case, root, work, binary, snr, seed, threshold, extra, timeout = job
+    case, root, work, binary, snr, seed, threshold, extra, timeout, transit_passes, profile = job
     rng = np.random.default_rng(seed)
     built = build_injection(case, Path(root), rng, snr)
     if built is None:
@@ -105,8 +106,10 @@ def run_one(job: tuple) -> dict:
     error = None
     timed_out = False
     try:
-        subprocess.run([binary, "--input", str(curve), "--output", str(out), "--threads", "1",
-                        "--transit-search-passes", "1", "--min-period", "0.5", "--max-period", "15",
+        subprocess.run([binary, "--search-profile", profile,
+                        "--input", str(curve), "--output", str(out), "--threads", "1",
+                        "--transit-search-passes", str(transit_passes),
+                        "--min-period", "0.5", "--max-period", "15",
                         *shlex.split(extra)], check=True, capture_output=True, text=True,
                        timeout=timeout)
     except subprocess.TimeoutExpired:
@@ -177,15 +180,27 @@ def main() -> int:
     p.add_argument("--seed", type=int, default=20261010)
     p.add_argument("--search-timeout", type=float, default=3600,
                    help="maximum seconds for one injected-curve search")
+    p.add_argument("--search-profile", choices=("fast", "standard"), default="fast",
+                   help="search configuration (default: Profile J / fast)")
+    p.add_argument("--transit-search-passes", type=int,
+                   help="number of iterative transit-search passes (defaults: 5 for fast, 1 for standard)")
     p.add_argument("--extra-search-args", default="", help="additional astrosearch options")
     p.add_argument("--calibration", type=Path,
-                   default=Path(__file__).resolve().parents[1] / "data/calibration/detection_threshold.json")
+                   help="detection-tier calibration; defaults to one matched to --search-profile")
     p.add_argument("--threshold-source", choices=("deployment", "evaluation"),
                    default="deployment",
                    help="use the all-controls deployment threshold or the calibration-split threshold")
     p.add_argument("--work-dir", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
     a = p.parse_args()
+    if a.transit_search_passes is None:
+        a.transit_search_passes = 5 if a.search_profile == "fast" else 1
+    if a.calibration is None:
+        calibration_name = ("profile-j-fivepass-20261010-fa05-verified.json"
+                            if a.search_profile == "fast" else "detection_threshold.json")
+        a.calibration = Path(__file__).resolve().parents[1] / "data/calibration" / calibration_name
+    if a.transit_search_passes < 1:
+        p.error("--transit-search-passes must be at least 1")
     root = a.manifest.parent
     calibration = json.loads(a.calibration.read_text())
     threshold = float(calibration["threshold"] if a.threshold_source == "deployment"
@@ -197,7 +212,7 @@ def main() -> int:
     a.work_dir.mkdir(parents=True, exist_ok=True)
     batch_started = time.monotonic()
     jobs = [(case, str(root), str(a.work_dir), a.binary, snr, a.seed + 1000 * i + j, threshold,
-             a.extra_search_args, a.search_timeout)
+            a.extra_search_args, a.search_timeout, a.transit_search_passes, a.search_profile)
             for i, case in enumerate(chosen) for j, snr in enumerate(SNR_LEVELS)]
     rows = []
     with ProcessPoolExecutor(max_workers=a.workers) as pool:
@@ -215,6 +230,8 @@ def main() -> int:
         writer.writerows(rows)
     summary = summarize(rows, threshold)
     summary["threshold_source"] = a.threshold_source
+    summary["transit_search_passes"] = a.transit_search_passes
+    summary["search_profile"] = a.search_profile
     summary["calibration_file"] = str(a.calibration.resolve())
     summary["batch_wall_seconds"] = time.monotonic() - batch_started
     a.output.parent.mkdir(parents=True, exist_ok=True)

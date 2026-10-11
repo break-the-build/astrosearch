@@ -4,10 +4,26 @@
 
 ## Build and run
 
+For the concise first-run guide, long-running workflow, verification sequence,
+known pitfalls, and copy-ready LLM prompts, start with
+[docs/GETTING_STARTED.md](docs/GETTING_STARTED.md). Agent-specific operating
+rules are in [AGENTS.md](AGENTS.md).
+
+The [research implementation and experiment report](docs/RECOMMENDATION_IMPLEMENTATION.md)
+documents resolved search contracts, calibration checks, phase-window target
+ranking, and optional GP/nuance/TLS/LEO/ML experiments. The alternative methods
+remain experimental; the report distinguishes implemented changes from
+scientific validation still required.
+
 ```sh
 cargo build --release
 ./target/release/astrosearch --input lightcurve.csv --output candidates.csv
 ```
+
+The standalone Rust CLI and library default to five-pass Profile J. The built-in
+detection tier is calibrated for the matching QLP contract; for other products,
+set a threshold from a product-matched calibration or treat the tier as a
+screening label. Use `--search-profile standard` for the full-grid comparison.
 
 ## TESS batch survey
 
@@ -32,7 +48,7 @@ uv run astrosearch-target-yield targets-survey-eligible.csv \
   --output targets-yield.csv --sky-cells sky-cells.csv
 ```
 
-The coverage command caches per-target MAST results for resumability and records sector counts, observed days, and exact SPOC 2-minute sector IDs. Cached values are snapshots; delete a target's cache JSON to refresh it after MAST coverage changes. The survey still checks actual products and baseline before searching.
+The coverage command caches per-target MAST results for resumability and records sector counts, observed days, and exact SPOC 2-minute sector IDs. It uses the survey's separate exposure limits: 200 seconds for QLP and 120 seconds for SPOC (`--min-exptime-spoc`). Changing authors or exposure limits invalidates the cache; failed or partial queries are retried on the next run and produce a nonzero exit status. Cached values are snapshots; delete a target's cache JSON to refresh it after MAST coverage changes. The survey still checks actual products and baseline before searching. Ranked CSVs retain the input catalog columns so they can be passed directly to the survey, and explicit zero coverage produces zero expected yield.
 
 After a batch search, check all detection-tier rows against SPOC TCE files in one pass. The command downloads each shared MAST sector file once and records its URL and SHA-256:
 
@@ -43,7 +59,7 @@ uv run astrosearch-tce-preflight \
   --output data/survey/run1/spoc_tce_catalog_checks.json
 ```
 
-By default this checks recent sectors (90+) with SPOC 2-minute coverage; no match is limited to the reported files and sectors and does not establish novelty.
+By default this checks recent sectors (90+) with SPOC 2-minute coverage for detection-tier candidates from every pipeline in the run. Targets without coverage metadata remain in the report as `NO_DATA`. Missing requested files, malformed tables, or download failures produce a partial report and a nonzero exit status. A failed refresh writes the current attempt and preserves the previous complete report in a separate `.previous-success.json` file. No match is limited to the reported files and sectors and does not establish novelty.
 
 
 Each successful Rust search is also added to `<output>/candidate_registry.sqlite` with the light-curve/candidate hashes, source/build identity, product manifest, and candidate measurements. Promotions remain human-evidenced: use `python scripts/candidate_registry.py promote ...` only after recording the relevant catalog, pixel, independent-pipeline, and follow-up evidence.
@@ -125,14 +141,14 @@ The result is an expected count from population statistics. It says nothing abou
 
 `--ranking snr` restores the older ranking, a relative fixed-radius-planet signal-to-noise proxy (CDPP, or a TESS-magnitude photon-noise fallback).
 
-`--search-profile fast` runs grid-study variant J, which combines four settings:
+The survey front end defaults to `--search-profile fast` (Profile J), which combines four settings:
 
 - 10-minute inverse-variance binning;
 - physical transit-duration limits;
 - a 7× coarse period grid, ranked by fast folding and refined around the best 512 cells;
 - a cap of 2 million period trials.
 
-On 158 known-answer cases (78 planets, 80 noise-only), J used 7× less CPU than `standard`: 2,776 s against 20,563 s, and 6 minutes against 110 minutes of wall time. At matched false-alarm rates it recovered every planet that `standard` found, plus 3 more at 5% and 4 more at 10%. That gain is not statistically significant (p = 0.25 and 0.13). `standard` stays the default until injection completeness has been rechecked under `fast`. `--periods` cannot be combined with `fast`.
+On 158 known-answer cases (78 positive cases, 80 noise-only), J used 7× less CPU than `standard`: 2,776 s against 20,563 s, and 6 minutes against 110 minutes of wall time. At matched false-alarm rates it recovered every positive that `standard` found, plus 3 more at 5% and 4 more at 10%; those gains were not statistically significant (p = 0.25 and 0.13). A later five-pass J run completed all 600 requested benchmark cases with no failures or timeouts (36,701 s child CPU; 4,282 s wall). Its verified calibration is `data/calibration/profile-j-fivepass-20261010-fa05-verified.json`. The calibration-split 5% threshold was 21.41980; on the blind split it recovered 91/200 known-answer positives (45.5%, Wilson 95% CI 38.7–52.4%) and triggered 17/200 inverted controls (8.5%, CI 5.4–13.2%), above the nominal 5% false-alarm target. The deployment threshold is 25.36783, selected from all 400 controls after that evaluation; independent testing at this exact threshold remains needed. With no explicit threshold or calibration file, the survey loads this Profile J five-pass deployment threshold and passes it to the Rust search. The five-pass J injection curve now drives target-yield ranking in `data/calibration/completeness.json`; its 20 injections per S/N level have wide intervals and remain provisional. The earlier paired one-pass comparison measured 7.54× less CPU and 7.57× lower batch wall time for J, with equal detection recovery except for one additional J recovery at S/N 30. `--periods` cannot be combined with `fast`.
 
 `local_decisions.csv` records the yield for each eligible target, along with whether the target was selected, deferred by the budget, or suppressed by the ledger. Both rankings are deterministic and need no external service.
 
@@ -155,7 +171,7 @@ python scripts/ctoi_gate.py --tic 4206066 --lightcurve data/tic4206066/combined.
 | 2 | Physical fit, consistent star | limb-darkened transit fit preferred by ΔBIC ≥ 10; transit-implied density 3π(a/R*)³/(GP²) within 3σ of TIC (MCMC posterior uncertainties by default) |
 | 3 | No false-positive indicators | secondary eclipse searched at every phase (model-shift style: SNR scaled by the scan's own red-noise factor, a look-elsewhere threshold for ~P/T phases, a single-event jackknife, and a margin over the strongest positive excursion; 3σ at phase 0.5); odd/even depths within 3σ; not grazing (b < 1 − Rp/R*); events not dominated by momentum dumps or scattered light; no difference-image centroid offset that is both beyond one TESS pixel and ≥ 3σ (run automatically on up to 2 SPOC sectors, target position propagated with proper motion); no TIC neighbor within 2 pixels (separations at the TESS epoch) both bright enough to produce the depth and within the Vanderburg et al. 2019 ingress/egress magnitude limit; Gaia DR3 RUWE < 1.4 (matched by source_id) |
 | 4 | Not already known | no ephemeris match in the TOI, CTOI (ExoFOP), confirmed-planet, or requested SPOC TCE tables |
-| 5 | Significant and not a false positive | jackknife score at or above the calibrated detection tier (`data/calibration/detection_threshold.json`); empirical per-target FAP 95% upper bound < 1% from inverted and block-shuffled null light curves (300 by default); TRICERATOPS FPP < 1% |
+| 5 | Significant and not a false positive | jackknife score at or above the calibrated detection tier (`data/calibration/profile-j-fivepass-20261010-fa05-verified.json` by default); empirical per-target FAP 95% upper bound < 1% from inverted and block-shuffled null light curves (300 by default); TRICERATOPS FPP < 1% |
 | 6 | Testable prediction | ephemeris with uncertainties and predicted windows; publishing them with a timestamp and submitting the CTOI are human actions |
 
 Before the diagnostics, other transit candidates scoring at least half the candidate's score are masked unless their period is commensurate (1/3, 1/2, 1, 2, 3×) with it, so a sibling planet cannot pose as a secondary eclipse or odd/even difference while a same-period secondary stays visible (`--sibling-score-fraction`, 0 disables). Full BJD inputs are normalized to BTJD. `gate.json` records the git commit, input SHA-256 digests and package versions, and `gate.md` ends with the [verification protocol](docs/VERIFICATION_PROTOCOL.md) checklist.
@@ -166,7 +182,7 @@ Supporting tools:
 
 - `scripts/export_tess.py` now writes a `<file>.meta.json` sidecar per sector (product, flux column, whether the pipeline corrected crowding, momentum-dump and scattered-light times); the gate reads these.
 - `astrosearch --output X` writes `X.provenance.json` with the tool version, git commit and dirty flag, the full configuration and its SHA-256, and the input file's SHA-256.
-- The candidate CSV's `jackknife_score` column is the score with the strongest single event removed, and `tier` labels transit candidates `detection` (jackknife score ≥ `--detection-threshold`, default 23.3) or `screening`. Score 6 (`--min-transit-score`) is only a screening floor: 97% of the known-answer benchmark's inverted null controls exceed it, and their best candidates are usually carried by one event. On the blind split, at thresholds fixed on the calibration split, the jackknife tier recovers 86/200 planets with 14/200 null triggers, against 61/200 and 8/200 for a raw-score tier; at equal blind false-alarm rates it recovers more at every rate tested (2–10%). `scripts/calibrate_detection_threshold.py` recomputes the tier from the benchmark.
+- The candidate CSV's `jackknife_score` column is the score with the strongest single event removed, and `tier` labels transit candidates `detection` or `screening`. The standalone Rust CLI and survey use Profile J by default; the survey verifies the selected calibration against the resolved search contract. The standalone default tier is calibrated for the verified QLP five-pass Profile J contract, so other products need a product-matched calibration before treating that label as calibrated. Score 6 (`--min-transit-score`) is only a screening floor: most known-answer inverted null controls exceed it, and their best candidates are often carried by one event. Standard and Profile J calibrations are separate contracts; use the one matching the run. `scripts/calibrate_detection_threshold.py` recomputes a threshold and evaluates the blind split.
 - `scripts/evaluate_secondary_scan.py`, `scripts/injection_recovery.py`, `scripts/baseline_bls_benchmark.py` and `scripts/compare_fap_passes.py` reproduce the review-board experiments (see [docs/REVIEW_IMPROVEMENTS.md](docs/REVIEW_IMPROVEMENTS.md)).
 - `scripts/gp_detrend.py` flattens active stars with a celerite2 Gaussian process (transits optionally masked); search its output with `--trend-method none`, and compare with the biweight default using injection-recovery before preferring it.
 - `scripts/benchmark_known_systems.py build|run` checks recovery and vetting on known planets (LHS 3844 b, L 98-59 b–d, TOI-700 b–c) and deep TFOPWG false-positive TOIs, with ephemerides pulled from the NASA Exoplanet Archive into `data/benchmarks/known_systems.csv`.
@@ -282,6 +298,10 @@ Scores are ranking statistics, not calibrated probabilities or confirmation. Dif
 The correlated score uses an approximate duration-dependent noise correction, but neither score corrects for trend uncertainty or the number of stars/periods searched. Median detrending can attenuate long signals. Transit-like signals can be eclipsing binaries, blends, instrumental artifacts, or stellar variability. Before claiming a candidate, compare pixel-level data, known-object/candidate catalogs, independent sectors and pipelines, and follow-up observations. The auxiliary real-curve validation script now provides finite-exposure, quadratic limb-darkened injections, rank-aware recovery counts with Wilson intervals, coverage-conditioned recovery, inverted-flux controls, and circular-shift nulls. It still does not provide a survey-wide completeness surface, a calibrated false-alarm probability, formal Bayesian model comparison, or pixel-level vetting. TESS products are FITS; convert a selected light curve to CSV for this prototype. Pixel-level centroid and difference-image checks are outside its input model, so the odd/even flag is not a substitute for SPOC/DV or pixel-level vetting.
 
 ## Library and checks
+
+For a leakage-safe, residual-driven benchmark loop that separates missed
+signals from below-tier candidates and false triggers, see
+[the residual feedback workflow](docs/RESIDUAL_FEEDBACK.md).
 
 The CLI is a thin wrapper around `astrosearch::analyze_file` and `astrosearch::analyze`. `analyze` takes a vector of `Point { time, flux, error }` and a `Config`, returning a `Report` with candidates, observation count, baseline, per-segment cadence/noise summaries, and warnings. `Candidate::kind` is a `CandidateKind` and alias labels are `AliasType` values; both print the same strings as the CSV and compare equal to them (`kind == "periodic_dip"`).
 

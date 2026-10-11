@@ -603,3 +603,55 @@ fn passes_stop_once_nothing_reaches_the_detection_tier() {
         strong.transit_trials
     );
 }
+
+#[test]
+fn remeasured_depth_keeps_the_box_depth_and_flags_smooth_modulation() {
+    // A sharp transit keeps most of its depth against its local baseline.
+    let mut transit = curve(1200, 91);
+    inject(&mut transit, 3.0, 0.7, 0.12, 0.0015);
+    let report = analyze(transit, config(1.5, 6.0)).unwrap();
+    let best = report
+        .candidates
+        .iter()
+        .find(|c| c.kind.is_transit() && (c.period - 3.0).abs() < 0.03)
+        .expect("injected transit recovered");
+    assert!(
+        best.note
+            .contains("depth remeasured after transit-masked detrending (box depth "),
+        "{}",
+        best.note
+    );
+    assert!(!best.note.contains("depth inconsistency"), "{}", best.note);
+    assert!((best.depth - 1500.0).abs() < 450.0, "{}", best.depth);
+
+    // A pure sinusoid has no sharp dip. Its local depths are unstable (from
+    // negative to near the box depth across rows), so the flag is a one-way
+    // diagnostic: every remeasured row keeps the box depth in `note`, and at
+    // least one related-period row is flagged or keeps the box depth with the
+    // non-positive local depth stated. Absence of the flag is not evidence of
+    // a sharp transit; the Python variability diagnostic tests that directly.
+    let mut wave = curve(1200, 92);
+    for point in &mut wave {
+        point.flux += 0.003 * (std::f64::consts::TAU * point.time / 0.8).sin();
+    }
+    let report = analyze(wave, config(0.3, 2.0)).unwrap();
+    let related = |p: f64| [0.4, 0.8, 1.6].iter().any(|q| (p - q).abs() / q < 0.02);
+    let remeasured: Vec<_> = report
+        .candidates
+        .iter()
+        .filter(|c| c.kind.is_transit() && c.note.contains("transit-masked") && related(c.period))
+        .collect();
+    assert!(!remeasured.is_empty(), "{:?}", report.candidates);
+    assert!(remeasured
+        .iter()
+        .filter(|c| c.note.contains("depth remeasured"))
+        .all(|c| c.note.contains("(box depth ")));
+    assert!(
+        remeasured
+            .iter()
+            .any(|c| c.note.contains("depth inconsistency")
+                || c.note.contains("is not positive; box depth kept")),
+        "{:?}",
+        remeasured.iter().map(|c| &c.note).collect::<Vec<_>>()
+    );
+}

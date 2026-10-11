@@ -1,0 +1,300 @@
+{
+ "search": [
+  "--search-profile",
+  "fast",
+  "--transit-search-passes",
+  "5"
+ ],
+ "split": "calibration",
+ "binary": "/private/tmp/claude-501/-Users-danny-dev-astronomy/43b9ff1d-7b75-4a65-9972-a1f3674e99a1/scratchpad/diag-target/release/astrosearch",
+ "classes": {
+  "control": {
+   "cases": 200,
+   "evaluated": 178,
+   "status": {
+    "evaluated": 178,
+    "no transit candidate": 22
+   },
+   "detection_tier": [
+    7,
+    178,
+    [
+     0.019177807241906278,
+     0.07893765518565159
+    ]
+   ],
+   "depth_inconsistent": [
+    38,
+    178,
+    [
+     0.15967149325053115,
+     0.27940031874709625
+    ]
+   ],
+   "depth_inconsistent_among_detection_tier": [
+    4,
+    7,
+    [
+     0.2504583645276572,
+     0.8417801447485302
+    ]
+   ],
+   "masking_dependent": [
+    23,
+    178,
+    [
+     0.08766711131430463,
+     0.1864258218590956
+    ]
+   ],
+   "masking_dependent_among_detection_tier": [
+    1,
+    7,
+    [
+     0.02567962434474355,
+     0.5131278292743189
+    ]
+   ],
+   "modulation_explained": [
+    14,
+    178,
+    [
+     0.04742689159231053,
+     0.12767871428655334
+    ]
+   ],
+   "modulation_explained_among_detection_tier": [
+    2,
+    7,
+    [
+     0.08221892400405678,
+     0.6410655481673808
+    ]
+   ],
+   "interleaved_secondary": [
+    1,
+    178,
+    [
+     0.000992400322275249,
+     0.03113151057559173
+    ]
+   ],
+   "interleaved_secondary_among_detection_tier": [
+    0,
+    7,
+    [
+     5.551115123125783e-17,
+     0.35433043506668743
+    ]
+   ],
+   "one_parity_events": [
+    10,
+    178,
+    [
+     0.030798647388743647,
+     0.10031259080365963
+    ]
+   ],
+   "one_parity_events_among_detection_tier": [
+    0,
+    7,
+    [
+     5.551115123125783e-17,
+     0.35433043506668743
+    ]
+   ]
+  },
+  "eclipsing_binary": {
+   "cases": 132,
+   "evaluated": 131,
+   "status": {
+    "evaluated": 131,
+    "no transit candidate": 1
+   },
+   "detection_tier": [
+    124,
+    131,
+    [
+     0.8938077957979604,
+     0.9738778627766858
+    ]
+   ],
+   "depth_inconsistent": [
+    55,
+    131,
+    [
+     0.3387979079923251,
+     0.5054636404686358
+    ]
+   ],
+   "depth_inconsistent_among_detection_tier": [
+    53,
+    124,
+    [
+     0.34381792828898405,
+     0.515382677163695
+    ]
+   ],
+   "masking_dependent": [
+    0,
+    131,
+    [
+     0.0,
+     0.028488707065994576
+    ]
+   ],
+   "masking_dependent_among_detection_tier": [
+    0,
+    124,
+    [
+     0.0,
+     0.030048615340677695
+    ]
+   ],
+   "modulation_explained": [
+    1,
+    131,
+    [
+     0.0013487890456915057,
+     0.04197215150021155
+    ]
+   ],
+   "modulation_explained_among_detection_tier": [
+    1,
+    124,
+    [
+     0.0014250064581251692,
+     0.04426798605447708
+    ]
+   ],
+   "interleaved_secondary": [
+    30,
+    131,
+    [
+     0.1653860213813489,
+     0.30806969008190005
+    ]
+   ],
+   "interleaved_secondary_among_detection_tier": [
+    30,
+    124,
+    [
+     0.1750499670451079,
+     0.32432996345330645
+    ]
+   ],
+   "one_parity_events": [
+    1,
+    131,
+    [
+     0.0013487890456915057,
+     0.04197215150021155
+    ]
+   ],
+   "one_parity_events_among_detection_tier": [
+    1,
+    124,
+    [
+     0.0014250064581251692,
+     0.04426798605447708
+    ]
+   ]
+  },
+  "planet": {
+   "cases": 200,
+   "evaluated": 175,
+   "status": {
+    "evaluated": 175,
+    "no matching transit candidate": 25
+   },
+   "detection_tier": [
+    74,
+    175,
+    [
+     0.35209286794945016,
+     0.4969354268428098
+    ]
+   ],
+   "depth_inconsistent": [
+    8,
+    175,
+    [
+     0.023343439021955972,
+     0.08760096364357534
+    ]
+   ],
+   "depth_inconsistent_among_detection_tier": [
+    6,
+    74,
+    [
+     0.03768985019382638,
+     0.16581942443557818
+    ]
+   ],
+   "masking_dependent": [
+    7,
+    175,
+    [
+     0.019508837291298556,
+     0.08025247609958534
+    ]
+   ],
+   "masking_dependent_among_detection_tier": [
+    0,
+    74,
+    [
+     0.0,
+     0.04934977939638607
+    ]
+   ],
+   "modulation_explained": [
+    0,
+    175,
+    [
+     0.0,
+     0.02147968846835207
+    ]
+   ],
+   "modulation_explained_among_detection_tier": [
+    0,
+    74,
+    [
+     0.0,
+     0.04934977939638607
+    ]
+   ],
+   "interleaved_secondary": [
+    0,
+    175,
+    [
+     0.0,
+     0.02147968846835207
+    ]
+   ],
+   "interleaved_secondary_among_detection_tier": [
+    0,
+    74,
+    [
+     0.0,
+     0.04934977939638607
+    ]
+   ],
+   "one_parity_events": [
+    0,
+    175,
+    [
+     0.0,
+     0.02147968846835207
+    ]
+   ],
+   "one_parity_events_among_detection_tier": [
+    0,
+    74,
+    [
+     0.0,
+     0.04934977939638607
+    ]
+   ]
+  }
+ }
+}

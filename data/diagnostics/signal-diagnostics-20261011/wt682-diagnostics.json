@@ -1,0 +1,1207 @@
+{
+ "detections": 15,
+ "parameters": {
+  "event_phase_tolerance": 0.02,
+  "min_event_overlap": 0.5,
+  "depth_ratio_limit": 3.0,
+  "local_box_warning": 0.25,
+  "related_ratios": [
+   0.5,
+   1.0,
+   2.0
+  ],
+  "period_tolerance": 0.002,
+  "harmonics": 2,
+  "explained_below": 0.3,
+  "survives_above": 0.7,
+  "unmasked_warning": 0.25,
+  "phase_scatter_limit": 0.02,
+  "secondary_phase_window": 0.05,
+  "min_other_phase": 0.2
+ },
+ "event_groups": [
+  {
+   "group": 1,
+   "members": [
+    {
+     "detection": "astrosearch:21",
+     "period_days": 0.1877202,
+     "epoch": 1654.07589926,
+     "duration_days": 0.01466564,
+     "reported_depth_ppm": 1.8922,
+     "depth_estimator": "local (transit-masked detrending)",
+     "box_depth_ppm": 2837.1,
+     "local_depth_ppm": 1.8922,
+     "observed_events": 470,
+     "score": 36.7678,
+     "odd_even_sigma": 15.505,
+     "search_pass": 5,
+     "masked_percent": 55.2,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 49.4
+    },
+    {
+     "detection": "astrosearch:22",
+     "period_days": 0.18769245,
+     "epoch": 1654.07881006,
+     "duration_days": 0.01466347,
+     "reported_depth_ppm": 2694.8824,
+     "depth_estimator": "box (local not positive)",
+     "box_depth_ppm": 2694.8824,
+     "local_depth_ppm": -115.7,
+     "observed_events": 349,
+     "score": 29.64476,
+     "odd_even_sigma": 11.007,
+     "search_pass": 5,
+     "masked_percent": 55.2,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 177.27
+    },
+    {
+     "detection": "astrosearch:25",
+     "period_days": 0.18775143,
+     "epoch": 1654.02385221,
+     "duration_days": 0.02200212,
+     "reported_depth_ppm": 84.2083,
+     "depth_estimator": "local (transit-masked detrending)",
+     "box_depth_ppm": 2089.5,
+     "local_depth_ppm": 84.2083,
+     "observed_events": 449,
+     "score": 25.12828,
+     "odd_even_sigma": 3.994,
+     "search_pass": 5,
+     "masked_percent": 55.2,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 115.59
+    },
+    {
+     "detection": "astrosearch:26",
+     "period_days": 0.37524452,
+     "epoch": 1654.28249963,
+     "duration_days": 0.01758959,
+     "reported_depth_ppm": 2947.0904,
+     "depth_estimator": "box (local not positive)",
+     "box_depth_ppm": 2947.0904,
+     "local_depth_ppm": -587.5,
+     "observed_events": 189,
+     "score": 24.61996,
+     "odd_even_sigma": 2.692,
+     "search_pass": 5,
+     "masked_percent": 55.2,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 438.6
+    },
+    {
+     "detection": "astrosearch:27",
+     "period_days": 0.18762111,
+     "epoch": 1654.1014724,
+     "duration_days": 0.02198685,
+     "reported_depth_ppm": 2232.7048,
+     "depth_estimator": "box (local not positive)",
+     "box_depth_ppm": 2232.7048,
+     "local_depth_ppm": -136.9,
+     "observed_events": 340,
+     "score": 24.49756,
+     "odd_even_sigma": 8.854,
+     "search_pass": 5,
+     "masked_percent": 55.2,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 18.63
+    },
+    {
+     "detection": "astrosearch:28",
+     "period_days": 0.18767808,
+     "epoch": 1654.0831972,
+     "duration_days": 0.01466235,
+     "reported_depth_ppm": 2090.47,
+     "depth_estimator": "box (local not positive)",
+     "box_depth_ppm": 2090.47,
+     "local_depth_ppm": -1.1,
+     "observed_events": 394,
+     "score": 24.24561,
+     "odd_even_sigma": 3.112,
+     "search_pass": 5,
+     "masked_percent": 55.2,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 141.04
+    },
+    {
+     "detection": "astrosearch:29",
+     "period_days": 0.18774796,
+     "epoch": 1654.0729876,
+     "duration_days": 0.01466781,
+     "reported_depth_ppm": 53.4003,
+     "depth_estimator": "local (transit-masked detrending)",
+     "box_depth_ppm": 2055.1,
+     "local_depth_ppm": 53.4003,
+     "observed_events": 384,
+     "score": 23.93113,
+     "odd_even_sigma": 11.64,
+     "search_pass": 5,
+     "masked_percent": 55.2,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 99.68
+    },
+    {
+     "detection": "astrosearch:30",
+     "period_days": 0.18771971,
+     "epoch": 1654.05463375,
+     "duration_days": 0.0219984,
+     "reported_depth_ppm": 365.0857,
+     "depth_estimator": "local (transit-masked detrending)",
+     "box_depth_ppm": 2277.3,
+     "local_depth_ppm": 365.0857,
+     "observed_events": 597,
+     "score": 23.85234,
+     "odd_even_sigma": 17.923,
+     "search_pass": 4,
+     "masked_percent": 36.5,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 315.71
+    },
+    {
+     "detection": "astrosearch:31",
+     "period_days": 0.18776184,
+     "epoch": 1654.07299834,
+     "duration_days": 0.01466889,
+     "reported_depth_ppm": 25.1828,
+     "depth_estimator": "local (transit-masked detrending)",
+     "box_depth_ppm": 2044.0,
+     "local_depth_ppm": 25.1828,
+     "observed_events": 379,
+     "score": 23.53995,
+     "odd_even_sigma": 7.467,
+     "search_pass": 5,
+     "masked_percent": 55.2,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 246.07
+    },
+    {
+     "detection": "astrosearch:32",
+     "period_days": 0.1876221,
+     "epoch": 1654.10293911,
+     "duration_days": 0.01905537,
+     "reported_depth_ppm": 1947.7686,
+     "depth_estimator": "box (local not positive)",
+     "box_depth_ppm": 1947.7686,
+     "local_depth_ppm": -186.5,
+     "observed_events": 413,
+     "score": 22.86378,
+     "odd_even_sigma": 10.846,
+     "search_pass": 5,
+     "masked_percent": 55.2,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": -18.62
+    },
+    {
+     "detection": "astrosearch:33",
+     "period_days": 0.37564298,
+     "epoch": 1654.20217174,
+     "duration_days": 0.03815124,
+     "reported_depth_ppm": 769.0187,
+     "depth_estimator": "local (transit-masked detrending)",
+     "box_depth_ppm": 3286.6,
+     "local_depth_ppm": 769.0187,
+     "observed_events": 204,
+     "score": 22.17233,
+     "odd_even_sigma": 0.551,
+     "search_pass": 5,
+     "masked_percent": 55.2,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 1782.25
+    }
+   ],
+   "relations": [
+    {
+     "a": "astrosearch:21",
+     "b": "astrosearch:22",
+     "shared_events": 277,
+     "overlap_fraction": 0.794,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:21",
+     "b": "astrosearch:25",
+     "shared_events": 357,
+     "overlap_fraction": 0.795,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:21",
+     "b": "astrosearch:26",
+     "shared_events": 148,
+     "overlap_fraction": 0.783,
+     "period_relation": "2:1 harmonic"
+    },
+    {
+     "a": "astrosearch:21",
+     "b": "astrosearch:27",
+     "shared_events": 269,
+     "overlap_fraction": 0.791,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:21",
+     "b": "astrosearch:28",
+     "shared_events": 256,
+     "overlap_fraction": 0.65,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:21",
+     "b": "astrosearch:29",
+     "shared_events": 270,
+     "overlap_fraction": 0.703,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:21",
+     "b": "astrosearch:31",
+     "shared_events": 264,
+     "overlap_fraction": 0.697,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:21",
+     "b": "astrosearch:32",
+     "shared_events": 313,
+     "overlap_fraction": 0.758,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:21",
+     "b": "astrosearch:33",
+     "shared_events": 153,
+     "overlap_fraction": 0.75,
+     "period_relation": "2:1 harmonic"
+    },
+    {
+     "a": "astrosearch:22",
+     "b": "astrosearch:25",
+     "shared_events": 223,
+     "overlap_fraction": 0.639,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:22",
+     "b": "astrosearch:26",
+     "shared_events": 104,
+     "overlap_fraction": 0.55,
+     "period_relation": "2:1 harmonic"
+    },
+    {
+     "a": "astrosearch:22",
+     "b": "astrosearch:28",
+     "shared_events": 256,
+     "overlap_fraction": 0.734,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:22",
+     "b": "astrosearch:29",
+     "shared_events": 260,
+     "overlap_fraction": 0.745,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:22",
+     "b": "astrosearch:31",
+     "shared_events": 257,
+     "overlap_fraction": 0.736,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:22",
+     "b": "astrosearch:32",
+     "shared_events": 180,
+     "overlap_fraction": 0.516,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:22",
+     "b": "astrosearch:33",
+     "shared_events": 154,
+     "overlap_fraction": 0.755,
+     "period_relation": "2:1 harmonic"
+    },
+    {
+     "a": "astrosearch:25",
+     "b": "astrosearch:27",
+     "shared_events": 239,
+     "overlap_fraction": 0.703,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:25",
+     "b": "astrosearch:28",
+     "shared_events": 204,
+     "overlap_fraction": 0.518,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:25",
+     "b": "astrosearch:29",
+     "shared_events": 225,
+     "overlap_fraction": 0.586,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:25",
+     "b": "astrosearch:31",
+     "shared_events": 215,
+     "overlap_fraction": 0.567,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:25",
+     "b": "astrosearch:32",
+     "shared_events": 285,
+     "overlap_fraction": 0.69,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:25",
+     "b": "astrosearch:33",
+     "shared_events": 155,
+     "overlap_fraction": 0.76,
+     "period_relation": "2:1 harmonic"
+    },
+    {
+     "a": "astrosearch:26",
+     "b": "astrosearch:27",
+     "shared_events": 150,
+     "overlap_fraction": 0.794,
+     "period_relation": "2:1 harmonic"
+    },
+    {
+     "a": "astrosearch:26",
+     "b": "astrosearch:28",
+     "shared_events": 122,
+     "overlap_fraction": 0.646,
+     "period_relation": "2:1 harmonic"
+    },
+    {
+     "a": "astrosearch:26",
+     "b": "astrosearch:32",
+     "shared_events": 147,
+     "overlap_fraction": 0.778,
+     "period_relation": "2:1 harmonic"
+    },
+    {
+     "a": "astrosearch:27",
+     "b": "astrosearch:28",
+     "shared_events": 200,
+     "overlap_fraction": 0.588,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:27",
+     "b": "astrosearch:32",
+     "shared_events": 266,
+     "overlap_fraction": 0.782,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:28",
+     "b": "astrosearch:29",
+     "shared_events": 246,
+     "overlap_fraction": 0.641,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:28",
+     "b": "astrosearch:31",
+     "shared_events": 247,
+     "overlap_fraction": 0.652,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:28",
+     "b": "astrosearch:33",
+     "shared_events": 102,
+     "overlap_fraction": 0.5,
+     "period_relation": "2:1 harmonic"
+    },
+    {
+     "a": "astrosearch:29",
+     "b": "astrosearch:31",
+     "shared_events": 263,
+     "overlap_fraction": 0.694,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "astrosearch:29",
+     "b": "astrosearch:33",
+     "shared_events": 112,
+     "overlap_fraction": 0.549,
+     "period_relation": "2:1 harmonic"
+    },
+    {
+     "a": "astrosearch:30",
+     "b": "astrosearch:33",
+     "shared_events": 150,
+     "overlap_fraction": 0.735,
+     "period_relation": "2:1 harmonic"
+    },
+    {
+     "a": "astrosearch:31",
+     "b": "astrosearch:33",
+     "shared_events": 103,
+     "overlap_fraction": 0.505,
+     "period_relation": "2:1 harmonic"
+    }
+   ],
+   "depth_check": {
+    "status": "INCONSISTENT",
+    "issues": [
+     "astrosearch:21: depth 2837.1 ppm but only 49.4 ppm at this ephemeris in the unmasked light curve (found in search pass 5 with 55.2% of samples masked); the dip depends on masking or detrending, not the data alone",
+     "astrosearch:22: depth 2694.9 ppm but only 177.3 ppm at this ephemeris in the unmasked light curve (found in search pass 5 with 55.2% of samples masked); the dip depends on masking or detrending, not the data alone",
+     "astrosearch:25: depth 2089.5 ppm but only 115.6 ppm at this ephemeris in the unmasked light curve (found in search pass 5 with 55.2% of samples masked); the dip depends on masking or detrending, not the data alone",
+     "astrosearch:26: depth 2947.1 ppm but only 438.6 ppm at this ephemeris in the unmasked light curve (found in search pass 5 with 55.2% of samples masked); the dip depends on masking or detrending, not the data alone",
+     "astrosearch:27: depth 2232.7 ppm but only 18.6 ppm at this ephemeris in the unmasked light curve (found in search pass 5 with 55.2% of samples masked); the dip depends on masking or detrending, not the data alone",
+     "astrosearch:28: depth 2090.5 ppm but only 141.0 ppm at this ephemeris in the unmasked light curve (found in search pass 5 with 55.2% of samples masked); the dip depends on masking or detrending, not the data alone",
+     "astrosearch:29: depth 2055.1 ppm but only 99.7 ppm at this ephemeris in the unmasked light curve (found in search pass 5 with 55.2% of samples masked); the dip depends on masking or detrending, not the data alone",
+     "astrosearch:30: depth 2277.3 ppm but only 315.7 ppm at this ephemeris in the unmasked light curve (found in search pass 4 with 36.5% of samples masked); the dip depends on masking or detrending, not the data alone",
+     "astrosearch:31: depth 2044.0 ppm but only 246.1 ppm at this ephemeris in the unmasked light curve (found in search pass 5 with 55.2% of samples masked); the dip depends on masking or detrending, not the data alone",
+     "astrosearch:32: depth 1947.8 ppm but only -18.6 ppm at this ephemeris in the unmasked light curve (found in search pass 5 with 55.2% of samples masked); the dip depends on masking or detrending, not the data alone",
+     "astrosearch:21: local depth 1.9 ppm is 0.1% of box depth 2837.1 ppm (dip no sharper than nearby variation)",
+     "astrosearch:22: local depth -115.7 ppm is -4.3% of box depth 2694.9 ppm (dip no sharper than nearby variation)",
+     "astrosearch:25: local depth 84.2 ppm is 4.0% of box depth 2089.5 ppm (dip no sharper than nearby variation)",
+     "astrosearch:26: local depth -587.5 ppm is -19.9% of box depth 2947.1 ppm (dip no sharper than nearby variation)",
+     "astrosearch:27: local depth -136.9 ppm is -6.1% of box depth 2232.7 ppm (dip no sharper than nearby variation)",
+     "astrosearch:28: local depth -1.1 ppm is -0.1% of box depth 2090.5 ppm (dip no sharper than nearby variation)",
+     "astrosearch:29: local depth 53.4 ppm is 2.6% of box depth 2055.1 ppm (dip no sharper than nearby variation)",
+     "astrosearch:30: local depth 365.1 ppm is 16.0% of box depth 2277.3 ppm (dip no sharper than nearby variation)",
+     "astrosearch:31: local depth 25.2 ppm is 1.2% of box depth 2044.0 ppm (dip no sharper than nearby variation)",
+     "astrosearch:32: local depth -186.5 ppm is -9.6% of box depth 1947.8 ppm (dip no sharper than nearby variation)",
+     "astrosearch:33: local depth 769.0 ppm is 23.4% of box depth 3286.6 ppm (dip no sharper than nearby variation)",
+     "reported depths in one event pattern span 1.9-2947.1 ppm (1557x); they come from different estimators: astrosearch:21 1.9 ppm [local (transit-masked detrending)]; astrosearch:22 2694.9 ppm [box (local not positive)]; astrosearch:25 84.2 ppm [local (transit-masked detrending)]; astrosearch:26 2947.1 ppm [box (local not positive)]; astrosearch:27 2232.7 ppm [box (local not positive)]; astrosearch:28 2090.5 ppm [box (local not positive)]; astrosearch:29 53.4 ppm [local (transit-masked detrending)]; astrosearch:30 365.1 ppm [local (transit-masked detrending)]; astrosearch:31 25.2 ppm [local (transit-masked detrending)]; astrosearch:32 1947.8 ppm [box (local not positive)]; astrosearch:33 769.0 ppm [local (transit-masked detrending)]"
+    ],
+    "note": "all values are kept; no depth is preferred by this check"
+   }
+  },
+  {
+   "group": 2,
+   "members": [
+    {
+     "detection": "astrosearch:24",
+     "period_days": 0.37544072,
+     "epoch": 1654.202024,
+     "duration_days": 0.02053191,
+     "reported_depth_ppm": 749.4029,
+     "depth_estimator": "local (transit-masked detrending)",
+     "box_depth_ppm": 4145.4,
+     "local_depth_ppm": 749.4029,
+     "observed_events": 299,
+     "score": 26.06829,
+     "odd_even_sigma": 0.144,
+     "search_pass": 3,
+     "masked_percent": 28.7,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 2977.86
+    }
+   ],
+   "relations": [],
+   "depth_check": {
+    "status": "INCONSISTENT",
+    "issues": [
+     "astrosearch:24: local depth 749.4 ppm is 18.1% of box depth 4145.4 ppm (dip no sharper than nearby variation)"
+    ],
+    "note": "all values are kept; no depth is preferred by this check"
+   }
+  },
+  {
+   "group": 3,
+   "members": [
+    {
+     "detection": "tls:1",
+     "period_days": 0.37544359696731916,
+     "epoch": 1654.150625047729,
+     "duration_days": 0.0019191254855278098,
+     "reported_depth_ppm": 3864.627516085073,
+     "depth_estimator": "tls model depth",
+     "box_depth_ppm": null,
+     "local_depth_ppm": null,
+     "observed_events": 295,
+     "score": 43.41644584063625,
+     "odd_even_sigma": 0.48793141874573653,
+     "search_pass": null,
+     "masked_percent": null,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 3544.25
+    },
+    {
+     "detection": "tls:2",
+     "period_days": 0.3754406511222754,
+     "epoch": 1654.1573920391286,
+     "duration_days": 0.0019093471787653877,
+     "reported_depth_ppm": 3890.6074654700974,
+     "depth_estimator": "tls model depth",
+     "box_depth_ppm": null,
+     "local_depth_ppm": null,
+     "observed_events": 291,
+     "score": 43.478266228879,
+     "odd_even_sigma": 0.078584671229041,
+     "search_pass": null,
+     "masked_percent": null,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 3843.14
+    },
+    {
+     "detection": "tls:3",
+     "period_days": 0.3754406511222754,
+     "epoch": 1654.1564895375634,
+     "duration_days": 0.001899593723947683,
+     "reported_depth_ppm": 3853.9869689978577,
+     "depth_estimator": "tls model depth",
+     "box_depth_ppm": null,
+     "local_depth_ppm": null,
+     "observed_events": 294,
+     "score": 43.296588836492056,
+     "odd_even_sigma": 1.7516424947709957,
+     "search_pass": null,
+     "masked_percent": null,
+     "parity_coverage": "both parities",
+     "unmasked_depth_ppm": 3674.43
+    }
+   ],
+   "relations": [
+    {
+     "a": "tls:1",
+     "b": "tls:2",
+     "shared_events": 178,
+     "overlap_fraction": 0.612,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "tls:1",
+     "b": "tls:3",
+     "shared_events": 182,
+     "overlap_fraction": 0.619,
+     "period_relation": "same-period"
+    },
+    {
+     "a": "tls:2",
+     "b": "tls:3",
+     "shared_events": 288,
+     "overlap_fraction": 0.99,
+     "period_relation": "same-period"
+    }
+   ],
+   "depth_check": {
+    "status": "consistent",
+    "issues": [],
+    "note": "all values are kept; no depth is preferred by this check"
+   }
+  }
+ ],
+ "interleaved_pairs": [],
+ "variability_conflicts": [
+  {
+   "detection": "astrosearch:21",
+   "period_days": 0.1877202,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 6155,
+    "depth_before_ppm": 49.4,
+    "depth_after_ppm": -91.12,
+    "retained_fraction": -1.8444,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "astrosearch:22",
+   "period_days": 0.18769245,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 6160,
+    "depth_before_ppm": 177.27,
+    "depth_after_ppm": -53.66,
+    "retained_fraction": -0.3027,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "astrosearch:24",
+   "period_days": 0.37544072,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 4328,
+    "depth_before_ppm": 2977.86,
+    "depth_after_ppm": 35.74,
+    "retained_fraction": 0.012,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "astrosearch:25",
+   "period_days": 0.18775143,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 9236,
+    "depth_before_ppm": 115.59,
+    "depth_after_ppm": -28.94,
+    "retained_fraction": -0.2504,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "astrosearch:26",
+   "period_days": 0.37524452,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 3697,
+    "depth_before_ppm": 438.6,
+    "depth_after_ppm": -163.2,
+    "retained_fraction": -0.3721,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "astrosearch:27",
+   "period_days": 0.18762111,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 9274,
+    "depth_before_ppm": 18.63,
+    "depth_after_ppm": -78.14,
+    "retained_fraction": -4.1936,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "astrosearch:28",
+   "period_days": 0.18767808,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 6172,
+    "depth_before_ppm": 141.04,
+    "depth_after_ppm": -42.81,
+    "retained_fraction": -0.3035,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "astrosearch:29",
+   "period_days": 0.18774796,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 6174,
+    "depth_before_ppm": 99.68,
+    "depth_after_ppm": -137.78,
+    "retained_fraction": -1.3822,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "astrosearch:30",
+   "period_days": 0.18771971,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 9276,
+    "depth_before_ppm": 315.71,
+    "depth_after_ppm": 50.99,
+    "retained_fraction": 0.1615,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "astrosearch:31",
+   "period_days": 0.18776184,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 6147,
+    "depth_before_ppm": 246.07,
+    "depth_after_ppm": -96.38,
+    "retained_fraction": -0.3917,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "astrosearch:32",
+   "period_days": 0.1876221,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 0.5,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 8036,
+    "depth_before_ppm": -18.62,
+    "depth_after_ppm": -28.42,
+    "retained_fraction": null,
+    "verdict": "no positive dip at this ephemeris before modulation removal",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "astrosearch:33",
+   "period_days": 0.37564298,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 7994,
+    "depth_before_ppm": 1782.25,
+    "depth_after_ppm": 168.49,
+    "retained_fraction": 0.0945,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "tls:1",
+   "period_days": 0.37544359696731916,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 403,
+    "depth_before_ppm": 3544.25,
+    "depth_after_ppm": 40.46,
+    "retained_fraction": 0.0114,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "tls:2",
+   "period_days": 0.3754406511222754,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 402,
+    "depth_before_ppm": 3843.14,
+    "depth_after_ppm": 335.64,
+    "retained_fraction": 0.0873,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  },
+  {
+   "detection": "tls:3",
+   "period_days": 0.3754406511222754,
+   "related_variability": [
+    {
+     "variability_rank": "1",
+     "variability_period_days": 0.37505136,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3576.7433,
+     "score": 199.46431
+    },
+    {
+     "variability_rank": "2",
+     "variability_period_days": 0.37544448,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3561.3546,
+     "score": 198.573
+    },
+    {
+     "variability_rank": "3",
+     "variability_period_days": 0.37582748,
+     "transit_period_over_variability_period": 1.0,
+     "amplitude_ppm": 3404.438,
+     "score": 189.8335
+    }
+   ],
+   "status": "tested",
+   "modulation_test": {
+    "status": "OK",
+    "variability_period_days": 0.37505136,
+    "harmonics": 2,
+    "segments_fitted": 11,
+    "in_transit_samples": 396,
+    "depth_before_ppm": 3674.43,
+    "depth_after_ppm": 164.53,
+    "retained_fraction": 0.0448,
+    "verdict": "competing explanation: periodic modulation accounts for most of the dip (stellar variability, ellipsoidal or reflection modulation, or an alias of it)",
+    "method": "per-segment least squares on out-of-transit samples: constant + linear (before) and + 2 harmonics of the variability period (after)"
+   }
+  }
+ ],
+ "provenance": "report-only: input candidate rows are not modified, filtered or re-ranked",
+ "inputs": {
+  "candidates": "../../wt682/new_candidates.csv",
+  "lightcurve": "../../wt682/SPOC/combined.csv",
+  "tls": "../../wt682/tls-short-period.csv"
+ }
+}

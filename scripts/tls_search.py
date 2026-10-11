@@ -57,13 +57,67 @@ def read_curve(path: Path):
     return time, flux, error
 
 
+# Each found signal is masked over this multiple of its fitted duration
+# before the next iteration. On TIC 366989133 (WT 682) neither 1x nor 2x
+# stopped TLS from refitting the same ~0.1-day feature with a 0.002-day
+# duration at shifted epochs, so the mask is left at 1x (unchanged search
+# results) and repeats are reported by shared observed events instead.
+MASK_DURATIONS = 1.0
+
+
 def alias_label(period: float, prior: list[dict]) -> str:
+    """Period relation to the first earlier signal within 1% of an integer or
+    half-integer ratio (either direction); a ratio of one is "same-period"."""
     for signal in prior:
-        ratio = period / signal["period_days"]
+        ratio = max(period, signal["period_days"]) / min(period, signal["period_days"])
         nearest = round(2 * ratio) / 2
-        if nearest > 0 and abs(ratio - nearest) / nearest <= 0.01:
+        if nearest >= 1 and abs(ratio - nearest) / nearest <= 0.01:
+            if nearest == 1:
+                return "same-period"
             return "integer" if nearest.is_integer() else "half-integer"
     return "none"
+
+
+def depth_ppm_from_tls(depth: float) -> float:
+    """TLS reports `depth` as the normalised flux at the transit bottom
+    (0.9961 for a 3,900 ppm transit), not the fractional depth."""
+    return (1.0 - float(depth)) * 1e6
+
+
+def observed_times(result) -> list[float]:
+    """TLS predicted mid-times that contain data (per_transit_count > 0)."""
+    raw_times = getattr(result, "transit_times", None)
+    raw_counts = getattr(result, "per_transit_count", None)
+    times = [] if raw_times is None else list(raw_times)  # TLS returns NumPy arrays
+    counts = [] if raw_counts is None else list(raw_counts)
+    if len(counts) != len(times):
+        return [float(t) for t in times]
+    return [float(t) for t, n in zip(times, counts) if n > 0]
+
+
+def event_relations(row: dict, prior: list[dict]) -> str:
+    """Observed events shared with each earlier signal, e.g. "1:288/291
+    same-period": iteration 1 shares 288 of this signal's 291 events. Shared
+    events, not period proximity, show whether two rows are one feature. Only
+    links sharing at least MIN_EVENT_OVERLAP of the smaller event set are
+    listed; dense short-period event combs match some events by chance."""
+    from vetting.signal_diagnostics import MIN_EVENT_OVERLAP, Detection, period_relation, shared_events
+
+    def detection(r: dict) -> Detection:
+        return Detection("tls", str(r["iteration"]), r["period_days"], r["epoch_days"], r["duration_days"],
+                         r["depth_ppm"], "tls", None, None, None, None,
+                         tuple(float(x) for x in r["observed_transit_times"].split(";") if x))
+
+    this = detection(row)
+    parts = []
+    for earlier in prior:
+        other = detection(earlier)
+        if this.events and other.events:
+            common = shared_events(this, other)
+            if common >= MIN_EVENT_OVERLAP * min(len(this.events), len(other.events)):
+                parts.append(f"{earlier['iteration']}:{common}/{min(len(this.events), len(other.events))} "
+                             f"{period_relation(this.period, other.period)}")
+    return "; ".join(parts)
 
 
 def main() -> int:
@@ -140,7 +194,7 @@ def main() -> int:
         row = {
             "iteration": iteration + 1, "period_days": float(result.period),
             "epoch_days": float(result.T0), "duration_days": float(result.duration),
-            "depth_ppm": float(result.depth) * 1e6, "radius_ratio": float(result.rp_rs),
+            "depth_ppm": depth_ppm_from_tls(result.depth), "radius_ratio": float(result.rp_rs),
             "sde": sde, "sde_raw": float(result.SDE_raw),
             "fap_white_noise": float(fap) if fap is not None and math.isfinite(float(fap)) else "",
             "odd_even_mismatch_sigma": float(result.odd_even_mismatch)
@@ -149,9 +203,12 @@ def main() -> int:
             "distinct_transit_count": int(result.distinct_transit_count),
             "alias_type_vs_previous": alias_label(float(result.period), output_rows),
             "engine": "transitleastsquares-default-limb-darkened-template",
+            "observed_transit_times": ";".join(f"{t:.8f}" for t in observed_times(result)),
         }
+        row["shared_events_with_earlier"] = event_relations(row, output_rows)
         output_rows.append(row)
-        in_transit = transit_mask(time, row["period_days"], row["duration_days"], row["epoch_days"])
+        in_transit = transit_mask(time, row["period_days"], MASK_DURATIONS * row["duration_days"],
+                                  row["epoch_days"])
         if not np.any(in_transit & keep):
             break
         keep &= ~in_transit
@@ -160,7 +217,8 @@ def main() -> int:
     fields = list(output_rows[0]) if output_rows else [
         "iteration", "period_days", "epoch_days", "duration_days", "depth_ppm",
         "radius_ratio", "sde", "sde_raw", "fap_white_noise", "odd_even_mismatch_sigma",
-        "transit_count", "distinct_transit_count", "alias_type_vs_previous", "engine"]
+        "transit_count", "distinct_transit_count", "alias_type_vs_previous", "engine",
+        "observed_transit_times", "shared_events_with_earlier"]
     with args.output.open("w", newline="", encoding="utf-8") as stream:
         writer = csv.DictWriter(stream, fieldnames=fields)
         writer.writeheader()
@@ -169,6 +227,9 @@ def main() -> int:
         "input": str(args.lightcurve), "signals": len(output_rows),
         "remaining_observations": int(keep.sum()), "minimum_sde": args.min_sde,
         "warning": "TLS FAP assumes white noise; use inverted-curve controls to assess systematics.",
+        "mask_durations": MASK_DURATIONS,
+        "deduplication": "rows are never dropped; shared_events_with_earlier lists observed events shared "
+                         "with earlier iterations so repeated detections of one feature are visible",
     }, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {args.output}; iterative TLS signals: {len(output_rows)}")
     return 0

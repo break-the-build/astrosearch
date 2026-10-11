@@ -32,6 +32,12 @@ const MAX_CANDIDATES_PER_PERIOD: usize = 3;
 /// are filled from the last pass's ranked list, which was searched with every
 /// earlier winner masked, so `transit_candidates` still bounds the output
 /// rather than the number of passes.
+///
+/// Candidates from the second pass on record their pass and the fraction of
+/// samples already masked in `note`. Masking strong windows of a smoothly
+/// varying star removes its minima, which raises the out-of-transit mean of
+/// what remains, so later-pass depths and scores can exceed anything present
+/// in the unmasked light curve; the note keeps that provenance visible.
 pub(crate) fn iterative_periodic_dips(
     samples: &Samples,
     config: Config,
@@ -42,13 +48,32 @@ pub(crate) fn iterative_periodic_dips(
     let mut remaining = Vec::new();
     let mut periodogram = Vec::new();
     let mut trials = 0;
+    let usable = samples
+        .transit_weights
+        .iter()
+        .filter(|&&w| w > 0.0)
+        .count()
+        .max(1);
+    let mut total_masked = 0usize;
+    let annotate = |candidate: &mut Candidate, pass: usize, masked_count: usize| {
+        if pass > 0 {
+            candidate.note.push_str(&format!(
+                "; found in search pass {} with {:.1}% of samples masked by earlier passes",
+                pass + 1,
+                100.0 * masked_count as f64 / usable as f64
+            ));
+        }
+    };
     for pass in 0..config.transit_search_passes.min(config.transit_candidates) {
         let search = periodic_dips(&masked, config, warnings);
         trials += search.trials;
         if pass == 0 {
             periodogram = search.periodogram;
         }
-        let mut ranked = search.candidates.into_iter();
+        let mut ranked = search.candidates.into_iter().map(|mut c| {
+            annotate(&mut c, pass, total_masked);
+            c
+        });
         let Some(candidate) = ranked.next() else {
             remaining.clear();
             break;
@@ -79,6 +104,7 @@ pub(crate) fn iterative_periodic_dips(
             }
         }
         candidates.push(candidate);
+        total_masked += newly_masked;
         if newly_masked == 0 {
             break;
         }

@@ -2,12 +2,26 @@
 
 use crate::{math, preprocess, preprocess::Samples, Candidate, Config, Point};
 
+/// A local depth below this fraction of the box depth is reported as a depth
+/// inconsistency. A box with a sharp edge keeps most of its depth locally; a
+/// sinusoid of the same box depth sampled 1.5-3 durations away does not.
+const LOCAL_DEPTH_WARNING_FRACTION: f64 = 0.25;
+
 /// The box-fit depth comes from a trend fitted through the transits, which
 /// can partly absorb them. For each periodic dip, re-detrend with its event
 /// windows excluded and take the median of nearby out-of-transit samples (1.5-3
 /// durations from an event) minus the median in-transit value. The result
 /// replaces the box depth only with at least 2 in-transit and 4 nearby samples
-/// and a positive value; those candidates say so in `note`.
+/// and a positive value; those candidates say so in `note`, which keeps the
+/// replaced box depth so neither measurement is lost.
+///
+/// The two depths answer different questions. The box depth compares the
+/// in-transit level with the whole out-of-transit phase curve; the local depth
+/// compares it with samples just outside each event. A sharp transit gives
+/// similar values. Smooth modulation at a related period (a spotted rotator,
+/// ellipsoidal variation) or an alias that folds alternating minima and maxima
+/// together gives a box depth with almost no local step, so a local depth far
+/// below the box depth is flagged rather than silently reported as the depth.
 pub(crate) fn remeasure_depths(
     candidates: &mut [Candidate],
     points: &[Point],
@@ -49,13 +63,25 @@ pub(crate) fn remeasure_depths(
         }
         if inside.len() >= 2 && outside.len() >= 4 {
             let depth = math::median(outside) - math::median(inside);
+            let box_depth = candidate.depth;
             if depth.is_finite() && depth > 0.0 {
                 candidate.depth = depth;
                 candidate.amplitude = depth;
                 // Rows without this note keep the box-fit depth behind `score`.
-                candidate
-                    .note
-                    .push_str("; depth remeasured after transit-masked detrending");
+                candidate.note.push_str(&format!(
+                    "; depth remeasured after transit-masked detrending (box depth {box_depth:.1} ppm)"
+                ));
+                if box_depth > 0.0 && depth < LOCAL_DEPTH_WARNING_FRACTION * box_depth {
+                    candidate.note.push_str(&format!(
+                        "; depth inconsistency: local depth is {:.1}% of box depth, so the dip is not \
+                         sharper than nearby variation (modulation or alias?)",
+                        100.0 * depth / box_depth
+                    ));
+                }
+            } else if depth.is_finite() {
+                candidate.note.push_str(&format!(
+                    "; transit-masked local depth {depth:.1} ppm is not positive; box depth kept"
+                ));
             }
         }
     }
